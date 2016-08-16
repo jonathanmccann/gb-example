@@ -17,8 +17,16 @@ void main() {
 	// Initial X coordinate starting point
 	int x = 50;
 
+	// Set the X coordinate boundaries so the sprite does not go off the screen
+	int xCoordinateLowerBoundary = 8;
+	int xCoordinateUpperBoundary = 160;
+
 	// Initial Y coordinate starting point
 	int y = 32;
+
+	// Set the Y coordinate boundaries so the sprite does not go off the screen
+	int yCoordinateLowerBoundary = 16;
+	int yCoordinateUpperBoundary = 140;
 
 	// Set the offset of height between the head and the body of the sprite
 	int offset = 8;
@@ -53,6 +61,12 @@ void main() {
 
 			x++;
 
+			// Check to see if the X coordinate is greater than the upper boundary
+			// If so, then do not let the sprite move beyond it
+			if (x > xCoordinateUpperBoundary) {
+				x = xCoordinateUpperBoundary;
+			}
+
 			// Move both the head and body of the sprite to the new X location
 			move_sprite(0, x, y);
 			move_sprite(1, x, y + 8);
@@ -64,6 +78,10 @@ void main() {
 
 			x--;
 
+			if (x < xCoordinateLowerBoundary) {
+				x = xCoordinateLowerBoundary;
+			}
+
 			move_sprite(0, x, y);
 			move_sprite(1, x, y + 8);
 			delay(15);
@@ -72,6 +90,10 @@ void main() {
 		if (key & J_UP) {
 			y--;
 
+			if (y < yCoordinateLowerBoundary) {
+				y = yCoordinateLowerBoundary;
+			}
+
 			move_sprite(0, x, y);
 			move_sprite(1, x, y + 8);
 			delay(15);
@@ -79,6 +101,10 @@ void main() {
 
 		if (key & J_DOWN) {
 			y++;
+
+			if (y > yCoordinateUpperBoundary) {
+				y = yCoordinateUpperBoundary;
+			}
 
 			move_sprite(0, x, y);
 			move_sprite(1, x, y + 8);
