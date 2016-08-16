@@ -28,12 +28,18 @@ void main() {
 	SHOW_SPRITES;
 
 	while (!0) {
+		// Make sure the body is set to the first style
+		set_sprite_tile(1, 1);
+
 		// Move the sprite head and body to the right from X pixel 50 to 100
 		for(x = 50; x < 100; x++) {
 			move_sprite(0, x, 32);
 			move_sprite(1, x, 40);
 			delay(15);
 		}
+
+		// After moving to the right, change the body to second style
+		set_sprite_tile(1, 2);
 
 		// Move the sprite head and body to the left from X pixel 100 to 50
 		for(x = 100; x > 50; x--) {
