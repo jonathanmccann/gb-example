@@ -14,7 +14,17 @@ unsigned char man[] =
 };
 
 void main() {
-	int x;
+	// Initial X coordinate starting point
+	int x = 50;
+
+	// Initial Y coordinate starting point
+	int y = 32;
+
+	// Set the offset of height between the head and the body of the sprite
+	int offset = 8;
+
+	// Keep track of the joypad button pressed
+	int key;
 
 	// Load the three parts of the man into the sprite data
 	set_sprite_data(0, 3, man);
@@ -25,26 +35,53 @@ void main() {
 	// Set the second sprite tile to be the first style of body
 	set_sprite_tile(1, 1);
 
+	// Move the sprite on to the screen so we can see it
+	move_sprite(0, 50, 32);
+	move_sprite(1, 50, 40);
+
 	SHOW_SPRITES;
 
 	while (!0) {
-		// Make sure the body is set to the first style
-		set_sprite_tile(1, 1);
+		key = joypad();
 
-		// Move the sprite head and body to the right from X pixel 50 to 100
-		for(x = 50; x < 100; x++) {
-			move_sprite(0, x, 32);
-			move_sprite(1, x, 40);
+		// '&' is used in conjunction with if statments in case
+		// Both right and up (or another combination) is being
+		// pushed so that the sprite can move diagonally
+		if (key & J_RIGHT) {
+			// Set the body of the sprite to the first style
+			set_sprite_tile(1, 1);
+
+			x++;
+
+			// Move both the head and body of the sprite to the new X location
+			move_sprite(0, x, y);
+			move_sprite(1, x, y + 8);
 			delay(15);
 		}
 
-		// After moving to the right, change the body to second style
-		set_sprite_tile(1, 2);
+		if (key & J_LEFT) {
+			set_sprite_tile(1, 2);
 
-		// Move the sprite head and body to the left from X pixel 100 to 50
-		for(x = 100; x > 50; x--) {
-			move_sprite(0, x, 32);
-			move_sprite(1, x, 40);
+			x--;
+
+			move_sprite(0, x, y);
+			move_sprite(1, x, y + 8);
+			delay(15);
+		}
+
+		if (key & J_UP) {
+			y--;
+
+			move_sprite(0, x, y);
+			move_sprite(1, x, y + 8);
+			delay(15);
+		}
+
+		if (key & J_DOWN) {
+			y++;
+
+			move_sprite(0, x, y);
+			move_sprite(1, x, y + 8);
 			delay(15);
 		}
 	}
