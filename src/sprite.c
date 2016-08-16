@@ -70,7 +70,6 @@ void main() {
 			// Move both the head and body of the sprite to the new X location
 			move_sprite(0, x, y);
 			move_sprite(1, x, y + 8);
-			delay(15);
 		}
 
 		if (key & J_LEFT) {
@@ -84,7 +83,6 @@ void main() {
 
 			move_sprite(0, x, y);
 			move_sprite(1, x, y + 8);
-			delay(15);
 		}
 
 		if (key & J_UP) {
@@ -96,7 +94,6 @@ void main() {
 
 			move_sprite(0, x, y);
 			move_sprite(1, x, y + 8);
-			delay(15);
 		}
 
 		if (key & J_DOWN) {
@@ -108,7 +105,8 @@ void main() {
 
 			move_sprite(0, x, y);
 			move_sprite(1, x, y + 8);
-			delay(15);
 		}
+
+		delay(15);
 	}
 }
