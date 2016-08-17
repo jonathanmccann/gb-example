@@ -15,14 +15,14 @@ unsigned char man[] =
 
 void main() {
 	// Initial X coordinate starting point
-	int x = 50;
+	int playerXCoordinate = 50;
 
 	// Set the X coordinate boundaries so the sprite does not go off the screen
 	int xCoordinateLowerBoundary = 8;
 	int xCoordinateUpperBoundary = 160;
 
 	// Initial Y coordinate starting point
-	int y = 32;
+	int playerYCoordinate = 32;
 
 	// Set the Y coordinate boundaries so the sprite does not go off the screen
 	int yCoordinateLowerBoundary = 16;
@@ -30,6 +30,15 @@ void main() {
 
 	// Set the offset of height between the head and the body of the sprite
 	int offset = 8;
+
+	// Initial X coordinate starting point for enemy
+	int enemyXCoordinate = 100;
+
+	// Initial Y coordinate starting point for enemy
+	int enemyYCoordinate = 100;
+
+	// Boolean to determine whether the enemy is moving up or down
+	int enemyMovingUp = 1;
 
 	// Keep track of the joypad button pressed
 	int key;
@@ -43,9 +52,13 @@ void main() {
 	// Set the second sprite tile to be the first style of body
 	set_sprite_tile(1, 1);
 
+	// Set the third sprite tile to be the head for use as an enemy
+	set_sprite_tile(2, 0);
+
 	// Move the sprite on to the screen so we can see it
 	move_sprite(0, 50, 32);
 	move_sprite(1, 50, 40);
+	move_sprite(2, 100, 100);
 
 	SHOW_SPRITES;
 
@@ -59,53 +72,71 @@ void main() {
 			// Set the body of the sprite to the first style
 			set_sprite_tile(1, 1);
 
-			x++;
+			playerXCoordinate++;
 
 			// Check to see if the X coordinate is greater than the upper boundary
 			// If so, then do not let the sprite move beyond it
-			if (x > xCoordinateUpperBoundary) {
-				x = xCoordinateUpperBoundary;
+			if (playerXCoordinate > xCoordinateUpperBoundary) {
+				playerXCoordinate = xCoordinateUpperBoundary;
 			}
 
 			// Move both the head and body of the sprite to the new X location
-			move_sprite(0, x, y);
-			move_sprite(1, x, y + 8);
+			move_sprite(0, playerXCoordinate, playerYCoordinate);
+			move_sprite(1, playerXCoordinate, playerYCoordinate + 8);
 		}
 
 		if (key & J_LEFT) {
 			set_sprite_tile(1, 2);
 
-			x--;
+			playerXCoordinate--;
 
-			if (x < xCoordinateLowerBoundary) {
-				x = xCoordinateLowerBoundary;
+			if (playerXCoordinate < xCoordinateLowerBoundary) {
+				playerXCoordinate = xCoordinateLowerBoundary;
 			}
 
-			move_sprite(0, x, y);
-			move_sprite(1, x, y + 8);
+			move_sprite(0, playerXCoordinate, playerYCoordinate);
+			move_sprite(1, playerXCoordinate, playerYCoordinate + 8);
 		}
 
 		if (key & J_UP) {
-			y--;
+			playerYCoordinate--;
 
-			if (y < yCoordinateLowerBoundary) {
-				y = yCoordinateLowerBoundary;
+			if (playerYCoordinate < yCoordinateLowerBoundary) {
+				playerYCoordinate = yCoordinateLowerBoundary;
 			}
 
-			move_sprite(0, x, y);
-			move_sprite(1, x, y + 8);
+			move_sprite(0, playerXCoordinate, playerYCoordinate);
+			move_sprite(1, playerXCoordinate, playerYCoordinate + 8);
 		}
 
 		if (key & J_DOWN) {
-			y++;
+			playerYCoordinate++;
 
-			if (y > yCoordinateUpperBoundary) {
-				y = yCoordinateUpperBoundary;
+			if (playerYCoordinate > yCoordinateUpperBoundary) {
+				playerYCoordinate = yCoordinateUpperBoundary;
 			}
 
-			move_sprite(0, x, y);
-			move_sprite(1, x, y + 8);
+			move_sprite(0, playerXCoordinate, playerYCoordinate);
+			move_sprite(1, playerXCoordinate, playerYCoordinate + 8);
 		}
+
+		// Move the enemy sprite head in a square pattern
+		if (enemyMovingUp) {
+			enemyYCoordinate--;
+
+			if (enemyYCoordinate <= 50) {
+				enemyMovingUp = 0;
+			}
+		}
+		else {
+			enemyYCoordinate++;
+
+			if (enemyYCoordinate >= 125) {
+				enemyMovingUp = 1;
+			}
+		}
+
+		move_sprite(2, enemyXCoordinate, enemyYCoordinate);
 
 		delay(15);
 	}
