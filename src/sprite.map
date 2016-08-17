@@ -203,8 +203,8 @@ AREA _XSEG
 MODULES
 	FILE /opt/gbdk/lib/small/asxxxx/gb/crt0.o
 		NAME Runtime
-	FILE /tmp/lcc32802.o
-		NAME lcc32800
+	FILE /tmp/lcc40522.o
+		NAME lcc40520
 LIBRARIES
 	LIBRARY /opt/gbdk/lib/small/asxxxx/gbz80/gbz80.lib
 		MODULE crt0_rle.o

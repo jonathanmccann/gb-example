@@ -40,6 +40,10 @@ void main() {
 	// Boolean to determine whether the enemy is moving up or down
 	int enemyMovingUp = 1;
 
+	// Set the Y coordinate upper and lower bounds for the enemy sprite
+	int enemyYCoordinateLowerBoundary = 50;
+	int enemyYCoordinateUpperBoundary = 125;
+
 	// Keep track of the joypad button pressed
 	int key;
 
@@ -82,7 +86,7 @@ void main() {
 
 			// Move both the head and body of the sprite to the new X location
 			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate, playerYCoordinate + 8);
+			move_sprite(1, playerXCoordinate, playerYCoordinate + offset);
 		}
 
 		if (key & J_LEFT) {
@@ -95,7 +99,7 @@ void main() {
 			}
 
 			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate, playerYCoordinate + 8);
+			move_sprite(1, playerXCoordinate, playerYCoordinate + offset);
 		}
 
 		if (key & J_UP) {
@@ -106,7 +110,7 @@ void main() {
 			}
 
 			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate, playerYCoordinate + 8);
+			move_sprite(1, playerXCoordinate, playerYCoordinate + offset);
 		}
 
 		if (key & J_DOWN) {
@@ -117,21 +121,21 @@ void main() {
 			}
 
 			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate, playerYCoordinate + 8);
+			move_sprite(1, playerXCoordinate, playerYCoordinate + offset);
 		}
 
 		// Move the enemy sprite head in a square pattern
 		if (enemyMovingUp) {
 			enemyYCoordinate--;
 
-			if (enemyYCoordinate <= 50) {
+			if (enemyYCoordinate <= enemyYCoordinateLowerBoundary) {
 				enemyMovingUp = 0;
 			}
 		}
 		else {
 			enemyYCoordinate++;
 
-			if (enemyYCoordinate >= 125) {
+			if (enemyYCoordinate >= enemyYCoordinateUpperBoundary) {
 				enemyMovingUp = 1;
 			}
 		}
