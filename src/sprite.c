@@ -31,6 +31,13 @@ void main() {
 	// Set the offset of height between the head and the body of the sprite
 	int offset = 8;
 
+	// Boolean to determine whether or not the player can shoot
+	int playerCanShoot = 1;
+
+	// Initial X and Y coordinate starting points for the shot
+	int shotXCoordinate = 0;
+	int shotYCoordinate = 0;
+
 	// Initial X coordinate starting point for enemy
 	int enemyXCoordinate = 100;
 
@@ -58,6 +65,9 @@ void main() {
 
 	// Set the third sprite tile to be the head for use as an enemy
 	set_sprite_tile(2, 0);
+
+	// Set the fourth sprite tile to be the head for use as a player's shot
+	set_sprite_tile(3, 0);
 
 	// Move the sprite on to the screen so we can see it
 	move_sprite(0, 50, 32);
@@ -122,6 +132,28 @@ void main() {
 
 			move_sprite(0, playerXCoordinate, playerYCoordinate);
 			move_sprite(1, playerXCoordinate, playerYCoordinate + offset);
+		}
+
+		if ((key & J_A) && playerCanShoot) {
+			playerCanShoot = 0;
+
+			shotXCoordinate = playerXCoordinate;
+			shotYCoordinate = playerYCoordinate;
+
+			move_sprite(3, shotXCoordinate, shotYCoordinate);
+		}
+
+		if (!playerCanShoot) {
+			shotXCoordinate += 2;
+
+			if (shotXCoordinate >= xCoordinateUpperBoundary) {
+				move_sprite(3, 200, 200);
+
+				playerCanShoot = 1;
+			}
+			else {
+				move_sprite(3, shotXCoordinate, shotYCoordinate);
+			}
 		}
 
 		// Move the enemy sprite head in a square pattern
