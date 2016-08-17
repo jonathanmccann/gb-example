@@ -51,6 +51,9 @@ void main() {
 	int enemyYCoordinateLowerBoundary = 50;
 	int enemyYCoordinateUpperBoundary = 125;
 
+	// Set the off screen coordinates to hide the sprite
+	int offScreen = 200;
+
 	// Keep track of the joypad button pressed
 	int key;
 
@@ -143,19 +146,6 @@ void main() {
 			move_sprite(3, shotXCoordinate, shotYCoordinate);
 		}
 
-		if (!playerCanShoot) {
-			shotXCoordinate += 2;
-
-			if (shotXCoordinate >= xCoordinateUpperBoundary) {
-				move_sprite(3, 200, 200);
-
-				playerCanShoot = 1;
-			}
-			else {
-				move_sprite(3, shotXCoordinate, shotYCoordinate);
-			}
-		}
-
 		// Move the enemy sprite head in a square pattern
 		if (enemyMovingUp) {
 			enemyYCoordinate--;
@@ -173,6 +163,36 @@ void main() {
 		}
 
 		move_sprite(2, enemyXCoordinate, enemyYCoordinate);
+
+		if (!playerCanShoot) {
+			shotXCoordinate += 2;
+
+			if (shotXCoordinate >= xCoordinateUpperBoundary) {
+				move_sprite(3, offScreen, offScreen);
+
+				playerCanShoot = 1;
+			}
+			else {
+				move_sprite(3, shotXCoordinate, shotYCoordinate);
+			}
+		}
+
+		// Collision detection between the player's shot and the enemy
+		if (shotYCoordinate > enemyYCoordinate - 4) {
+			if (shotYCoordinate < enemyYCoordinate + 4) {
+				if (shotXCoordinate > enemyXCoordinate - 4) {
+					if (shotXCoordinate < enemyXCoordinate + 4) {
+						playerCanShoot = 1;
+
+						enemyXCoordinate = offScreen;
+						enemyYCoordinate = offScreen;
+
+						move_sprite(2, offScreen, offScreen);
+						move_sprite(3, offScreen, offScreen);
+					}
+				}
+			}
+		}
 
 		delay(15);
 	}
