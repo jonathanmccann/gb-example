@@ -146,7 +146,7 @@ void main() {
 			move_sprite(3, shotXCoordinate, shotYCoordinate);
 		}
 
-		// Move the enemy sprite head in a square pattern
+		// Move the enemy sprite head in a straight line pattern
 		if (enemyMovingUp) {
 			enemyYCoordinate--;
 
@@ -178,10 +178,10 @@ void main() {
 		}
 
 		// Collision detection between the player's shot and the enemy
-		if (shotYCoordinate > enemyYCoordinate - 4) {
-			if (shotYCoordinate < enemyYCoordinate + 4) {
-				if (shotXCoordinate > enemyXCoordinate - 4) {
-					if (shotXCoordinate < enemyXCoordinate + 4) {
+		if (shotYCoordinate > enemyYCoordinate - 8) {
+			if (shotYCoordinate < enemyYCoordinate + 8) {
+				if (shotXCoordinate > enemyXCoordinate - 8) {
+					if (shotXCoordinate < enemyXCoordinate + 8) {
 						playerCanShoot = 1;
 
 						enemyXCoordinate = offScreen;
