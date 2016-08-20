@@ -1,5 +1,8 @@
 #include <gb.h>
 
+#include <tiles.c>
+#include <background_map_tiles.c>
+
 unsigned char man[] =
 {
 	// Head
@@ -57,6 +60,10 @@ void main() {
 	// Keep track of the joypad button pressed
 	int key;
 
+	// Set the scroll rate of the background in pixels
+	int backgroundXScrollRate = 1;
+	int backgroundYScrollRate = 1;
+
 	// Load the three parts of the man into the sprite data
 	set_sprite_data(0, 3, man);
 
@@ -77,9 +84,21 @@ void main() {
 	move_sprite(1, 50, 40);
 	move_sprite(2, 100, 100);
 
+	// Set the background data
+	// Since there are two tiles
+	set_bkg_data(0, 2, tiles);
+
+	// Set the background tiles. These tiles in background_map_tiles
+	// refer to 8x8 tiles created in tiles.c / tiles
+	set_bkg_tiles(0, 0, 20, 18, background_map_tiles);
+
+	SHOW_BKG;
 	SHOW_SPRITES;
 
 	while (!0) {
+		// Scroll the background as defined by the scroll rate
+		scroll_bkg(backgroundXScrollRate, backgroundYScrollRate);
+
 		key = joypad();
 
 		// '&' is used in conjunction with if statments in case
