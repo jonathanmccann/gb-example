@@ -2,6 +2,8 @@
 
 #include <tiles.c>
 #include <background_map_tiles.c>
+#include <ship.c>
+
 
 unsigned char man[] =
 {
@@ -64,24 +66,27 @@ void main() {
 	int backgroundXScrollRate = 1;
 	int backgroundYScrollRate = 1;
 
-	// Load the three parts of the man into the sprite data
-	set_sprite_data(0, 3, man);
+	// Load the two parts of the ship into the sprite data
+	set_sprite_data(0, 2, ship);
 
-	// Set the first sprite tile to be the head
+	// Load the three parts of the man into the sprite data
+	//set_sprite_date(3, 3, man);
+
+	// Set the first sprite tile to be the left half of the ship
 	set_sprite_tile(0, 0);
 
-	// Set the second sprite tile to be the first style of body
+	// Set the second sprite tile to be the right half of the ship
 	set_sprite_tile(1, 1);
 
 	// Set the third sprite tile to be the head for use as an enemy
-	set_sprite_tile(2, 0);
+	set_sprite_tile(2, 3);
 
 	// Set the fourth sprite tile to be the head for use as a player's shot
-	set_sprite_tile(3, 0);
+	set_sprite_tile(3, 3);
 
 	// Move the sprite on to the screen so we can see it
 	move_sprite(0, 50, 32);
-	move_sprite(1, 50, 40);
+	move_sprite(1, 58, 32);
 	move_sprite(2, 100, 100);
 
 	// Set the background data
@@ -105,9 +110,6 @@ void main() {
 		// Both right and up (or another combination) is being
 		// pushed so that the sprite can move diagonally
 		if (key & J_RIGHT) {
-			// Set the body of the sprite to the first style
-			set_sprite_tile(1, 1);
-
 			playerXCoordinate++;
 
 			// Check to see if the X coordinate is greater than the upper boundary
@@ -118,12 +120,10 @@ void main() {
 
 			// Move both the head and body of the sprite to the new X location
 			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate, playerYCoordinate + offset);
+			move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
 		}
 
 		if (key & J_LEFT) {
-			set_sprite_tile(1, 2);
-
 			playerXCoordinate--;
 
 			if (playerXCoordinate < xCoordinateLowerBoundary) {
@@ -131,7 +131,7 @@ void main() {
 			}
 
 			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate, playerYCoordinate + offset);
+			move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
 		}
 
 		if (key & J_UP) {
@@ -142,7 +142,7 @@ void main() {
 			}
 
 			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate, playerYCoordinate + offset);
+			move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
 		}
 
 		if (key & J_DOWN) {
@@ -153,7 +153,7 @@ void main() {
 			}
 
 			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate, playerYCoordinate + offset);
+			move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
 		}
 
 		if ((key & J_A) && playerCanShoot) {
