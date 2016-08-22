@@ -219,24 +219,39 @@ void main() {
 		}
 
 		// Move the enemy sprite head in a straight line pattern
-		for (i = 0; i < numberOfEnemies; i++) {
-			if (enemy[i].isMovingUp) {
-				enemy[i].yCoordinate--;
+		if (enemy[0].isMovingUp) {
+			enemy[0].yCoordinate--;
 
-				if (enemy[i].yCoordinate <= enemy[i].yCoordinateLowerBoundary) {
-					enemy[i].isMovingUp = 0;
-				}
+			if (enemy[0].yCoordinate <= enemy[0].yCoordinateLowerBoundary) {
+				enemy[0].isMovingUp = 0;
 			}
-			else {
-				enemy[i].yCoordinate++;
-
-				if (enemy[i].yCoordinate >= enemy[i].yCoordinateUpperBoundary) {
-					enemy[i].isMovingUp = 1;
-				}
-			}
-
-			move_sprite(enemy[i].spriteNumber, enemy[i].xCoordinate, enemy[i].yCoordinate);
 		}
+		else {
+			enemy[0].yCoordinate++;
+
+			if (enemy[0].yCoordinate >= enemy[0].yCoordinateUpperBoundary) {
+				enemy[0].isMovingUp = 1;
+			}
+		}
+
+		move_sprite(enemy[0].spriteNumber, enemy[0].xCoordinate, enemy[0].yCoordinate);
+
+		if (enemy[1].isMovingUp) {
+			enemy[1].yCoordinate--;
+
+			if (enemy[1].yCoordinate <= enemy[1].yCoordinateLowerBoundary) {
+				enemy[1].isMovingUp = 0;
+			}
+		}
+		else {
+			enemy[1].yCoordinate++;
+
+			if (enemy[1].yCoordinate >= enemy[1].yCoordinateUpperBoundary) {
+				enemy[1].isMovingUp = 1;
+			}
+		}
+
+		move_sprite(enemy[1].spriteNumber, enemy[1].xCoordinate, enemy[1].yCoordinate);
 
 		if (!playerCanShoot) {
 			shotXCoordinate += 2;
@@ -252,19 +267,33 @@ void main() {
 		}
 
 		// Collision detection between the player's shot and the enemy
-		for (j = 0; j < numberOfEnemies; j++) {
-			if (shotYCoordinate > enemy[j].yCoordinate - 8) {
-				if (shotYCoordinate < enemy[j].yCoordinate + 8) {
-					if (shotXCoordinate > enemy[j].xCoordinate - 8) {
-						if (shotXCoordinate < enemy[j].xCoordinate + 8) {
-							playerCanShoot = 1;
+		if (shotYCoordinate > enemy[0].yCoordinate - 8) {
+			if (shotYCoordinate < enemy[0].yCoordinate + 8) {
+				if (shotXCoordinate > enemy[0].xCoordinate - 8) {
+					if (shotXCoordinate < enemy[0].xCoordinate + 8) {
+						playerCanShoot = 1;
 
-							enemy[j].xCoordinate = offScreen;
-							enemy[j].yCoordinate = offScreen;
+						enemy[0].xCoordinate = offScreen;
+						enemy[0].yCoordinate = offScreen;
 
-							move_sprite(enemy[j].spriteNumber, offScreen, offScreen);
-							move_sprite(4, offScreen, offScreen);
-						}
+						move_sprite(enemy[0].spriteNumber, offScreen, offScreen);
+						move_sprite(4, offScreen, offScreen);
+					}
+				}
+			}
+		}
+
+		if (shotYCoordinate > enemy[1].yCoordinate - 8) {
+			if (shotYCoordinate < enemy[1].yCoordinate + 8) {
+				if (shotXCoordinate > enemy[1].xCoordinate - 8) {
+					if (shotXCoordinate < enemy[1].xCoordinate + 8) {
+						playerCanShoot = 1;
+
+						enemy[1].xCoordinate = offScreen;
+						enemy[1].yCoordinate = offScreen;
+
+						move_sprite(enemy[1].spriteNumber, offScreen, offScreen);
+						move_sprite(4, offScreen, offScreen);
 					}
 				}
 			}
