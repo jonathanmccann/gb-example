@@ -257,8 +257,10 @@ void main() {
 			move_sprite(4, shotXCoordinate, shotYCoordinate);
 		}
 
-		moveEnemySprite(&enemy[0]);
-		moveEnemySprite(&enemy[1]);
+		for (i = 0; i < numberOfEnemies; i++) {
+			moveEnemySprite(&enemy[i]);
+			moveEnemySprite(&enemy[i]);
+		}
 
 		if (!playerCanShoot) {
 			shotXCoordinate += 2;
@@ -273,8 +275,10 @@ void main() {
 			}
 		}
 
-		testShotAndEnemyCollision(&enemy[0]);
-		testShotAndEnemyCollision(&enemy[1]);
+		for (j = 0; j < numberOfEnemies; j++) {
+			testShotAndEnemyCollision(&enemy[j]);
+			testShotAndEnemyCollision(&enemy[j]);
+		}
 
 		delay(15);
 
