@@ -17,19 +17,19 @@ AREA .  .ABS.
 		l__LIT	0000
 		l__GSINITTAIL	0001
 		l__BSS	0059
+		l__BASE	01B9
 		l__HOME	01D3
 		l__HEADER	01E1
-		l__BASE	01FC
 		s__CODE	0200
 		l__GSINIT	0205
 		l__DATA	0210
-		l__CODE	072E
-		s__HOME	092E
-		s__BASE	0B01
-		s__LIT	0CFD
-		s__GSINIT	0CFD
-		s__GSINITTAIL	0F02
-		s__GSFINAL	0F03
+		l__CODE	0725
+		s__HOME	0925
+		s__BASE	0AF8
+		s__LIT	0CB1
+		s__GSINIT	0CB1
+		s__GSINITTAIL	0EB6
+		s__GSFINAL	0EB7
 		.OAM	C000
 		s__DATA	C0A0
 		s__BSS	C2B0
@@ -43,7 +43,7 @@ AREA .  .ABS.
 AREA _CODE
 	RADIX HEX
 	BASE 0200
-	SIZE 072E
+	SIZE 0725
 	ATTRIB REL CON
 	GLOBALS
 		_insert	0200
@@ -60,100 +60,98 @@ AREA _HEADER
 		_exit	01D2
 AREA _HOME
 	RADIX HEX
-	BASE 092E
+	BASE 0925
 	SIZE 01D3
 	ATTRIB REL CON
 	GLOBALS
-		.set_mode	092E
-		.remove_VBL	093E
-		.remove_LCD	0944
-		.remove_TIM	094A
-		.remove_SIO	0950
-		.remove_JOY	0956
-		.add_VBL	095C
-		.add_LCD	0962
-		.add_TIM	0968
-		.add_SIO	096E
-		.add_JOY	0974
-		.remove_int	097A
-		.add_int	099A
-		.wait_vbl_done	09B6
-		_wait_vbl_done	09B6
-		_display_off	09CD
-		.display_off	09CD
-		.serial_IO	09EE
-		_mode	0A1D
-		_get_mode	0A26
-		_enable_interrupts	0A2B
-		_disable_interrupts	0A2D
-		_reset	0A2F
-		.reset	0A2F
-		_set_interrupts	0A35
-		_remove_VBL	0A40
-		_remove_LCD	0A4B
-		_remove_TIM	0A56
-		_remove_SIO	0A61
-		_remove_JOY	0A6C
-		_add_VBL	0A77
-		_add_LCD	0A82
-		_add_TIM	0A8D
-		_add_SIO	0A98
-		_add_JOY	0AA3
-		_clock	0AAE
-		__printTStates	0AB7
-		banked_call	0AB8
-		banked_ret	0AD1
-		__initrleblock	0ADA
+		.set_mode	0925
+		.remove_VBL	0935
+		.remove_LCD	093B
+		.remove_TIM	0941
+		.remove_SIO	0947
+		.remove_JOY	094D
+		.add_VBL	0953
+		.add_LCD	0959
+		.add_TIM	095F
+		.add_SIO	0965
+		.add_JOY	096B
+		.remove_int	0971
+		.add_int	0991
+		.wait_vbl_done	09AD
+		_wait_vbl_done	09AD
+		_display_off	09C4
+		.display_off	09C4
+		.serial_IO	09E5
+		_mode	0A14
+		_get_mode	0A1D
+		_enable_interrupts	0A22
+		_disable_interrupts	0A24
+		_reset	0A26
+		.reset	0A26
+		_set_interrupts	0A2C
+		_remove_VBL	0A37
+		_remove_LCD	0A42
+		_remove_TIM	0A4D
+		_remove_SIO	0A58
+		_remove_JOY	0A63
+		_add_VBL	0A6E
+		_add_LCD	0A79
+		_add_TIM	0A84
+		_add_SIO	0A8F
+		_add_JOY	0A9A
+		_clock	0AA5
+		__printTStates	0AAE
+		banked_call	0AAF
+		banked_ret	0AC8
+		__initrleblock	0AD1
 AREA _BASE
 	RADIX HEX
-	BASE 0B01
-	SIZE 01FC
+	BASE 0AF8
+	SIZE 01B9
 	ATTRIB REL CON
 	GLOBALS
-		_scroll_bkg	0B01
-		.mv_sprite	0B17
-		_move_sprite	0B26
-		_set_win_data	0B33
-		_set_bkg_data	0B33
-		_set_sprite_data	0B80
-		.padup	0BAF
-		_waitpadup	0BAF
-		.jpad	0BBF
-		.wait_pad	0BEC
-		_joypad	0BF3
-		_waitpad	0BF8
-		.set_sprite_tile	0C02
-		_set_sprite_tile	0C0F
-		.delay	0C1A
-		_delay	0C54
-		.copy_vram	0C5D
-		_get_data	0C6C
-		_set_data	0C6C
-		_set_bkg_tiles	0C7F
-		.set_xy_wtt	0C93
-		.set_xy_btt	0CA4
-		.set_xy_tt	0CB3
-		_set_tiles	0CE4
+		_scroll_bkg	0AF8
+		.mv_sprite	0B0E
+		_move_sprite	0B1D
+		_set_win_data	0B2A
+		_set_bkg_data	0B2A
+		_set_sprite_data	0B77
+		.padup	0BA6
+		_waitpadup	0BA6
+		.jpad	0BB6
+		.wait_pad	0BE3
+		_joypad	0BEA
+		_waitpad	0BEF
+		.set_sprite_tile	0BF9
+		_set_sprite_tile	0C06
+		.copy_vram	0C11
+		_get_data	0C20
+		_set_data	0C20
+		_set_bkg_tiles	0C33
+		.set_xy_wtt	0C47
+		.set_xy_btt	0C58
+		.set_xy_tt	0C67
+		_set_tiles	0C98
 AREA _LIT
 	RADIX HEX
-	BASE 0CFD
+	BASE 0CB1
 	SIZE 0000
 	ATTRIB REL CON
 AREA _GSINIT
 	RADIX HEX
-	BASE 0CFD
+	BASE 0CB1
 	SIZE 0205
 	ATTRIB REL CON
 	GLOBALS
-		gsinit	0CFD
+		gsinit	0CB1
 AREA _GSINITTAIL
 	RADIX HEX
-	BASE 0F02
+	BASE 0EB6
 	SIZE 0001
 	ATTRIB REL CON
 AREA _GSFINAL
 	RADIX HEX
-	BASE 0F03
+	BASE 0EB7
 	SIZE 0000
 	ATTRIB REL CON
 AREA _DATA
@@ -225,8 +223,8 @@ AREA _XSEG
 MODULES
 	FILE /opt/gbdk/lib/small/asxxxx/gb/crt0.o
 		NAME Runtime
-	FILE /tmp/lcc281782.o
-		NAME lcc281780
+	FILE /tmp/lcc293382.o
+		NAME lcc293380
 LIBRARIES
 	LIBRARY /opt/gbdk/lib/small/asxxxx/gbz80/gbz80.lib
 		MODULE crt0_rle.o
@@ -240,8 +238,6 @@ LIBRARIES
 		MODULE pad.o
 	LIBRARY /opt/gbdk/lib/small/asxxxx/gb/gb.lib
 		MODULE set_spr.o
-	LIBRARY /opt/gbdk/lib/small/asxxxx/gb/gb.lib
-		MODULE delay.o
 	LIBRARY /opt/gbdk/lib/small/asxxxx/gb/gb.lib
 		MODULE cpy_data.o
 	LIBRARY /opt/gbdk/lib/small/asxxxx/gb/gb.lib

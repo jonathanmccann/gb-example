@@ -280,8 +280,6 @@ void main() {
 			testShotAndEnemyCollision(&enemy[j]);
 		}
 
-		delay(15);
-
 		// Use this to force the game to run at 60
 		// frames per second and allow the background
 		// to scroll more smoothly
