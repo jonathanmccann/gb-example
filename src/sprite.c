@@ -6,6 +6,16 @@
 
 #define numberOfEnemies 2
 
+// Boolean to determine whether or not the player can shoot
+int playerCanShoot = 1;
+
+// Initial X and Y coordinate starting points for the shot
+int shotXCoordinate = 0;
+int shotYCoordinate = 0;
+
+// Set the off screen coordinates to hide the sprite
+int offScreen = 200;
+
 // Create an iterator for loops
 int i, j;
 
@@ -77,6 +87,45 @@ void initializeEnemies() {
 	insert(&enemy[1], &secondEnemy);
 }
 
+void moveEnemySprite(Enemy *enemy) {
+	// Move the enemy sprite head in a straight line pattern
+	if (enemy->isMovingUp) {
+		enemy->yCoordinate--;
+
+		if (enemy->yCoordinate <= enemy->yCoordinateLowerBoundary) {
+			enemy->isMovingUp = 0;
+		}
+	}
+	else {
+		enemy->yCoordinate++;
+
+		if (enemy->yCoordinate >= enemy->yCoordinateUpperBoundary) {
+			enemy->isMovingUp = 1;
+		}
+	}
+
+	move_sprite(enemy->spriteNumber, enemy->xCoordinate, enemy->yCoordinate);
+}
+
+void testShotAndEnemyCollision(Enemy *enemy) {
+	// Collision detection between the player's shot and the enemy
+	if (shotYCoordinate > enemy->yCoordinate - 8) {
+		if (shotYCoordinate < enemy->yCoordinate + 8) {
+			if (shotXCoordinate > enemy->xCoordinate - 8) {
+				if (shotXCoordinate < enemy->xCoordinate + 8) {
+					playerCanShoot = 1;
+
+					enemy->xCoordinate = offScreen;
+					enemy->yCoordinate = offScreen;
+
+					move_sprite(enemy->spriteNumber, offScreen, offScreen);
+					move_sprite(4, offScreen, offScreen);
+				}
+			}
+		}
+	}
+}
+
 void main() {
 	// Initial X coordinate starting point
 	int playerXCoordinate = 50;
@@ -94,16 +143,6 @@ void main() {
 
 	// Set the offset of height between the head and the body of the sprite
 	int offset = 8;
-
-	// Boolean to determine whether or not the player can shoot
-	int playerCanShoot = 1;
-
-	// Initial X and Y coordinate starting points for the shot
-	int shotXCoordinate = 0;
-	int shotYCoordinate = 0;
-
-	// Set the off screen coordinates to hide the sprite
-	int offScreen = 200;
 
 	// Keep track of the joypad button pressed
 	int key;
@@ -218,40 +257,8 @@ void main() {
 			move_sprite(4, shotXCoordinate, shotYCoordinate);
 		}
 
-		// Move the enemy sprite head in a straight line pattern
-		if (enemy[0].isMovingUp) {
-			enemy[0].yCoordinate--;
-
-			if (enemy[0].yCoordinate <= enemy[0].yCoordinateLowerBoundary) {
-				enemy[0].isMovingUp = 0;
-			}
-		}
-		else {
-			enemy[0].yCoordinate++;
-
-			if (enemy[0].yCoordinate >= enemy[0].yCoordinateUpperBoundary) {
-				enemy[0].isMovingUp = 1;
-			}
-		}
-
-		move_sprite(enemy[0].spriteNumber, enemy[0].xCoordinate, enemy[0].yCoordinate);
-
-		if (enemy[1].isMovingUp) {
-			enemy[1].yCoordinate--;
-
-			if (enemy[1].yCoordinate <= enemy[1].yCoordinateLowerBoundary) {
-				enemy[1].isMovingUp = 0;
-			}
-		}
-		else {
-			enemy[1].yCoordinate++;
-
-			if (enemy[1].yCoordinate >= enemy[1].yCoordinateUpperBoundary) {
-				enemy[1].isMovingUp = 1;
-			}
-		}
-
-		move_sprite(enemy[1].spriteNumber, enemy[1].xCoordinate, enemy[1].yCoordinate);
+		moveEnemySprite(&enemy[0]);
+		moveEnemySprite(&enemy[1]);
 
 		if (!playerCanShoot) {
 			shotXCoordinate += 2;
@@ -266,38 +273,8 @@ void main() {
 			}
 		}
 
-		// Collision detection between the player's shot and the enemy
-		if (shotYCoordinate > enemy[0].yCoordinate - 8) {
-			if (shotYCoordinate < enemy[0].yCoordinate + 8) {
-				if (shotXCoordinate > enemy[0].xCoordinate - 8) {
-					if (shotXCoordinate < enemy[0].xCoordinate + 8) {
-						playerCanShoot = 1;
-
-						enemy[0].xCoordinate = offScreen;
-						enemy[0].yCoordinate = offScreen;
-
-						move_sprite(enemy[0].spriteNumber, offScreen, offScreen);
-						move_sprite(4, offScreen, offScreen);
-					}
-				}
-			}
-		}
-
-		if (shotYCoordinate > enemy[1].yCoordinate - 8) {
-			if (shotYCoordinate < enemy[1].yCoordinate + 8) {
-				if (shotXCoordinate > enemy[1].xCoordinate - 8) {
-					if (shotXCoordinate < enemy[1].xCoordinate + 8) {
-						playerCanShoot = 1;
-
-						enemy[1].xCoordinate = offScreen;
-						enemy[1].yCoordinate = offScreen;
-
-						move_sprite(enemy[1].spriteNumber, offScreen, offScreen);
-						move_sprite(4, offScreen, offScreen);
-					}
-				}
-			}
-		}
+		testShotAndEnemyCollision(&enemy[0]);
+		testShotAndEnemyCollision(&enemy[1]);
 
 		delay(15);
 
