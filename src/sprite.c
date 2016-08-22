@@ -4,6 +4,22 @@
 #include <background_map_tiles.c>
 #include <ship.c>
 
+typedef struct _Enemy {
+	// Initial X coordinate starting point for enemy
+	int xCoordinate;
+
+	// Initial Y coordinate starting point for enemy
+	int yCoordinate;
+
+	// Boolean to determine whether the enemy is moving up or down
+	BOOLEAN isMovingUp;
+
+	// Set the Y coordinate upper and lower bounds for the enemy sprite
+	int yCoordinateLowerBoundary;
+	int yCoordinateUpperBoundary;
+} Enemy;
+
+Enemy enemy;
 
 unsigned char man[] =
 {
@@ -17,6 +33,21 @@ unsigned char man[] =
 	0x08,0x08,0x49,0x49,0x3E,0x3E,0x10,0x10,
 	0x10,0x10,0x28,0x28,0x24,0x24,0x42,0x42
 };
+
+void initializeEnemy() {
+	// Initial X coordinate starting point for enemy
+	enemy.xCoordinate = 100;
+
+	// Initial Y coordinate starting point for enemy
+	enemy.yCoordinate = 100;
+
+	// Boolean to determine whether the enemy is moving up or down
+	enemy.isMovingUp = TRUE;
+
+	// Set the Y coordinate upper and lower bounds for the enemy sprite
+	enemy.yCoordinateLowerBoundary = 50;
+	enemy.yCoordinateUpperBoundary = 125;
+}
 
 void main() {
 	// Initial X coordinate starting point
@@ -43,19 +74,6 @@ void main() {
 	int shotXCoordinate = 0;
 	int shotYCoordinate = 0;
 
-	// Initial X coordinate starting point for enemy
-	int enemyXCoordinate = 100;
-
-	// Initial Y coordinate starting point for enemy
-	int enemyYCoordinate = 100;
-
-	// Boolean to determine whether the enemy is moving up or down
-	int enemyMovingUp = 1;
-
-	// Set the Y coordinate upper and lower bounds for the enemy sprite
-	int enemyYCoordinateLowerBoundary = 50;
-	int enemyYCoordinateUpperBoundary = 125;
-
 	// Set the off screen coordinates to hide the sprite
 	int offScreen = 200;
 
@@ -65,6 +83,9 @@ void main() {
 	// Set the scroll rate of the background in pixels
 	int backgroundXScrollRate = 1;
 	int backgroundYScrollRate = 1;
+
+	// Call the initialize enemy function
+	initializeEnemy();
 
 	// Load the two parts of the ship into the sprite data
 	set_sprite_data(0, 2, ship);
@@ -166,22 +187,22 @@ void main() {
 		}
 
 		// Move the enemy sprite head in a straight line pattern
-		if (enemyMovingUp) {
-			enemyYCoordinate--;
+		if (enemy.isMovingUp) {
+			enemy.yCoordinate--;
 
-			if (enemyYCoordinate <= enemyYCoordinateLowerBoundary) {
-				enemyMovingUp = 0;
+			if (enemy.yCoordinate <= enemy.yCoordinateLowerBoundary) {
+				enemy.isMovingUp = 0;
 			}
 		}
 		else {
-			enemyYCoordinate++;
+			enemy.yCoordinate++;
 
-			if (enemyYCoordinate >= enemyYCoordinateUpperBoundary) {
-				enemyMovingUp = 1;
+			if (enemy.yCoordinate >= enemy.yCoordinateUpperBoundary) {
+				enemy.isMovingUp = 1;
 			}
 		}
 
-		move_sprite(2, enemyXCoordinate, enemyYCoordinate);
+		move_sprite(2, enemy.xCoordinate, enemy.yCoordinate);
 
 		if (!playerCanShoot) {
 			shotXCoordinate += 2;
@@ -197,14 +218,14 @@ void main() {
 		}
 
 		// Collision detection between the player's shot and the enemy
-		if (shotYCoordinate > enemyYCoordinate - 8) {
-			if (shotYCoordinate < enemyYCoordinate + 8) {
-				if (shotXCoordinate > enemyXCoordinate - 8) {
-					if (shotXCoordinate < enemyXCoordinate + 8) {
+		if (shotYCoordinate > enemy.yCoordinate - 8) {
+			if (shotYCoordinate < enemy.yCoordinate + 8) {
+				if (shotXCoordinate > enemy.xCoordinate - 8) {
+					if (shotXCoordinate < enemy.xCoordinate + 8) {
 						playerCanShoot = 1;
 
-						enemyXCoordinate = offScreen;
-						enemyYCoordinate = offScreen;
+						enemy.xCoordinate = offScreen;
+						enemy.yCoordinate = offScreen;
 
 						move_sprite(2, offScreen, offScreen);
 						move_sprite(3, offScreen, offScreen);
