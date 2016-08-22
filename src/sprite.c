@@ -158,7 +158,9 @@ void main() {
 	set_sprite_data(0, 2, ship);
 
 	// Load the three parts of the man into the sprite data
-	//set_sprite_date(3, 3, man);
+	// Starting at '2' due to the two sprites already added
+	// by the 'ship' data
+	set_sprite_data(2, 3, man);
 
 	// Set the first sprite tile to be the left half of the ship
 	set_sprite_tile(0, 0);
@@ -167,13 +169,13 @@ void main() {
 	set_sprite_tile(1, 1);
 
 	// Set the third sprite tile to be the head for use as the first enemy
-	set_sprite_tile(2, 3);
+	set_sprite_tile(2, 2);
 
 	// Set the fourth sprite tile to be the head for use as the second enemy
-	set_sprite_tile(3, 3);
+	set_sprite_tile(3, 2);
 
 	// Set the fifth sprite tile to be the head for use as a player's shot
-	set_sprite_tile(4, 3);
+	set_sprite_tile(4, 2);
 
 	// Move the sprite on to the screen so we can see it
 	move_sprite(0, 50, 32);
