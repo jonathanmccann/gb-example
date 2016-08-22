@@ -21,6 +21,14 @@ typedef struct _Enemy {
 	int yCoordinateUpperBoundary;
 } Enemy;
 
+Enemy firstEnemy = {
+	100,  // Starting X coordinate
+	100,  // Staring Y coordinate
+	TRUE, // Is the enemy moving up
+	50,   // Y coordinate lower boundary
+	125   // Y coordinate upper boundary
+};
+
 Enemy enemy[numberOfEnemies];
 
 unsigned char man[] =
@@ -37,7 +45,7 @@ unsigned char man[] =
 };
 
 void initializeEnemy() {
-	int i;
+	/*int i;
 
 	for (i = 0; i < numberOfEnemies; i++) {
 		// Initial X coordinate starting point for enemy
@@ -52,7 +60,7 @@ void initializeEnemy() {
 		// Set the Y coordinate upper and lower bounds for the enemy sprite
 		enemy[i].yCoordinateLowerBoundary = 50;
 		enemy[i].yCoordinateUpperBoundary = 125;
-	}
+	}*/
 }
 
 void main() {
@@ -193,22 +201,22 @@ void main() {
 		}
 
 		// Move the enemy sprite head in a straight line pattern
-		if (enemy[0].isMovingUp) {
-			enemy[0].yCoordinate--;
+		if (firstEnemy.isMovingUp) {
+			firstEnemy.yCoordinate--;
 
-			if (enemy[0].yCoordinate <= enemy[0].yCoordinateLowerBoundary) {
-				enemy[0].isMovingUp = 0;
+			if (firstEnemy.yCoordinate <= firstEnemy.yCoordinateLowerBoundary) {
+				firstEnemy.isMovingUp = 0;
 			}
 		}
 		else {
-			enemy[0].yCoordinate++;
+			firstEnemy.yCoordinate++;
 
-			if (enemy[0].yCoordinate >= enemy[0].yCoordinateUpperBoundary) {
-				enemy[0].isMovingUp = 1;
+			if (firstEnemy.yCoordinate >= firstEnemy.yCoordinateUpperBoundary) {
+				firstEnemy.isMovingUp = 1;
 			}
 		}
 
-		move_sprite(2, enemy[0].xCoordinate, enemy[0].yCoordinate);
+		move_sprite(2, firstEnemy.xCoordinate, firstEnemy.yCoordinate);
 
 		if (!playerCanShoot) {
 			shotXCoordinate += 2;
@@ -224,14 +232,14 @@ void main() {
 		}
 
 		// Collision detection between the player's shot and the enemy
-		if (shotYCoordinate > enemy[0].yCoordinate - 8) {
-			if (shotYCoordinate < enemy[0].yCoordinate + 8) {
-				if (shotXCoordinate > enemy[0].xCoordinate - 8) {
-					if (shotXCoordinate < enemy[0].xCoordinate + 8) {
+		if (shotYCoordinate > firstEnemy.yCoordinate - 8) {
+			if (shotYCoordinate < firstEnemy.yCoordinate + 8) {
+				if (shotXCoordinate > firstEnemy.xCoordinate - 8) {
+					if (shotXCoordinate < firstEnemy.xCoordinate + 8) {
 						playerCanShoot = 1;
 
-						enemy[0].xCoordinate = offScreen;
-						enemy[0].yCoordinate = offScreen;
+						firstEnemy.xCoordinate = offScreen;
+						firstEnemy.yCoordinate = offScreen;
 
 						move_sprite(2, offScreen, offScreen);
 						move_sprite(3, offScreen, offScreen);
