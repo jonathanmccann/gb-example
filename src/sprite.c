@@ -6,6 +6,9 @@
 
 #define numberOfEnemies 2
 
+// Create an iterator for loops
+int i, j;
+
 typedef struct _Enemy {
 	// Initial X coordinate starting point for enemy
 	int xCoordinate;
@@ -19,6 +22,9 @@ typedef struct _Enemy {
 	// Set the Y coordinate upper and lower bounds for the enemy sprite
 	int yCoordinateLowerBoundary;
 	int yCoordinateUpperBoundary;
+
+	// Set the sprite number associated with the enemy
+	int spriteNumber;
 } Enemy;
 
 Enemy firstEnemy = {
@@ -26,7 +32,17 @@ Enemy firstEnemy = {
 	100,  // Staring Y coordinate
 	TRUE, // Is the enemy moving up
 	50,   // Y coordinate lower boundary
-	125   // Y coordinate upper boundary
+	125,  // Y coordinate upper boundary
+	2     // Sprite number of the enemy
+};
+
+Enemy secondEnemy = {
+	125,   // Starting X coordinate
+	20,    // Staring Y coordinate
+	FALSE, // Is the enemy moving up
+	20,    // Y coordinate lower boundary
+	125,   // Y coordinate upper boundary
+	3      // Sprite number of the enemy
 };
 
 Enemy enemy[numberOfEnemies];
@@ -44,23 +60,21 @@ unsigned char man[] =
 	0x10,0x10,0x28,0x28,0x24,0x24,0x42,0x42
 };
 
-void initializeEnemy() {
-	/*int i;
+void insert(Enemy *enemy, Enemy *enemyToInsert) {
+	enemy->xCoordinate = enemyToInsert->xCoordinate;
+	enemy->yCoordinate = enemyToInsert->yCoordinate;
+	enemy->isMovingUp = enemyToInsert->isMovingUp;
+	enemy->yCoordinateLowerBoundary = enemyToInsert->yCoordinateLowerBoundary;
+	enemy->yCoordinateUpperBoundary = enemyToInsert->yCoordinateUpperBoundary;
+	enemy->spriteNumber = enemyToInsert->spriteNumber;
+}
 
-	for (i = 0; i < numberOfEnemies; i++) {
-		// Initial X coordinate starting point for enemy
-		enemy[i].xCoordinate = 100;
-
-		// Initial Y coordinate starting point for enemy
-		enemy[i].yCoordinate = 100;
-
-		// Boolean to determine whether the enemy is moving up or down
-		enemy[i].isMovingUp = TRUE;
-
-		// Set the Y coordinate upper and lower bounds for the enemy sprite
-		enemy[i].yCoordinateLowerBoundary = 50;
-		enemy[i].yCoordinateUpperBoundary = 125;
-	}*/
+void initializeEnemies() {
+	// Pass references to the enemy array and the enemy itself
+	// to work around a limitation in SDCC where structs cannot
+	// be assigned directly to an array
+	insert(&enemy[0], &firstEnemy);
+	insert(&enemy[1], &secondEnemy);
 }
 
 void main() {
@@ -99,7 +113,7 @@ void main() {
 	int backgroundYScrollRate = 1;
 
 	// Call the initialize enemy function
-	initializeEnemy();
+	initializeEnemies();
 
 	// Load the two parts of the ship into the sprite data
 	set_sprite_data(0, 2, ship);
@@ -113,16 +127,20 @@ void main() {
 	// Set the second sprite tile to be the right half of the ship
 	set_sprite_tile(1, 1);
 
-	// Set the third sprite tile to be the head for use as an enemy
+	// Set the third sprite tile to be the head for use as the first enemy
 	set_sprite_tile(2, 3);
 
-	// Set the fourth sprite tile to be the head for use as a player's shot
+	// Set the fourth sprite tile to be the head for use as the second enemy
 	set_sprite_tile(3, 3);
+
+	// Set the fifth sprite tile to be the head for use as a player's shot
+	set_sprite_tile(4, 3);
 
 	// Move the sprite on to the screen so we can see it
 	move_sprite(0, 50, 32);
 	move_sprite(1, 58, 32);
 	move_sprite(2, 100, 100);
+	move_sprite(3, 20, 125);
 
 	// Set the background data
 	// Since there are two tiles
@@ -197,52 +215,56 @@ void main() {
 			shotXCoordinate = playerXCoordinate;
 			shotYCoordinate = playerYCoordinate;
 
-			move_sprite(3, shotXCoordinate, shotYCoordinate);
+			move_sprite(4, shotXCoordinate, shotYCoordinate);
 		}
 
 		// Move the enemy sprite head in a straight line pattern
-		if (firstEnemy.isMovingUp) {
-			firstEnemy.yCoordinate--;
+		for (i = 0; i < numberOfEnemies; i++) {
+			if (enemy[i].isMovingUp) {
+				enemy[i].yCoordinate--;
 
-			if (firstEnemy.yCoordinate <= firstEnemy.yCoordinateLowerBoundary) {
-				firstEnemy.isMovingUp = 0;
+				if (enemy[i].yCoordinate <= enemy[i].yCoordinateLowerBoundary) {
+					enemy[i].isMovingUp = 0;
+				}
 			}
-		}
-		else {
-			firstEnemy.yCoordinate++;
+			else {
+				enemy[i].yCoordinate++;
 
-			if (firstEnemy.yCoordinate >= firstEnemy.yCoordinateUpperBoundary) {
-				firstEnemy.isMovingUp = 1;
+				if (enemy[i].yCoordinate >= enemy[i].yCoordinateUpperBoundary) {
+					enemy[i].isMovingUp = 1;
+				}
 			}
-		}
 
-		move_sprite(2, firstEnemy.xCoordinate, firstEnemy.yCoordinate);
+			move_sprite(enemy[i].spriteNumber, enemy[i].xCoordinate, enemy[i].yCoordinate);
+		}
 
 		if (!playerCanShoot) {
 			shotXCoordinate += 2;
 
 			if (shotXCoordinate >= xCoordinateUpperBoundary) {
-				move_sprite(3, offScreen, offScreen);
+				move_sprite(4, offScreen, offScreen);
 
 				playerCanShoot = 1;
 			}
 			else {
-				move_sprite(3, shotXCoordinate, shotYCoordinate);
+				move_sprite(4, shotXCoordinate, shotYCoordinate);
 			}
 		}
 
 		// Collision detection between the player's shot and the enemy
-		if (shotYCoordinate > firstEnemy.yCoordinate - 8) {
-			if (shotYCoordinate < firstEnemy.yCoordinate + 8) {
-				if (shotXCoordinate > firstEnemy.xCoordinate - 8) {
-					if (shotXCoordinate < firstEnemy.xCoordinate + 8) {
-						playerCanShoot = 1;
+		for (j = 0; j < numberOfEnemies; j++) {
+			if (shotYCoordinate > enemy[j].yCoordinate - 8) {
+				if (shotYCoordinate < enemy[j].yCoordinate + 8) {
+					if (shotXCoordinate > enemy[j].xCoordinate - 8) {
+						if (shotXCoordinate < enemy[j].xCoordinate + 8) {
+							playerCanShoot = 1;
 
-						firstEnemy.xCoordinate = offScreen;
-						firstEnemy.yCoordinate = offScreen;
+							enemy[j].xCoordinate = offScreen;
+							enemy[j].yCoordinate = offScreen;
 
-						move_sprite(2, offScreen, offScreen);
-						move_sprite(3, offScreen, offScreen);
+							move_sprite(enemy[j].spriteNumber, offScreen, offScreen);
+							move_sprite(4, offScreen, offScreen);
+						}
 					}
 				}
 			}
