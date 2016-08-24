@@ -21,23 +21,23 @@ AREA .  .ABS.
 		l__HOME	01D3
 		l__HEADER	01E1
 		s__CODE	0200
-		l__GSINIT	0203
-		l__DATA	0210
+		l__GSINIT	0205
+		l__DATA	020E
 		l__CODE	071C
 		s__HOME	091C
 		s__BASE	0AEF
 		s__LIT	0CA8
 		s__GSINIT	0CA8
-		s__GSINITTAIL	0EAB
-		s__GSFINAL	0EAC
+		s__GSINITTAIL	0EAD
+		s__GSFINAL	0EAE
 		.OAM	C000
 		s__DATA	C0A0
-		s__BSS	C2B0
-		s__HEAP	C309
-		s__BSEG	C309
-		s__ISEG	C309
-		s__XSEG	C309
-		s__OVERLAY	C309
+		s__BSS	C2AE
+		s__HEAP	C307
+		s__BSEG	C307
+		s__ISEG	C307
+		s__XSEG	C307
+		s__OVERLAY	C307
 		.STACK	E000
 		.refresh_OAM	FF80
 AREA _CODE
@@ -140,24 +140,24 @@ AREA _LIT
 AREA _GSINIT
 	RADIX HEX
 	BASE 0CA8
-	SIZE 0203
+	SIZE 0205
 	ATTRIB REL CON
 	GLOBALS
 		gsinit	0CA8
 AREA _GSINITTAIL
 	RADIX HEX
-	BASE 0EAB
+	BASE 0EAD
 	SIZE 0001
 	ATTRIB REL CON
 AREA _GSFINAL
 	RADIX HEX
-	BASE 0EAC
+	BASE 0EAE
 	SIZE 0000
 	ATTRIB REL CON
 AREA _DATA
 	RADIX HEX
 	BASE C0A0
-	SIZE 0210
+	SIZE 020E
 	ATTRIB REL CON
 	GLOBALS
 		_tiles	C0A0
@@ -168,63 +168,62 @@ AREA _DATA
 		_shotYCoordinate	C24C
 		_offScreen	C24E
 		_i	C250
-		_j	C252
-		_firstEnemy	C254
-		_secondEnemy	C25F
-		_enemy	C26A
-		_man	C280
+		_firstEnemy	C252
+		_secondEnemy	C25D
+		_enemy	C268
+		_man	C27E
 AREA _BSS
 	RADIX HEX
-	BASE C2B0
+	BASE C2AE
 	SIZE 0059
 	ATTRIB REL CON
 	GLOBALS
-		__cpu	C2B0
-		.mode	C2B1
-		__io_out	C2B2
-		__io_in	C2B3
-		__io_status	C2B4
-		.vbl_done	C2B5
-		__current_bank	C2B6
-		_sys_time	C2B7
-		.sys_time	C2B7
-		.int_0x40	C2B9
-		.int_0x48	C2C9
-		.int_0x50	C2D9
-		.int_0x58	C2E9
-		.int_0x60	C2F9
+		__cpu	C2AE
+		.mode	C2AF
+		__io_out	C2B0
+		__io_in	C2B1
+		__io_status	C2B2
+		.vbl_done	C2B3
+		__current_bank	C2B4
+		_sys_time	C2B5
+		.sys_time	C2B5
+		.int_0x40	C2B7
+		.int_0x48	C2C7
+		.int_0x50	C2D7
+		.int_0x58	C2E7
+		.int_0x60	C2F7
 AREA _HEAP
 	RADIX HEX
-	BASE C309
+	BASE C307
 	SIZE 0000
 	ATTRIB REL CON
 	GLOBALS
-		_malloc_heap_start	C309
+		_malloc_heap_start	C307
 AREA _OVERLAY
 	RADIX HEX
-	BASE C309
+	BASE C307
 	SIZE 0000
 	ATTRIB REL CON
 AREA _ISEG
 	RADIX HEX
-	BASE C309
+	BASE C307
 	SIZE 0000
 	ATTRIB REL CON
 AREA _BSEG
 	RADIX HEX
-	BASE C309
+	BASE C307
 	SIZE 0000
 	ATTRIB REL CON
 AREA _XSEG
 	RADIX HEX
-	BASE C309
+	BASE C307
 	SIZE 0000
 	ATTRIB REL CON
 MODULES
 	FILE /opt/gbdk/lib/small/asxxxx/gb/crt0.o
 		NAME Runtime
-	FILE /tmp/lcc216122.o
-		NAME lcc216120
+	FILE /tmp/lcc218802.o
+		NAME lcc218800
 LIBRARIES
 	LIBRARY /opt/gbdk/lib/small/asxxxx/gbz80/gbz80.lib
 		MODULE crt0_rle.o

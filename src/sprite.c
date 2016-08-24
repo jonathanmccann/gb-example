@@ -17,7 +17,7 @@ int shotYCoordinate = 0;
 int offScreen = 200;
 
 // Create an iterator for loops
-int i, j;
+int i;
 
 typedef struct _Enemy {
 	// Initial X coordinate starting point for enemy
@@ -276,8 +276,8 @@ void main() {
 			}
 		}
 
-		for (j = 0; j < numberOfEnemies; j++) {
-			testShotAndEnemyCollision(&enemy[j]);
+		for (i = 0; i < numberOfEnemies; i++) {
+			testShotAndEnemyCollision(&enemy[i]);
 		}
 
 		// Use this to force the game to run at 60
