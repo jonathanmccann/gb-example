@@ -33,19 +33,22 @@ void initializePlayer() {
 	move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
 }
 
-void testShotAndEnemyCollision(Enemy *enemy) {
-	// Collision detection between the player's shot and the enemy
-	if (shotYCoordinate > enemy->yCoordinate - 8) {
-		if (shotYCoordinate < enemy->yCoordinate + 8) {
-			if (shotXCoordinate > enemy->xCoordinate - 8) {
-				if (shotXCoordinate < enemy->xCoordinate + 8) {
-					playerCanShoot = 1;
+// Collision detection between the player's shot and the enemy
+// 'enemy' is the array defined in 'enemy.c'
+void testShotAndEnemyCollision() {
+	for (i = 0; i < numberOfEnemies; i++) {
+		if (shotYCoordinate > enemies[i].yCoordinate - 8) {
+			if (shotYCoordinate < enemies[i].yCoordinate + 8) {
+				if (shotXCoordinate > enemies[i].xCoordinate - 8) {
+					if (shotXCoordinate < enemies[i].xCoordinate + 8) {
+						playerCanShoot = 1;
 
-					enemy->xCoordinate = offScreen;
-					enemy->yCoordinate = offScreen;
+						enemies[i].xCoordinate = offScreen;
+						enemies[i].yCoordinate = offScreen;
 
-					move_sprite(enemy->spriteNumber, offScreen, offScreen);
-					move_sprite(4, offScreen, offScreen);
+						move_sprite(enemies[i].spriteNumber, offScreen, offScreen);
+						move_sprite(4, offScreen, offScreen);
+					}
 				}
 			}
 		}
