@@ -14,7 +14,7 @@ int playerYCoordinate = 32;
 int yCoordinateLowerBoundary = 16;
 int yCoordinateUpperBoundary = 140;
 
-// Set the offset of height between the head and the body of the sprite
+// Set the offset of width between the left and right halves of the ship
 int offset = 8;
 
 // Boolean to determine whether or not the player can shoot
@@ -29,8 +29,8 @@ int offScreen = 200;
 
 void initializePlayer() {
 	// Move the sprite on to the screen so we can see it
-	move_sprite(0, playerXCoordinate, playerYCoordinate);
-	move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
+	move_sprite(left_half_ship, playerXCoordinate, playerYCoordinate);
+	move_sprite(right_half_ship, playerXCoordinate + offset, playerYCoordinate);
 }
 
 // Collision detection between the player's shot and the enemy
@@ -47,12 +47,19 @@ void testShotAndEnemyCollision() {
 						enemies[i].yCoordinate = offScreen;
 
 						move_sprite(enemies[i].spriteNumber, offScreen, offScreen);
-						move_sprite(4, offScreen, offScreen);
+						move_sprite(player_shot, offScreen, offScreen);
 					}
 				}
 			}
 		}
 	}
+}
+
+void movePlayer() {
+	// Move both the left and right halves of the ship to its new location
+	// as set in 'updatePlayerAndShot'
+	move_sprite(left_half_ship, playerXCoordinate, playerYCoordinate);
+	move_sprite(right_half_ship, playerXCoordinate + offset, playerYCoordinate);
 }
 
 void updatePlayerAndShot(int key) {
@@ -68,9 +75,7 @@ void updatePlayerAndShot(int key) {
 			playerXCoordinate = xCoordinateUpperBoundary;
 		}
 
-		// Move both the head and body of the sprite to the new X location
-		move_sprite(0, playerXCoordinate, playerYCoordinate);
-		move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
+		movePlayer();
 	}
 
 	if (key & J_LEFT) {
@@ -80,8 +85,7 @@ void updatePlayerAndShot(int key) {
 			playerXCoordinate = xCoordinateLowerBoundary;
 		}
 
-		move_sprite(0, playerXCoordinate, playerYCoordinate);
-		move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
+		movePlayer();
 	}
 
 	if (key & J_UP) {
@@ -91,8 +95,7 @@ void updatePlayerAndShot(int key) {
 			playerYCoordinate = yCoordinateLowerBoundary;
 		}
 
-		move_sprite(0, playerXCoordinate, playerYCoordinate);
-		move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
+		movePlayer();
 	}
 
 	if (key & J_DOWN) {
@@ -102,8 +105,7 @@ void updatePlayerAndShot(int key) {
 			playerYCoordinate = yCoordinateUpperBoundary;
 		}
 
-		move_sprite(0, playerXCoordinate, playerYCoordinate);
-		move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
+		movePlayer();
 	}
 
 	if ((key & J_A) && playerCanShoot) {
@@ -112,19 +114,19 @@ void updatePlayerAndShot(int key) {
 		shotXCoordinate = playerXCoordinate;
 		shotYCoordinate = playerYCoordinate;
 
-		move_sprite(4, shotXCoordinate, shotYCoordinate);
+		move_sprite(player_shot, shotXCoordinate, shotYCoordinate);
 	}
 
 	if (!playerCanShoot) {
 		shotXCoordinate += 2;
 
 		if (shotXCoordinate >= xCoordinateUpperBoundary) {
-			move_sprite(4, offScreen, offScreen);
+			move_sprite(player_shot, offScreen, offScreen);
 
 			playerCanShoot = 1;
 		}
 		else {
-			move_sprite(4, shotXCoordinate, shotYCoordinate);
+			move_sprite(player_shot, shotXCoordinate, shotYCoordinate);
 		}
 	}
 }

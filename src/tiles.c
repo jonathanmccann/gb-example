@@ -22,6 +22,8 @@
 
 */
 
+#define tilesSize 2
+
 /* Start of tile array. */
 unsigned char tiles[] =
 {
