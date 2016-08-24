@@ -6,16 +6,6 @@
 
 #define numberOfEnemies 2
 
-// Boolean to determine whether or not the player can shoot
-int playerCanShoot = 1;
-
-// Initial X and Y coordinate starting points for the shot
-int shotXCoordinate = 0;
-int shotYCoordinate = 0;
-
-// Set the off screen coordinates to hide the sprite
-int offScreen = 200;
-
 // Create an iterator for loops
 int i;
 
@@ -56,6 +46,8 @@ Enemy secondEnemy = {
 };
 
 Enemy enemy[numberOfEnemies];
+
+#include <player.c>
 
 unsigned char man[] =
 {
@@ -107,46 +99,7 @@ void moveEnemySprite(Enemy *enemy) {
 	move_sprite(enemy->spriteNumber, enemy->xCoordinate, enemy->yCoordinate);
 }
 
-void testShotAndEnemyCollision(Enemy *enemy) {
-	// Collision detection between the player's shot and the enemy
-	if (shotYCoordinate > enemy->yCoordinate - 8) {
-		if (shotYCoordinate < enemy->yCoordinate + 8) {
-			if (shotXCoordinate > enemy->xCoordinate - 8) {
-				if (shotXCoordinate < enemy->xCoordinate + 8) {
-					playerCanShoot = 1;
-
-					enemy->xCoordinate = offScreen;
-					enemy->yCoordinate = offScreen;
-
-					move_sprite(enemy->spriteNumber, offScreen, offScreen);
-					move_sprite(4, offScreen, offScreen);
-				}
-			}
-		}
-	}
-}
-
 void main() {
-	// Initial X coordinate starting point
-	int playerXCoordinate = 50;
-
-	// Set the X coordinate boundaries so the sprite does not go off the screen
-	int xCoordinateLowerBoundary = 8;
-	int xCoordinateUpperBoundary = 160;
-
-	// Initial Y coordinate starting point
-	int playerYCoordinate = 32;
-
-	// Set the Y coordinate boundaries so the sprite does not go off the screen
-	int yCoordinateLowerBoundary = 16;
-	int yCoordinateUpperBoundary = 140;
-
-	// Set the offset of height between the head and the body of the sprite
-	int offset = 8;
-
-	// Keep track of the joypad button pressed
-	int key;
-
 	// Set the scroll rate of the background in pixels
 	int backgroundXScrollRate = 1;
 	int backgroundYScrollRate = 1;
@@ -177,9 +130,9 @@ void main() {
 	// Set the fifth sprite tile to be the head for use as a player's shot
 	set_sprite_tile(4, 2);
 
+	initializePlayer();
+
 	// Move the sprite on to the screen so we can see it
-	move_sprite(0, 50, 32);
-	move_sprite(1, 58, 32);
 	move_sprite(2, 100, 100);
 	move_sprite(3, 20, 125);
 
@@ -198,82 +151,10 @@ void main() {
 		// Scroll the background as defined by the scroll rate
 		scroll_bkg(backgroundXScrollRate, backgroundYScrollRate);
 
-		key = joypad();
-
-		// '&' is used in conjunction with if statments in case
-		// Both right and up (or another combination) is being
-		// pushed so that the sprite can move diagonally
-		if (key & J_RIGHT) {
-			playerXCoordinate++;
-
-			// Check to see if the X coordinate is greater than the upper boundary
-			// If so, then do not let the sprite move beyond it
-			if (playerXCoordinate > xCoordinateUpperBoundary) {
-				playerXCoordinate = xCoordinateUpperBoundary;
-			}
-
-			// Move both the head and body of the sprite to the new X location
-			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
-		}
-
-		if (key & J_LEFT) {
-			playerXCoordinate--;
-
-			if (playerXCoordinate < xCoordinateLowerBoundary) {
-				playerXCoordinate = xCoordinateLowerBoundary;
-			}
-
-			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
-		}
-
-		if (key & J_UP) {
-			playerYCoordinate--;
-
-			if (playerYCoordinate < yCoordinateLowerBoundary) {
-				playerYCoordinate = yCoordinateLowerBoundary;
-			}
-
-			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
-		}
-
-		if (key & J_DOWN) {
-			playerYCoordinate++;
-
-			if (playerYCoordinate > yCoordinateUpperBoundary) {
-				playerYCoordinate = yCoordinateUpperBoundary;
-			}
-
-			move_sprite(0, playerXCoordinate, playerYCoordinate);
-			move_sprite(1, playerXCoordinate + offset, playerYCoordinate);
-		}
-
-		if ((key & J_A) && playerCanShoot) {
-			playerCanShoot = 0;
-
-			shotXCoordinate = playerXCoordinate;
-			shotYCoordinate = playerYCoordinate;
-
-			move_sprite(4, shotXCoordinate, shotYCoordinate);
-		}
+		updatePlayerAndShot(joypad());
 
 		for (i = 0; i < numberOfEnemies; i++) {
 			moveEnemySprite(&enemy[i]);
-		}
-
-		if (!playerCanShoot) {
-			shotXCoordinate += 2;
-
-			if (shotXCoordinate >= xCoordinateUpperBoundary) {
-				move_sprite(4, offScreen, offScreen);
-
-				playerCanShoot = 1;
-			}
-			else {
-				move_sprite(4, shotXCoordinate, shotYCoordinate);
-			}
 		}
 
 		for (i = 0; i < numberOfEnemies; i++) {

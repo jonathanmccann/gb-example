@@ -21,36 +21,38 @@ AREA .  .ABS.
 		l__HOME	01D3
 		l__HEADER	01E1
 		s__CODE	0200
-		l__GSINIT	0205
-		l__DATA	020E
-		l__CODE	071C
-		s__HOME	091C
-		s__BASE	0AEF
-		s__LIT	0CA8
-		s__GSINIT	0CA8
-		s__GSINITTAIL	0EAD
-		s__GSFINAL	0EAE
+		l__DATA	021C
+		l__GSINIT	023D
+		l__CODE	079E
+		s__HOME	099E
+		s__BASE	0B71
+		s__LIT	0D2A
+		s__GSINIT	0D2A
+		s__GSINITTAIL	0F67
+		s__GSFINAL	0F68
 		.OAM	C000
 		s__DATA	C0A0
-		s__BSS	C2AE
-		s__HEAP	C307
-		s__BSEG	C307
-		s__ISEG	C307
-		s__XSEG	C307
-		s__OVERLAY	C307
+		s__BSS	C2BC
+		s__HEAP	C315
+		s__BSEG	C315
+		s__ISEG	C315
+		s__XSEG	C315
+		s__OVERLAY	C315
 		.STACK	E000
 		.refresh_OAM	FF80
 AREA _CODE
 	RADIX HEX
 	BASE 0200
-	SIZE 071C
+	SIZE 079E
 	ATTRIB REL CON
 	GLOBALS
-		_insert	0200
-		_initializeEnemies	02F8
-		_moveEnemySprite	0313
-		_testShotAndEnemyCollision	042D
-		_main	0544
+		_initializePlayer	0200
+		_testShotAndEnemyCollision	0243
+		_updatePlayerAndShot	035A
+		_insert	05CD
+		_initializeEnemies	06C5
+		_moveEnemySprite	06E0
+		_main	07FA
 AREA _HEADER
 	RADIX HEX
 	BASE 0000
@@ -60,170 +62,177 @@ AREA _HEADER
 		_exit	01D2
 AREA _HOME
 	RADIX HEX
-	BASE 091C
+	BASE 099E
 	SIZE 01D3
 	ATTRIB REL CON
 	GLOBALS
-		.set_mode	091C
-		.remove_VBL	092C
-		.remove_LCD	0932
-		.remove_TIM	0938
-		.remove_SIO	093E
-		.remove_JOY	0944
-		.add_VBL	094A
-		.add_LCD	0950
-		.add_TIM	0956
-		.add_SIO	095C
-		.add_JOY	0962
-		.remove_int	0968
-		.add_int	0988
-		.wait_vbl_done	09A4
-		_wait_vbl_done	09A4
-		_display_off	09BB
-		.display_off	09BB
-		.serial_IO	09DC
-		_mode	0A0B
-		_get_mode	0A14
-		_enable_interrupts	0A19
-		_disable_interrupts	0A1B
-		_reset	0A1D
-		.reset	0A1D
-		_set_interrupts	0A23
-		_remove_VBL	0A2E
-		_remove_LCD	0A39
-		_remove_TIM	0A44
-		_remove_SIO	0A4F
-		_remove_JOY	0A5A
-		_add_VBL	0A65
-		_add_LCD	0A70
-		_add_TIM	0A7B
-		_add_SIO	0A86
-		_add_JOY	0A91
-		_clock	0A9C
-		__printTStates	0AA5
-		banked_call	0AA6
-		banked_ret	0ABF
-		__initrleblock	0AC8
+		.set_mode	099E
+		.remove_VBL	09AE
+		.remove_LCD	09B4
+		.remove_TIM	09BA
+		.remove_SIO	09C0
+		.remove_JOY	09C6
+		.add_VBL	09CC
+		.add_LCD	09D2
+		.add_TIM	09D8
+		.add_SIO	09DE
+		.add_JOY	09E4
+		.remove_int	09EA
+		.add_int	0A0A
+		.wait_vbl_done	0A26
+		_wait_vbl_done	0A26
+		_display_off	0A3D
+		.display_off	0A3D
+		.serial_IO	0A5E
+		_mode	0A8D
+		_get_mode	0A96
+		_enable_interrupts	0A9B
+		_disable_interrupts	0A9D
+		_reset	0A9F
+		.reset	0A9F
+		_set_interrupts	0AA5
+		_remove_VBL	0AB0
+		_remove_LCD	0ABB
+		_remove_TIM	0AC6
+		_remove_SIO	0AD1
+		_remove_JOY	0ADC
+		_add_VBL	0AE7
+		_add_LCD	0AF2
+		_add_TIM	0AFD
+		_add_SIO	0B08
+		_add_JOY	0B13
+		_clock	0B1E
+		__printTStates	0B27
+		banked_call	0B28
+		banked_ret	0B41
+		__initrleblock	0B4A
 AREA _BASE
 	RADIX HEX
-	BASE 0AEF
+	BASE 0B71
 	SIZE 01B9
 	ATTRIB REL CON
 	GLOBALS
-		_scroll_bkg	0AEF
-		.mv_sprite	0B05
-		_move_sprite	0B14
-		_set_win_data	0B21
-		_set_bkg_data	0B21
-		_set_sprite_data	0B6E
-		.padup	0B9D
-		_waitpadup	0B9D
-		.jpad	0BAD
-		.wait_pad	0BDA
-		_joypad	0BE1
-		_waitpad	0BE6
-		.set_sprite_tile	0BF0
-		_set_sprite_tile	0BFD
-		.copy_vram	0C08
-		_get_data	0C17
-		_set_data	0C17
-		_set_bkg_tiles	0C2A
-		.set_xy_wtt	0C3E
-		.set_xy_btt	0C4F
-		.set_xy_tt	0C5E
-		_set_tiles	0C8F
+		_scroll_bkg	0B71
+		.mv_sprite	0B87
+		_move_sprite	0B96
+		_set_win_data	0BA3
+		_set_bkg_data	0BA3
+		_set_sprite_data	0BF0
+		.padup	0C1F
+		_waitpadup	0C1F
+		.jpad	0C2F
+		.wait_pad	0C5C
+		_joypad	0C63
+		_waitpad	0C68
+		.set_sprite_tile	0C72
+		_set_sprite_tile	0C7F
+		.copy_vram	0C8A
+		_get_data	0C99
+		_set_data	0C99
+		_set_bkg_tiles	0CAC
+		.set_xy_wtt	0CC0
+		.set_xy_btt	0CD1
+		.set_xy_tt	0CE0
+		_set_tiles	0D11
 AREA _LIT
 	RADIX HEX
-	BASE 0CA8
+	BASE 0D2A
 	SIZE 0000
 	ATTRIB REL CON
 AREA _GSINIT
 	RADIX HEX
-	BASE 0CA8
-	SIZE 0205
+	BASE 0D2A
+	SIZE 023D
 	ATTRIB REL CON
 	GLOBALS
-		gsinit	0CA8
+		gsinit	0D2A
 AREA _GSINITTAIL
 	RADIX HEX
-	BASE 0EAD
+	BASE 0F67
 	SIZE 0001
 	ATTRIB REL CON
 AREA _GSFINAL
 	RADIX HEX
-	BASE 0EAE
+	BASE 0F68
 	SIZE 0000
 	ATTRIB REL CON
 AREA _DATA
 	RADIX HEX
 	BASE C0A0
-	SIZE 020E
+	SIZE 021C
 	ATTRIB REL CON
 	GLOBALS
 		_tiles	C0A0
 		_background_map_tiles	C0C0
 		_ship	C228
-		_playerCanShoot	C248
-		_shotXCoordinate	C24A
-		_shotYCoordinate	C24C
-		_offScreen	C24E
-		_i	C250
-		_firstEnemy	C252
-		_secondEnemy	C25D
-		_enemy	C268
-		_man	C27E
+		_i	C248
+		_firstEnemy	C24A
+		_secondEnemy	C255
+		_enemy	C260
+		_playerXCoordinate	C276
+		_xCoordinateLowerBoundary	C278
+		_xCoordinateUpperBoundary	C27A
+		_playerYCoordinate	C27C
+		_yCoordinateLowerBoundary	C27E
+		_yCoordinateUpperBoundary	C280
+		_offset	C282
+		_playerCanShoot	C284
+		_shotXCoordinate	C286
+		_shotYCoordinate	C288
+		_offScreen	C28A
+		_man	C28C
 AREA _BSS
 	RADIX HEX
-	BASE C2AE
+	BASE C2BC
 	SIZE 0059
 	ATTRIB REL CON
 	GLOBALS
-		__cpu	C2AE
-		.mode	C2AF
-		__io_out	C2B0
-		__io_in	C2B1
-		__io_status	C2B2
-		.vbl_done	C2B3
-		__current_bank	C2B4
-		_sys_time	C2B5
-		.sys_time	C2B5
-		.int_0x40	C2B7
-		.int_0x48	C2C7
-		.int_0x50	C2D7
-		.int_0x58	C2E7
-		.int_0x60	C2F7
+		__cpu	C2BC
+		.mode	C2BD
+		__io_out	C2BE
+		__io_in	C2BF
+		__io_status	C2C0
+		.vbl_done	C2C1
+		__current_bank	C2C2
+		_sys_time	C2C3
+		.sys_time	C2C3
+		.int_0x40	C2C5
+		.int_0x48	C2D5
+		.int_0x50	C2E5
+		.int_0x58	C2F5
+		.int_0x60	C305
 AREA _HEAP
 	RADIX HEX
-	BASE C307
+	BASE C315
 	SIZE 0000
 	ATTRIB REL CON
 	GLOBALS
-		_malloc_heap_start	C307
+		_malloc_heap_start	C315
 AREA _OVERLAY
 	RADIX HEX
-	BASE C307
+	BASE C315
 	SIZE 0000
 	ATTRIB REL CON
 AREA _ISEG
 	RADIX HEX
-	BASE C307
+	BASE C315
 	SIZE 0000
 	ATTRIB REL CON
 AREA _BSEG
 	RADIX HEX
-	BASE C307
+	BASE C315
 	SIZE 0000
 	ATTRIB REL CON
 AREA _XSEG
 	RADIX HEX
-	BASE C307
+	BASE C315
 	SIZE 0000
 	ATTRIB REL CON
 MODULES
 	FILE /opt/gbdk/lib/small/asxxxx/gb/crt0.o
 		NAME Runtime
-	FILE /tmp/lcc218802.o
-		NAME lcc218800
+	FILE /tmp/lcc247222.o
+		NAME lcc247220
 LIBRARIES
 	LIBRARY /opt/gbdk/lib/small/asxxxx/gbz80/gbz80.lib
 		MODULE crt0_rle.o
