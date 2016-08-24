@@ -261,7 +261,6 @@ void main() {
 
 		for (i = 0; i < numberOfEnemies; i++) {
 			moveEnemySprite(&enemy[i]);
-			moveEnemySprite(&enemy[i]);
 		}
 
 		if (!playerCanShoot) {
@@ -278,7 +277,6 @@ void main() {
 		}
 
 		for (j = 0; j < numberOfEnemies; j++) {
-			testShotAndEnemyCollision(&enemy[j]);
 			testShotAndEnemyCollision(&enemy[j]);
 		}
 
