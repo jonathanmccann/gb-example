@@ -6,15 +6,15 @@
 int playerXCoordinate = 50;
 
 // Set the X coordinate boundaries so the sprite does not go off the screen
-int xCoordinateLowerBoundary = 8;
-int xCoordinateUpperBoundary = 160;
+UBYTE xCoordinateLowerBoundary = 8;
+UBYTE xCoordinateUpperBoundary = 160;
 
 // Initial Y coordinate starting point
 int playerYCoordinate = 32;
 
 // Set the Y coordinate boundaries so the sprite does not go off the screen
-int yCoordinateLowerBoundary = 16;
-int yCoordinateUpperBoundary = 140;
+UBYTE yCoordinateLowerBoundary = 16;
+UBYTE yCoordinateUpperBoundary = 140;
 
 // Set the offset of width between the left and right halves of the ship
 int offset = 8;
@@ -28,21 +28,19 @@ int offScreen = 0;
 
 typedef struct {
 	// Initial X coordinate starting point for enemy
-	int xCoordinate;
+	UBYTE xCoordinate;
 
 	// Initial Y coordinate starting point for enemy
-	int yCoordinate;
+	UBYTE yCoordinate;
 
 	// Boolean to determine whether the enemy is moving up or down
-	BOOLEAN isOnScreen;
+	UBYTE isOnScreen;
 
 	// Set the sprite number associated with the enemy
 	int spriteNumber;
 } Shot;
 
 Shot shots[numberOfShots];
-
-Shot *shotPointers[numberOfShots];
 
 void initializePlayer() {
 	// Move the sprite on to the screen so we can see it
@@ -63,23 +61,17 @@ void initializeShots() {
 	shots[0].xCoordinate = offScreen;
 	shots[0].yCoordinate = offScreen;
 	shots[0].spriteNumber = straight_shot;
-	shots[0].isOnScreen = FALSE;
-
-	shotPointers[0] = &shots[0];
+	shots[0].isOnScreen = 0;
 
 	shots[1].xCoordinate = offScreen;
 	shots[1].yCoordinate = offScreen;
 	shots[1].spriteNumber = upper_shot;
-	shots[1].isOnScreen = FALSE;
-
-	shotPointers[1] = &shots[1];
+	shots[1].isOnScreen = 0;
 
 	shots[2].xCoordinate = offScreen;
 	shots[2].yCoordinate = offScreen;
 	shots[2].spriteNumber = lower_shot;
-	shots[2].isOnScreen = FALSE;
-
-	shotPointers[2] = &shots[2];
+	shots[2].isOnScreen = 0;
 }
 
 void moveShotsToPlayer() {
@@ -88,21 +80,21 @@ void moveShotsToPlayer() {
 
 	shots[0].xCoordinate = playerXCoordinate;
 	shots[0].yCoordinate = playerYCoordinate;
-	shots[0].isOnScreen = TRUE;
+	shots[0].isOnScreen = 1;
 
-	move_sprite(straight_shot, playerXCoordinate, playerYCoordinate);
+	move_sprite(straight_shot, shots[0].xCoordinate, shots[0].yCoordinate);
 
 	shots[1].xCoordinate = playerXCoordinate;
 	shots[1].yCoordinate = playerYCoordinate;
-	shots[1].isOnScreen = TRUE;
+	shots[1].isOnScreen = 1;
 
-	move_sprite(upper_shot, playerXCoordinate, playerYCoordinate);
+	move_sprite(upper_shot, shots[1].xCoordinate, shots[1].yCoordinate);
 
 	shots[2].xCoordinate = playerXCoordinate;
 	shots[2].yCoordinate = playerYCoordinate;
-	shots[2].isOnScreen = TRUE;
+	shots[2].isOnScreen = 1;
 
-	move_sprite(lower_shot, playerXCoordinate, playerYCoordinate);
+	move_sprite(lower_shot, shots[2].xCoordinate, shots[2].yCoordinate);
 }
 
 void movePlayer() {
@@ -115,51 +107,51 @@ void movePlayer() {
 void moveShots() {
 	// Move the first shot in a straight line.
 	// If it is off screen, then reset the shot.
-	if (shotPointers[0]->isOnScreen) {
-		if (shotPointers[0]->xCoordinate >= xCoordinateUpperBoundary) {
-			shotPointers[0]->xCoordinate = offScreen;
-			shotPointers[0]->yCoordinate = offScreen;
-			shotPointers[0]->isOnScreen = FALSE;
+	if (shots[0].isOnScreen) {
+		if (shots[0].xCoordinate >= xCoordinateUpperBoundary) {
+			shots[0].xCoordinate = offScreen;
+			shots[0].yCoordinate = offScreen;
+			shots[0].isOnScreen = 0;
 		}
 		else {
-			shotPointers[0]->xCoordinate += 2;
+			shots[0].xCoordinate += 2;
 		}
 
-		move_sprite(shotPointers[0]->spriteNumber, shotPointers[0]->xCoordinate, shotPointers[0]->yCoordinate);
+		move_sprite(shots[0].spriteNumber, shots[0].xCoordinate, shots[0].yCoordinate);
 	}
 
 	// Move the second shot in an upward angle (decrease the Y coordinate)
-	if (shotPointers[1]->isOnScreen) {
-		if ((shotPointers[1]->xCoordinate >= xCoordinateUpperBoundary) ||
-			(shotPointers[1]->yCoordinate <= yCoordinateLowerBoundary)) {
+	if (shots[1].isOnScreen) {
+		if ((shots[1].xCoordinate >= xCoordinateUpperBoundary) ||
+			(shots[1].yCoordinate <= yCoordinateLowerBoundary)) {
 
-			shotPointers[1]->xCoordinate = offScreen;
-			shotPointers[1]->yCoordinate = offScreen;
-			shotPointers[1]->isOnScreen = FALSE;
+			shots[1].xCoordinate = offScreen;
+			shots[1].yCoordinate = offScreen;
+			shots[1].isOnScreen = 0;
 		}
 		else {
-			shotPointers[1]->xCoordinate += 2;
-			shotPointers[1]->yCoordinate -= 1;
+			shots[1].xCoordinate += 2;
+			shots[1].yCoordinate -= 1;
 		}
 
-		move_sprite(shotPointers[1]->spriteNumber, shotPointers[1]->xCoordinate, shotPointers[1]->yCoordinate);
+		move_sprite(shots[1].spriteNumber, shots[1].xCoordinate, shots[1].yCoordinate);
 	}
 
 	// Move the third shot in an downward angle (increase the Y coordinate)
-	if (shotPointers[2]->isOnScreen) {
-		if ((shotPointers[2]->xCoordinate >= xCoordinateUpperBoundary) ||
-			(shotPointers[2]->yCoordinate >= yCoordinateUpperBoundary)) {
+	if (shots[2].isOnScreen) {
+		if ((shots[2].xCoordinate >= xCoordinateUpperBoundary) ||
+			(shots[2].yCoordinate >= yCoordinateUpperBoundary)) {
 
-			shotPointers[2]->xCoordinate = offScreen;
-			shotPointers[2]->yCoordinate = offScreen;
-			shotPointers[2]->isOnScreen = FALSE;
-			move_sprite(shotPointers[2]->spriteNumber, shotPointers[2]->xCoordinate, shotPointers[2]->yCoordinate);
+			shots[2].xCoordinate = offScreen;
+			shots[2].yCoordinate = offScreen;
+			shots[2].isOnScreen = 0;
 		}
 		else {
-			shotPointers[2]->xCoordinate += 2;
-			shotPointers[2]->yCoordinate += 1;
-			move_sprite(shotPointers[2]->spriteNumber, shotPointers[2]->xCoordinate, shotPointers[2]->yCoordinate);
+			shots[2].xCoordinate += 2;
+			shots[2].yCoordinate += 1;
 		}
+
+		move_sprite(shots[2].spriteNumber, shots[2].xCoordinate, shots[2].yCoordinate);
 	}
 }
 
@@ -229,14 +221,14 @@ void updatePlayerAndShots(int key) {
 		movePlayer();
 	}
 
-	if ((key & J_A) && !shotPointers[0]->isOnScreen &&
-		!shotPointers[1]->isOnScreen && !shotPointers[2]->isOnScreen) {
+	if ((key & J_A) && !shots[0].isOnScreen &&
+		!shots[1].isOnScreen && !shots[2].isOnScreen) {
 
 		moveShotsToPlayer();
 	}
 
-	if (shotPointers[0]->isOnScreen || shotPointers[1]->isOnScreen ||
-		shotPointers[2]->isOnScreen) {
+	if (shots[0].isOnScreen || shots[1].isOnScreen ||
+		shots[2].isOnScreen) {
 
 		moveShots();
 	}
