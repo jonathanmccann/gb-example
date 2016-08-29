@@ -18,6 +18,7 @@ void main() {
 	// Call the initialize enemy and player functions
 	initializeEnemies();
 	initializePlayer();
+	initializeShots();
 
 	// Show the background and sprites that were previously
 	// initialized
@@ -29,7 +30,7 @@ void main() {
 
 		// Pass the input from the joypad to player.c to update
 		// the player and shot's location
-		updatePlayerAndShot(joypad());
+		updatePlayerAndShots(joypad());
 
 		// Move the enemy sprites as they are defined in enemy.c
 		moveEnemySprites();

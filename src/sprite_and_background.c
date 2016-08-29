@@ -12,7 +12,9 @@
 #define right_half_ship 1
 #define first_enemy 2
 #define second_enemy 3
-#define player_shot 4
+#define straight_shot 4
+#define upper_shot 5
+#define lower_shot 6
 
 unsigned char man[] =
 {
@@ -63,8 +65,10 @@ void initializeSprites() {
 	// Set the fourth sprite tile to be the head for use as the second enemy
 	set_sprite_tile(second_enemy, 2);
 
-	// Set the fifth sprite tile to be the head for use as a player's shot
-	set_sprite_tile(player_shot, 2);
+	// Set the three sprite tiles for the three various shots as the head
+	set_sprite_tile(straight_shot, 2);
+	set_sprite_tile(upper_shot, 2);
+	set_sprite_tile(lower_shot, 2);
 }
 
 void updateBackground() {
