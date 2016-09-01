@@ -26,11 +26,14 @@ int straightShotYCoordinate = 0;
 // Set the off screen coordinates to hide the sprite
 int offScreen = 0;
 
+// Create an iterator for use across all functions
+UBYTE shotIndex;
+
 typedef struct {
-	// Initial X coordinate starting point for enemy
+	// Initial X coordinate starting point for the shot
 	UBYTE xCoordinate;
 
-	// Initial Y coordinate starting point for enemy
+	// Initial Y coordinate starting point for the shot
 	UBYTE yCoordinate;
 
 	// Boolean to determine whether the enemy is moving up or down
@@ -49,52 +52,27 @@ void initializePlayer() {
 }
 
 void initializeShots() {
-	/*
-	Set up the shots to confirm that "isOnScreen"
-	is false. Then, use another array as a pointer
-	to the "shots" array to avoid multiplication
-	and strange results when accessing the original
-	array. See http://zalods.blogspot.com.es/2016/07/game-boy-development-tips-and-tricks-ii.html
-	for more details.
-	*/
+	// Set up the shots to confirm that "isOnScreen" is false.
 
-	shots[0].xCoordinate = offScreen;
-	shots[0].yCoordinate = offScreen;
-	shots[0].spriteNumber = straight_shot;
-	shots[0].isOnScreen = 0;
-
-	shots[1].xCoordinate = offScreen;
-	shots[1].yCoordinate = offScreen;
-	shots[1].spriteNumber = upper_shot;
-	shots[1].isOnScreen = 0;
-
-	shots[2].xCoordinate = offScreen;
-	shots[2].yCoordinate = offScreen;
-	shots[2].spriteNumber = lower_shot;
-	shots[2].isOnScreen = 0;
+	for (shotIndex = 0; shotIndex <= numberOfShots; shotIndex++) {
+		shots[shotIndex].xCoordinate = offScreen;
+		shots[shotIndex].yCoordinate = offScreen;
+		shots[shotIndex].spriteNumber = shot_sprite_starting_position + shotIndex;
+		shots[shotIndex].isOnScreen = 0;
+	}
 }
 
 void moveShotsToPlayer() {
 	// Set all of the shots to be where the player is
 	// so it looks like the shot is coming from the ship
 
-	shots[0].xCoordinate = playerXCoordinate;
-	shots[0].yCoordinate = playerYCoordinate;
-	shots[0].isOnScreen = 1;
+	for (shotIndex = 0; shotIndex <= numberOfShots; shotIndex++) {
+		shots[shotIndex].xCoordinate = playerXCoordinate;
+		shots[shotIndex].yCoordinate = playerYCoordinate;
+		shots[shotIndex].isOnScreen = 1;
 
-	move_sprite(straight_shot, shots[0].xCoordinate, shots[0].yCoordinate);
-
-	shots[1].xCoordinate = playerXCoordinate;
-	shots[1].yCoordinate = playerYCoordinate;
-	shots[1].isOnScreen = 1;
-
-	move_sprite(upper_shot, shots[1].xCoordinate, shots[1].yCoordinate);
-
-	shots[2].xCoordinate = playerXCoordinate;
-	shots[2].yCoordinate = playerYCoordinate;
-	shots[2].isOnScreen = 1;
-
-	move_sprite(lower_shot, shots[2].xCoordinate, shots[2].yCoordinate);
+		move_sprite(shots[shotIndex].spriteNumber, shots[shotIndex].xCoordinate, shots[shotIndex].yCoordinate);
+	}
 }
 
 void movePlayer() {

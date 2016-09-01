@@ -12,6 +12,7 @@
 #define right_half_ship 1
 #define first_enemy 2
 #define second_enemy 3
+#define shot_sprite_starting_position 4
 #define straight_shot 4
 #define upper_shot 5
 #define lower_shot 6
