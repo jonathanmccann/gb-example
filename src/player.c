@@ -1,4 +1,4 @@
-#include <gb.h>
+#include <gb/gb.h>
 
 #define numberOfShots 3
 

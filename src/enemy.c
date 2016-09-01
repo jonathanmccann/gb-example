@@ -1,4 +1,4 @@
-#include <gb.h>
+#include <gb/gb.h>
 
 #define numberOfEnemies 2
 

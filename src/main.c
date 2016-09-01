@@ -1,4 +1,4 @@
-#include <gb.h>
+#include <gb/gb.h>
 
 #include <sprite_and_background.c>
 

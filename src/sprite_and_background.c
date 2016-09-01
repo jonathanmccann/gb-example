@@ -1,4 +1,4 @@
-#include <gb.h>
+#include <gb/gb.h>
 
 #include <tiles.c>
 #include <background_map_tiles.c>
