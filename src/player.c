@@ -1,5 +1,6 @@
 #include <gb/gb.h>
 
+#include "../include/enemy.h"
 #include "../include/sprite_and_background.h"
 
 #define numberOfShots 3
@@ -29,7 +30,7 @@ int straightShotYCoordinate = 0;
 int offScreen = 0;
 
 // Create an iterator for use across all functions
-UBYTE shotIndex;
+UBYTE iterator;
 
 typedef struct {
 	// Initial X coordinate starting point for the shot
@@ -56,11 +57,11 @@ void initializePlayer() {
 void initializeShots() {
 	// Set up the shots to confirm that "isOnScreen" is false.
 
-	for (shotIndex = 0; shotIndex <= numberOfShots; shotIndex++) {
-		shots[shotIndex].xCoordinate = offScreen;
-		shots[shotIndex].yCoordinate = offScreen;
-		shots[shotIndex].spriteNumber = shot_sprite_starting_position + shotIndex;
-		shots[shotIndex].isOnScreen = 0;
+	for (iterator = 0; iterator <= numberOfShots; iterator++) {
+		shots[iterator].xCoordinate = offScreen;
+		shots[iterator].yCoordinate = offScreen;
+		shots[iterator].spriteNumber = shot_sprite_starting_position + iterator;
+		shots[iterator].isOnScreen = 0;
 	}
 }
 
@@ -68,12 +69,12 @@ void moveShotsToPlayer() {
 	// Set all of the shots to be where the player is
 	// so it looks like the shot is coming from the ship
 
-	for (shotIndex = 0; shotIndex <= numberOfShots; shotIndex++) {
-		shots[shotIndex].xCoordinate = playerXCoordinate;
-		shots[shotIndex].yCoordinate = playerYCoordinate;
-		shots[shotIndex].isOnScreen = 1;
+	for (iterator = 0; iterator <= numberOfShots; iterator++) {
+		shots[iterator].xCoordinate = playerXCoordinate;
+		shots[iterator].yCoordinate = playerYCoordinate;
+		shots[iterator].isOnScreen = 1;
 
-		move_sprite(shots[shotIndex].spriteNumber, shots[shotIndex].xCoordinate, shots[shotIndex].yCoordinate);
+		move_sprite(shots[iterator].spriteNumber, shots[iterator].xCoordinate, shots[iterator].yCoordinate);
 	}
 }
 
@@ -138,15 +139,15 @@ void moveShots() {
 // Collision detection between the player's shot and the enemy
 // 'enemy' is the array defined in 'enemy.c'
 void testShotAndEnemyCollision() {
-	for (i = 0; i < numberOfEnemies; i++) {
-		if (straightShotYCoordinate > enemies[i].yCoordinate - 8) {
-			if (straightShotYCoordinate < enemies[i].yCoordinate + 8) {
-				if (straightShotXCoordinate > enemies[i].xCoordinate - 8) {
-					if (straightShotXCoordinate < enemies[i].xCoordinate + 8) {
-						enemies[i].xCoordinate = offScreen;
-						enemies[i].yCoordinate = offScreen;
+	for (iterator = 0; iterator < numberOfEnemies; iterator++) {
+		if (straightShotYCoordinate > enemies[iterator].yCoordinate - 8) {
+			if (straightShotYCoordinate < enemies[iterator].yCoordinate + 8) {
+				if (straightShotXCoordinate > enemies[iterator].xCoordinate - 8) {
+					if (straightShotXCoordinate < enemies[iterator].xCoordinate + 8) {
+						enemies[iterator].xCoordinate = offScreen;
+						enemies[iterator].yCoordinate = offScreen;
 
-						move_sprite(enemies[i].spriteNumber, offScreen, offScreen);
+						move_sprite(enemies[iterator].spriteNumber, offScreen, offScreen);
 						//move_sprite(10, offScreen, offScreen);
 					}
 				}

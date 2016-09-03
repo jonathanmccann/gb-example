@@ -1,65 +1,24 @@
 #include <gb/gb.h>
 
-#include "../include/sprite_and_background.h"
-
-#define numberOfEnemies 2
+#include "../include/enemy.h"
 
 // Create an iterator for loops
 int i;
 
-typedef struct _Enemy {
-	// Initial X coordinate starting point for enemy
-	int xCoordinate;
-
-	// Initial Y coordinate starting point for enemy
-	int yCoordinate;
-
-	// Boolean to determine whether the enemy is moving up or down
-	BOOLEAN isMovingUp;
-
-	// Set the Y coordinate upper and lower bounds for the enemy sprite
-	int yCoordinateLowerBoundary;
-	int yCoordinateUpperBoundary;
-
-	// Set the sprite number associated with the enemy
-	int spriteNumber;
-} Enemy;
-
-Enemy firstEnemy = {
-	100,  			// Starting X coordinate
-	100,  			// Staring Y coordinate
-	TRUE, 			// Is the enemy moving up
-	50,   			// Y coordinate lower boundary
-	125,  			// Y coordinate upper boundary
-	first_enemy     // Sprite number of the enemy
-};
-
-Enemy secondEnemy = {
-	125,   		  // Starting X coordinate
-	20,    		  // Staring Y coordinate
-	FALSE, 		  // Is the enemy moving up
-	20,    		  // Y coordinate lower boundary
-	125,   		  // Y coordinate upper boundary
-	second_enemy  // Sprite number of the enemy
-};
-
-Enemy enemies[numberOfEnemies];
-
-void insertEnemyIntoEnemyArray(Enemy *enemy, Enemy *enemyToInsert) {
-	enemy->xCoordinate = enemyToInsert->xCoordinate;
-	enemy->yCoordinate = enemyToInsert->yCoordinate;
-	enemy->isMovingUp = enemyToInsert->isMovingUp;
-	enemy->yCoordinateLowerBoundary = enemyToInsert->yCoordinateLowerBoundary;
-	enemy->yCoordinateUpperBoundary = enemyToInsert->yCoordinateUpperBoundary;
-	enemy->spriteNumber = enemyToInsert->spriteNumber;
-}
-
 void initializeEnemies() {
-	// Pass references to the enemy array and the enemy itself
-	// to work around a limitation in SDCC where structs cannot
-	// be assigned directly to an array
-	insertEnemyIntoEnemyArray(&enemies[0], &firstEnemy);
-	insertEnemyIntoEnemyArray(&enemies[1], &secondEnemy);
+	enemies[0].xCoordinate = firstEnemy.xCoordinate;
+	enemies[0].yCoordinate = firstEnemy.yCoordinate;
+	enemies[0].isMovingUp = firstEnemy.isMovingUp;
+	enemies[0].yCoordinateLowerBoundary = firstEnemy.yCoordinateLowerBoundary;
+	enemies[0].yCoordinateUpperBoundary = firstEnemy.yCoordinateUpperBoundary;
+	enemies[0].spriteNumber = firstEnemy.spriteNumber;
+
+	enemies[1].xCoordinate = secondEnemy.xCoordinate;
+	enemies[1].yCoordinate = secondEnemy.yCoordinate;
+	enemies[1].isMovingUp = secondEnemy.isMovingUp;
+	enemies[1].yCoordinateLowerBoundary = secondEnemy.yCoordinateLowerBoundary;
+	enemies[1].yCoordinateUpperBoundary = secondEnemy.yCoordinateUpperBoundary;
+	enemies[1].spriteNumber = secondEnemy.spriteNumber;
 
 	// Move the enemy sprites on to the screen so we can see it
 	move_sprite(enemies[0].spriteNumber, enemies[0].xCoordinate, enemies[0].yCoordinate);

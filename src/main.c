@@ -1,11 +1,11 @@
 #include <gb/gb.h>
 
+#include "../include/enemy.h"
 #include "../include/sprite_and_background.h"
 
 // 'enemy.c' must be included before 'player.c'
 // since 'player.c' references variables defined in
 // 'enemy.c'
-#include <enemy.c>
 #include <player.c>
 
 void main() {
