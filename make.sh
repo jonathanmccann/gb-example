@@ -6,6 +6,6 @@ cd src
 
 rm main.gb
 
-$1 -o main.gb main.c
+$1 -o main.gb main.c sprite_and_background.c
 
 wine $2 main.gb > /dev/null 2>&1

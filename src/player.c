@@ -1,5 +1,7 @@
 #include <gb/gb.h>
 
+#include "sprite_and_background.h"
+
 #define numberOfShots 3
 
 // Initial X coordinate starting point

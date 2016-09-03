@@ -1,5 +1,7 @@
 #include <gb/gb.h>
 
+#include "sprite_and_background.h"
+
 #define numberOfEnemies 2
 
 // Create an iterator for loops

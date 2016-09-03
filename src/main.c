@@ -1,6 +1,6 @@
 #include <gb/gb.h>
 
-#include <sprite_and_background.c>
+#include "sprite_and_background.h"
 
 // 'enemy.c' must be included before 'player.c'
 // since 'player.c' references variables defined in

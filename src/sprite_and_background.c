@@ -1,21 +1,10 @@
 #include <gb/gb.h>
 
+#include "sprite_and_background.h"
+
 #include <tiles.c>
 #include <background_map_tiles.c>
 #include <ship.c>
-
-#define backgroundXScrollRate 1
-#define backgroundYScrollRate 1
-
-// Define the sprite numbers for use in other files
-#define left_half_ship 0
-#define right_half_ship 1
-#define first_enemy 2
-#define second_enemy 3
-#define shot_sprite_starting_position 4
-#define straight_shot 4
-#define upper_shot 5
-#define lower_shot 6
 
 unsigned char man[] =
 {
