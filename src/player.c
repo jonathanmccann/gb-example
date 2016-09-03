@@ -1,6 +1,5 @@
 #include <gb/gb.h>
 
-#include "../include/enemy.h"
 #include "../include/player.h"
 #include "../include/sprite_and_background.h"
 
@@ -23,15 +22,11 @@ UBYTE yCoordinateUpperBoundary = 140;
 // Set the offset of width between the left and right halves of the ship
 int offset = 8;
 
-// Initial X and Y coordinate starting points for the three shots
-int straightShotXCoordinate = 0;
-int straightShotYCoordinate = 0;
-
 // Set the off screen coordinates to hide the sprite
 int offScreen = 0;
 
 // Create an iterator for use across all functions
-UBYTE iterator;
+UBYTE i;
 
 typedef struct {
 	// Initial X coordinate starting point for the shot
@@ -58,11 +53,11 @@ void initializePlayer() {
 void initializeShots() {
 	// Set up the shots to confirm that "isOnScreen" is false.
 
-	for (iterator = 0; iterator <= numberOfShots; iterator++) {
-		shots[iterator].xCoordinate = offScreen;
-		shots[iterator].yCoordinate = offScreen;
-		shots[iterator].spriteNumber = shot_sprite_starting_position + iterator;
-		shots[iterator].isOnScreen = 0;
+	for (i = 0; i <= numberOfShots; i++) {
+		shots[i].xCoordinate = offScreen;
+		shots[i].yCoordinate = offScreen;
+		shots[i].spriteNumber = shot_sprite_starting_position + i;
+		shots[i].isOnScreen = 0;
 	}
 }
 
@@ -70,12 +65,12 @@ void moveShotsToPlayer() {
 	// Set all of the shots to be where the player is
 	// so it looks like the shot is coming from the ship
 
-	for (iterator = 0; iterator <= numberOfShots; iterator++) {
-		shots[iterator].xCoordinate = playerXCoordinate;
-		shots[iterator].yCoordinate = playerYCoordinate;
-		shots[iterator].isOnScreen = 1;
+	for (i = 0; i <= numberOfShots; i++) {
+		shots[i].xCoordinate = playerXCoordinate;
+		shots[i].yCoordinate = playerYCoordinate;
+		shots[i].isOnScreen = 1;
 
-		move_sprite(shots[iterator].spriteNumber, shots[iterator].xCoordinate, shots[iterator].yCoordinate);
+		move_sprite(shots[i].spriteNumber, shots[i].xCoordinate, shots[i].yCoordinate);
 	}
 }
 
@@ -137,19 +132,19 @@ void moveShots() {
 	}
 }
 
-// Collision detection between the player's shot and the enemy
-// 'enemy' is the array defined in 'enemy.c'
-void testShotAndEnemyCollision() {
-	for (iterator = 0; iterator < numberOfEnemies; iterator++) {
-		if (straightShotYCoordinate > enemies[iterator].yCoordinate - 8) {
-			if (straightShotYCoordinate < enemies[iterator].yCoordinate + 8) {
-				if (straightShotXCoordinate > enemies[iterator].xCoordinate - 8) {
-					if (straightShotXCoordinate < enemies[iterator].xCoordinate + 8) {
-						enemies[iterator].xCoordinate = offScreen;
-						enemies[iterator].yCoordinate = offScreen;
+// Collision detection between the player's shots and the enemy
+void testShotAndEnemyCollision(Enemy* enemy) {
+	int i;
 
-						move_sprite(enemies[iterator].spriteNumber, offScreen, offScreen);
-						//move_sprite(10, offScreen, offScreen);
+	for (i = 0; i < numberOfShots; i++) {
+		if (shots[i].yCoordinate > enemy->yCoordinate - 8) {
+			if (shots[i].yCoordinate < enemy->yCoordinate + 8) {
+				if (shots[i].xCoordinate > enemy->xCoordinate - 8) {
+					if (shots[i].xCoordinate < enemy->xCoordinate + 8) {
+						enemy->xCoordinate = offScreen;
+						enemy->yCoordinate = offScreen;
+
+						move_sprite(enemy->spriteNumber, offScreen, offScreen);
 					}
 				}
 			}

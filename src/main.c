@@ -31,9 +31,9 @@ void main() {
 		// Move the enemy sprites as they are defined in enemy.c
 		moveEnemySprites();
 
-		// After all movement has completed, test to see if the shot
-		// collides with any of the enemies in player.c
-		testShotAndEnemyCollision();
+		// After all movement has completed, test to see if any of the shots
+		// collide with any of the enemies in
+		testEnemyCollision();
 
 		// Use this to force the game to run at 60
 		// frames per second and allow the background

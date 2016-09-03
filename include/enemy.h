@@ -27,5 +27,6 @@ Enemy enemies[numberOfEnemies];
 
 void initializeEnemies();
 void moveEnemySprites();
+void testEnemyCollision();
 
 #endif //PROJECT_ENEMY_H

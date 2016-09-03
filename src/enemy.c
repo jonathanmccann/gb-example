@@ -1,9 +1,7 @@
 #include <gb/gb.h>
 
 #include "../include/enemy.h"
-
-// Create an iterator for loops
-int i;
+#include "../include/player.h"
 
 Enemy firstEnemy = {
 	100,  			// Starting X coordinate
@@ -44,6 +42,8 @@ void initializeEnemies() {
 }
 
 void moveEnemySprites() {
+	int i;
+
 	for (i = 0; i < numberOfEnemies; i++) {
 		// Move the enemy sprite head in a straight line pattern
 		if (enemies[i].isMovingUp) {
@@ -62,5 +62,19 @@ void moveEnemySprites() {
 		}
 
 		move_sprite(enemies[i].spriteNumber, enemies[i].xCoordinate, enemies[i].yCoordinate);
+	}
+}
+
+/*
+ * The enemies are passed as elements to 'player.c'
+ * because in 'player.c' the struct elements in the
+ * array 'enemies' cannot be read outside of this
+ * file.
+ */
+void testEnemyCollision() {
+	int i;
+
+	for (i = 0; i < numberOfEnemies; i++) {
+		testShotAndEnemyCollision(&enemies[i]);
 	}
 }
