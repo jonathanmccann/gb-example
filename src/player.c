@@ -1,6 +1,7 @@
 #include <gb/gb.h>
 
 #include "../include/enemy.h"
+#include "../include/player.h"
 #include "../include/sprite_and_background.h"
 
 #define numberOfShots 3
