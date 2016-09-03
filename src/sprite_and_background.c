@@ -1,6 +1,6 @@
 #include <gb/gb.h>
 
-#include "sprite_and_background.h"
+#include "../include/sprite_and_background.h"
 
 #include <tiles.c>
 #include <background_map_tiles.c>
