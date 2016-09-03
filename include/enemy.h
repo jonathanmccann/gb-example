@@ -23,24 +23,6 @@ typedef struct _Enemy {
 	int spriteNumber;
 } Enemy;
 
-Enemy firstEnemy = {
-	100,  			// Starting X coordinate
-	100,  			// Staring Y coordinate
-	TRUE, 			// Is the enemy moving up
-	50,   			// Y coordinate lower boundary
-	125,  			// Y coordinate upper boundary
-	first_enemy     // Sprite number of the enemy
-};
-
-Enemy secondEnemy = {
-	125,   		  // Starting X coordinate
-	20,    		  // Staring Y coordinate
-	FALSE, 		  // Is the enemy moving up
-	20,    		  // Y coordinate lower boundary
-	125,   		  // Y coordinate upper boundary
-	second_enemy  // Sprite number of the enemy
-};
-
 Enemy enemies[numberOfEnemies];
 
 void initializeEnemies();
