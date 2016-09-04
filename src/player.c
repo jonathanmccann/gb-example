@@ -5,15 +5,9 @@
 
 #define numberOfShots 3
 
-// Initial X coordinate starting point
-UBYTE playerXCoordinate = 50;
-
 // Set the X coordinate boundaries so the sprite does not go off the screen
 UBYTE xCoordinateLowerBoundary = 8;
 UBYTE xCoordinateUpperBoundary = 152;
-
-// Initial Y coordinate starting point
-UBYTE playerYCoordinate = 32;
 
 // Set the Y coordinate boundaries so the sprite does not go off the screen
 UBYTE yCoordinateLowerBoundary = 16;
@@ -29,6 +23,13 @@ int offScreen = 0;
 UBYTE i;
 
 typedef struct {
+	UBYTE xCoordinate;
+	UBYTE yCoordinate;
+	int leftSpriteNumber;
+	int rightSpriteNumber;
+} Player;
+
+typedef struct {
 	// Initial X coordinate starting point for the shot
 	UBYTE xCoordinate;
 
@@ -42,12 +43,19 @@ typedef struct {
 	int spriteNumber;
 } Shot;
 
+Player player;
+
 Shot shots[numberOfShots];
 
 void initializePlayer() {
 	// Move the sprite on to the screen so we can see it
-	move_sprite(left_half_ship, playerXCoordinate, playerYCoordinate);
-	move_sprite(right_half_ship, playerXCoordinate + offset, playerYCoordinate);
+	player.xCoordinate = 50;
+	player.yCoordinate = 32;
+	player.leftSpriteNumber = left_half_ship;
+	player.rightSpriteNumber = right_half_ship;
+
+	move_sprite(player.leftSpriteNumber, player.xCoordinate, player.yCoordinate);
+	move_sprite(player.rightSpriteNumber, player.xCoordinate + offset, player.yCoordinate);
 }
 
 void initializeShots() {
@@ -66,8 +74,8 @@ void moveShotsToPlayer() {
 	// so it looks like the shot is coming from the ship
 
 	for (i = 0; i <= numberOfShots; i++) {
-		shots[i].xCoordinate = playerXCoordinate;
-		shots[i].yCoordinate = playerYCoordinate;
+		shots[i].xCoordinate = player.xCoordinate;
+		shots[i].yCoordinate = player.yCoordinate;
 		shots[i].isOnScreen = 1;
 
 		move_sprite(shots[i].spriteNumber, shots[i].xCoordinate, shots[i].yCoordinate);
@@ -77,8 +85,8 @@ void moveShotsToPlayer() {
 void movePlayer() {
 	// Move both the left and right halves of the ship to its new location
 	// as set in 'updatePlayerAndShot'
-	move_sprite(left_half_ship, playerXCoordinate, playerYCoordinate);
-	move_sprite(right_half_ship, playerXCoordinate + offset, playerYCoordinate);
+	move_sprite(left_half_ship, player.xCoordinate, player.yCoordinate);
+	move_sprite(right_half_ship, player.xCoordinate + offset, player.yCoordinate);
 }
 
 void moveShots() {
@@ -157,42 +165,42 @@ void updatePlayerAndShots(int key) {
 	// Both right and up (or another combination) is being
 	// pushed so that the sprite can move diagonally
 	if (key & J_RIGHT) {
-		playerXCoordinate++;
+		player.xCoordinate++;
 
 		// Check to see if the X coordinate is greater than the upper boundary
 		// If so, then do not let the sprite move beyond it
-		if (playerXCoordinate > xCoordinateUpperBoundary) {
-			playerXCoordinate = xCoordinateUpperBoundary;
+		if (player.xCoordinate > xCoordinateUpperBoundary) {
+			player.xCoordinate = xCoordinateUpperBoundary;
 		}
 
 		movePlayer();
 	}
 
 	if (key & J_LEFT) {
-		playerXCoordinate--;
+		player.xCoordinate--;
 
-		if (playerXCoordinate < xCoordinateLowerBoundary) {
-			playerXCoordinate = xCoordinateLowerBoundary;
+		if (player.xCoordinate < xCoordinateLowerBoundary) {
+			player.xCoordinate = xCoordinateLowerBoundary;
 		}
 
 		movePlayer();
 	}
 
 	if (key & J_UP) {
-		playerYCoordinate--;
+		player.yCoordinate--;
 
-		if (playerYCoordinate < yCoordinateLowerBoundary) {
-			playerYCoordinate = yCoordinateLowerBoundary;
+		if (player.yCoordinate < yCoordinateLowerBoundary) {
+			player.yCoordinate = yCoordinateLowerBoundary;
 		}
 
 		movePlayer();
 	}
 
 	if (key & J_DOWN) {
-		playerYCoordinate++;
+		player.yCoordinate++;
 
-		if (playerYCoordinate > yCoordinateUpperBoundary) {
-			playerYCoordinate = yCoordinateUpperBoundary;
+		if (player.yCoordinate > yCoordinateUpperBoundary) {
+			player.yCoordinate = yCoordinateUpperBoundary;
 		}
 
 		movePlayer();
