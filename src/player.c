@@ -10,14 +10,14 @@ UBYTE playerXCoordinate = 50;
 
 // Set the X coordinate boundaries so the sprite does not go off the screen
 UBYTE xCoordinateLowerBoundary = 8;
-UBYTE xCoordinateUpperBoundary = 160;
+UBYTE xCoordinateUpperBoundary = 152;
 
 // Initial Y coordinate starting point
 UBYTE playerYCoordinate = 32;
 
 // Set the Y coordinate boundaries so the sprite does not go off the screen
 UBYTE yCoordinateLowerBoundary = 16;
-UBYTE yCoordinateUpperBoundary = 140;
+UBYTE yCoordinateUpperBoundary = 150;
 
 // Set the offset of width between the left and right halves of the ship
 int offset = 8;
