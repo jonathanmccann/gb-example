@@ -61,7 +61,7 @@ void initializePlayer() {
 void initializeShots() {
 	// Set up the shots to confirm that "isOnScreen" is false.
 
-	for (i = 0; i <= numberOfShots; i++) {
+	for (i = 0; i < numberOfShots; i++) {
 		shots[i].xCoordinate = offScreen;
 		shots[i].yCoordinate = offScreen;
 		shots[i].spriteNumber = shot_sprite_starting_position + i;
@@ -73,7 +73,7 @@ void moveShotsToPlayer() {
 	// Set all of the shots to be where the player is
 	// so it looks like the shot is coming from the ship
 
-	for (i = 0; i <= numberOfShots; i++) {
+	for (i = 0; i < numberOfShots; i++) {
 		shots[i].xCoordinate = player.xCoordinate;
 		shots[i].yCoordinate = player.yCoordinate;
 		shots[i].isOnScreen = 1;
