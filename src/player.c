@@ -6,14 +6,14 @@
 #define numberOfShots 3
 
 // Initial X coordinate starting point
-int playerXCoordinate = 50;
+UBYTE playerXCoordinate = 50;
 
 // Set the X coordinate boundaries so the sprite does not go off the screen
 UBYTE xCoordinateLowerBoundary = 8;
 UBYTE xCoordinateUpperBoundary = 160;
 
 // Initial Y coordinate starting point
-int playerYCoordinate = 32;
+UBYTE playerYCoordinate = 32;
 
 // Set the Y coordinate boundaries so the sprite does not go off the screen
 UBYTE yCoordinateLowerBoundary = 16;
