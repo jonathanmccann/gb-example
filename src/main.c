@@ -20,7 +20,7 @@ void main() {
 	// initialized
 	initializeDisplay();
 
-	while (!0) {
+	while (1) {
 		// Trigger the background to be updated
 		updateBackground();
 
