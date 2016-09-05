@@ -3,7 +3,8 @@
 #include "../include/player.h"
 #include "../include/sprite_and_background.h"
 
-#define numberOfShots 3
+#define numberOfRotatingShots 2
+#define numberOfStraightShots 1
 
 // Set the X coordinate boundaries so the sprite does not go off the screen
 UBYTE xCoordinateLowerBoundary = 8;
@@ -36,8 +37,14 @@ typedef struct {
 	// Initial Y coordinate starting point for the shot
 	UBYTE yCoordinate;
 
+	// Velocity of the shot in the X direction
+	UBYTE xVelocity;
+
+	// Velocity of the shot in the Y direction
+	UBYTE yVelocity;
+
 	// Boolean to determine whether the enemy is moving up or down
-	UBYTE isOnScreen;
+	int isOnScreen;
 
 	// Set the sprite number associated with the enemy
 	int spriteNumber;
@@ -45,7 +52,8 @@ typedef struct {
 
 Player player;
 
-Shot shots[numberOfShots];
+Shot rotatingShots[numberOfRotatingShots];
+Shot straightShots[numberOfStraightShots];
 
 void initializePlayer() {
 	// Move the sprite on to the screen so we can see it
@@ -61,11 +69,31 @@ void initializePlayer() {
 void initializeShots() {
 	// Set up the shots to confirm that "isOnScreen" is false.
 
-	for (i = 0; i < numberOfShots; i++) {
-		shots[i].xCoordinate = offScreen;
-		shots[i].yCoordinate = offScreen;
-		shots[i].spriteNumber = shot_sprite_starting_position + i;
-		shots[i].isOnScreen = 0;
+	for (i = 0; i < numberOfStraightShots; i++) {
+		straightShots[i].xCoordinate = offScreen;
+		straightShots[i].yCoordinate = offScreen;
+		straightShots[i].xVelocity = 2;
+		straightShots[i].yVelocity = 0;
+		straightShots[i].spriteNumber = straight_shot_sprite_starting_position + i;
+		straightShots[i].isOnScreen = 0;
+	}
+
+	for (i = 0; i < numberOfRotatingShots; i++) {
+		rotatingShots[i].xCoordinate = offScreen;
+		rotatingShots[i].yCoordinate = offScreen;
+		rotatingShots[i].xVelocity = 2;
+		rotatingShots[i].yVelocity = -1;
+		rotatingShots[i].spriteNumber = rotating_shot_sprite_starting_position + i;
+		rotatingShots[i].isOnScreen = 0;
+
+		i++;
+
+		rotatingShots[i].xCoordinate = offScreen;
+		rotatingShots[i].yCoordinate = offScreen;
+		rotatingShots[i].xVelocity = 2;
+		rotatingShots[i].yVelocity = 1;
+		rotatingShots[i].spriteNumber = rotating_shot_sprite_starting_position + i;
+		rotatingShots[i].isOnScreen = 0;
 	}
 }
 
@@ -73,12 +101,20 @@ void moveShotsToPlayer() {
 	// Set all of the shots to be where the player is
 	// so it looks like the shot is coming from the ship
 
-	for (i = 0; i < numberOfShots; i++) {
-		shots[i].xCoordinate = player.xCoordinate;
-		shots[i].yCoordinate = player.yCoordinate;
-		shots[i].isOnScreen = 1;
+	for (i = 0; i < numberOfStraightShots; i++) {
+		straightShots[i].xCoordinate = player.xCoordinate;
+		straightShots[i].yCoordinate = player.yCoordinate;
+		straightShots[i].isOnScreen = 1;
 
-		move_sprite(shots[i].spriteNumber, shots[i].xCoordinate, shots[i].yCoordinate);
+		move_sprite(straightShots[i].spriteNumber, straightShots[i].xCoordinate, straightShots[i].yCoordinate);
+	}
+
+	for (i = 0; i < numberOfRotatingShots; i++) {
+		rotatingShots[i].xCoordinate = player.xCoordinate;
+		rotatingShots[i].yCoordinate = player.yCoordinate;
+		rotatingShots[i].isOnScreen = 1;
+
+		move_sprite(rotatingShots[i].spriteNumber, rotatingShots[i].xCoordinate, rotatingShots[i].yCoordinate);
 	}
 }
 
@@ -89,54 +125,46 @@ void movePlayer() {
 	move_sprite(right_half_ship, player.xCoordinate + offset, player.yCoordinate);
 }
 
-void moveShots() {
-	// Move the first shot in a straight line.
-	// If it is off screen, then reset the shot.
-	if (shots[0].isOnScreen) {
-		if (shots[0].xCoordinate >= xCoordinateUpperBoundary) {
-			shots[0].xCoordinate = offScreen;
-			shots[0].yCoordinate = offScreen;
-			shots[0].isOnScreen = 0;
-		}
-		else {
-			shots[0].xCoordinate += 2;
-		}
+void moveRotatingShots() {
+	for (i = 0; i < numberOfRotatingShots; i++) {
+		if (rotatingShots[i].isOnScreen) {
+			if ((rotatingShots[i].xCoordinate <= xCoordinateLowerBoundary) ||
+				(rotatingShots[i].xCoordinate >= xCoordinateUpperBoundary) ||
+				(rotatingShots[i].yCoordinate <= yCoordinateLowerBoundary) ||
+				(rotatingShots[i].yCoordinate >= yCoordinateUpperBoundary)) {
 
-		move_sprite(shots[0].spriteNumber, shots[0].xCoordinate, shots[0].yCoordinate);
+				rotatingShots[i].xCoordinate = offScreen;
+				rotatingShots[i].yCoordinate = offScreen;
+				rotatingShots[i].isOnScreen = 0;
+			}
+			else {
+				rotatingShots[i].xCoordinate += rotatingShots[i].xVelocity;
+				rotatingShots[i].yCoordinate += rotatingShots[i].yVelocity;
+			}
+
+			move_sprite(rotatingShots[i].spriteNumber, rotatingShots[i].xCoordinate, rotatingShots[i].yCoordinate);
+		}
 	}
+}
 
-	// Move the second shot in an upward angle (decrease the Y coordinate)
-	if (shots[1].isOnScreen) {
-		if ((shots[1].xCoordinate >= xCoordinateUpperBoundary) ||
-			(shots[1].yCoordinate <= yCoordinateLowerBoundary)) {
+void moveStraightShots() {
+	for (i = 0; i < numberOfStraightShots; i++) {
+		if (straightShots[i].isOnScreen) {
+			if ((straightShots[i].xCoordinate <= xCoordinateLowerBoundary) ||
+				(straightShots[i].xCoordinate >= xCoordinateUpperBoundary) ||
+				(straightShots[i].yCoordinate <= yCoordinateLowerBoundary) ||
+				(straightShots[i].yCoordinate >= yCoordinateUpperBoundary)) {
 
-			shots[1].xCoordinate = offScreen;
-			shots[1].yCoordinate = offScreen;
-			shots[1].isOnScreen = 0;
+				straightShots[i].xCoordinate = offScreen;
+				straightShots[i].yCoordinate = offScreen;
+				straightShots[i].isOnScreen = 0;
+			}
+			else {
+				straightShots[i].xCoordinate += straightShots[i].xVelocity;
+			}
+
+			move_sprite(straightShots[i].spriteNumber, straightShots[i].xCoordinate, straightShots[i].yCoordinate);
 		}
-		else {
-			shots[1].xCoordinate += 2;
-			shots[1].yCoordinate -= 1;
-		}
-
-		move_sprite(shots[1].spriteNumber, shots[1].xCoordinate, shots[1].yCoordinate);
-	}
-
-	// Move the third shot in an downward angle (increase the Y coordinate)
-	if (shots[2].isOnScreen) {
-		if ((shots[2].xCoordinate >= xCoordinateUpperBoundary) ||
-			(shots[2].yCoordinate >= yCoordinateUpperBoundary)) {
-
-			shots[2].xCoordinate = offScreen;
-			shots[2].yCoordinate = offScreen;
-			shots[2].isOnScreen = 0;
-		}
-		else {
-			shots[2].xCoordinate += 2;
-			shots[2].yCoordinate += 1;
-		}
-
-		move_sprite(shots[2].spriteNumber, shots[2].xCoordinate, shots[2].yCoordinate);
 	}
 }
 
@@ -144,11 +172,26 @@ void moveShots() {
 void testShotAndEnemyCollision(Enemy* enemy) {
 	int i;
 
-	for (i = 0; i < numberOfShots; i++) {
-		if (shots[i].yCoordinate > enemy->yCoordinate - 8) {
-			if (shots[i].yCoordinate < enemy->yCoordinate + 8) {
-				if (shots[i].xCoordinate > enemy->xCoordinate - 8) {
-					if (shots[i].xCoordinate < enemy->xCoordinate + 8) {
+	for (i = 0; i < numberOfStraightShots; i++) {
+		if (straightShots[i].yCoordinate > enemy->yCoordinate - 8) {
+			if (straightShots[i].yCoordinate < enemy->yCoordinate + 8) {
+				if (straightShots[i].xCoordinate > enemy->xCoordinate - 8) {
+					if (straightShots[i].xCoordinate < enemy->xCoordinate + 8) {
+						enemy->xCoordinate = offScreen;
+						enemy->yCoordinate = offScreen;
+
+						move_sprite(enemy->spriteNumber, offScreen, offScreen);
+					}
+				}
+			}
+		}
+	}
+
+	for (i = 0; i < numberOfRotatingShots; i++) {
+		if (rotatingShots[i].yCoordinate > enemy->yCoordinate - 8) {
+			if (rotatingShots[i].yCoordinate < enemy->yCoordinate + 8) {
+				if (rotatingShots[i].xCoordinate > enemy->xCoordinate - 8) {
+					if (rotatingShots[i].xCoordinate < enemy->xCoordinate + 8) {
 						enemy->xCoordinate = offScreen;
 						enemy->yCoordinate = offScreen;
 
@@ -206,15 +249,16 @@ void updatePlayerAndShots(int key) {
 		movePlayer();
 	}
 
-	if ((key & J_A) && !shots[0].isOnScreen &&
-		!shots[1].isOnScreen && !shots[2].isOnScreen) {
+	if ((key & J_A) && !straightShots[0].isOnScreen &&
+		!rotatingShots[0].isOnScreen && !rotatingShots[1].isOnScreen) {
 
 		moveShotsToPlayer();
 	}
 
-	if (shots[0].isOnScreen || shots[1].isOnScreen ||
-		shots[2].isOnScreen) {
+	if (straightShots[0].isOnScreen || rotatingShots[0].isOnScreen ||
+		rotatingShots[1].isOnScreen) {
 
-		moveShots();
+		moveStraightShots();
+		moveRotatingShots();
 	}
 }
