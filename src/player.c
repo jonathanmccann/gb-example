@@ -249,7 +249,7 @@ void updatePlayerAndShots(int key) {
 		movePlayer();
 	}
 
-	if ((key & J_A) && !straightShots[0].isOnScreen &&
+	if ((key & J_B) && !straightShots[0].isOnScreen &&
 		!rotatingShots[0].isOnScreen && !rotatingShots[1].isOnScreen) {
 
 		moveShotsToPlayer();
