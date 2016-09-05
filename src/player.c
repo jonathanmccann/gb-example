@@ -6,6 +6,10 @@
 #define numberOfRotatingShots 2
 #define numberOfStraightShots 1
 
+#define forwardShot 0
+#define upAndDownShot 1
+#define behindShot 2
+
 // Set the X coordinate boundaries so the sprite does not go off the screen
 UBYTE xCoordinateLowerBoundary = 8;
 UBYTE xCoordinateUpperBoundary = 152;
@@ -21,7 +25,7 @@ int offset = 8;
 int offScreen = 0;
 
 // Create an iterator for use across all functions
-UBYTE i, keyADown, rotatingShotCounter;
+UBYTE i, keyADown, rotatingShotDirection;
 
 typedef struct {
 	UBYTE xCoordinate;
@@ -203,26 +207,32 @@ void testShotAndEnemyCollision(Enemy* enemy) {
 	}
 }
 
+void updateRotatingShotDirection() {
+	if (rotatingShotDirection == forwardShot) {
+		rotatingShotDirection = upAndDownShot;
+	}
+	else if (rotatingShotDirection == upAndDownShot) {
+		rotatingShotDirection = behindShot;
+	}
+	else {
+		rotatingShotDirection = forwardShot;
+	}
+}
+
 void updateRotatingShotsVelocity() {
     int xVelocity, yVelocity;
 
-	if (rotatingShotCounter == 0) {
+	if (rotatingShotDirection == forwardShot) {
 		xVelocity = 2;
 		yVelocity = -1;
-
-		rotatingShotCounter++;
 	}
-	else if (rotatingShotCounter == 1) {
+	else if (rotatingShotDirection == upAndDownShot) {
 		xVelocity = 0;
 		yVelocity = 2;
-
-		rotatingShotCounter++;
 	}
 	else {
 		xVelocity = -2;
 		yVelocity = -1;
-
-		rotatingShotCounter = 0;
 	}
 
 	for (i = 0; i < numberOfRotatingShots; i++) {
@@ -292,6 +302,7 @@ void updatePlayerAndShots(int key) {
 	else if (keyADown) {
 		keyADown = 0;
 
+		updateRotatingShotDirection();
 		updateRotatingShotsVelocity();
 	}
 
