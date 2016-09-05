@@ -129,6 +129,49 @@ void movePlayer() {
 	move_sprite(right_half_ship, player.xCoordinate + offset, player.yCoordinate);
 }
 
+void updateRotatingShotDirection() {
+	if (rotatingShotDirection == forwardShot) {
+		rotatingShotDirection = upAndDownShot;
+	}
+	else if (rotatingShotDirection == upAndDownShot) {
+		rotatingShotDirection = behindShot;
+	}
+	else {
+		rotatingShotDirection = forwardShot;
+	}
+}
+
+void updateRotatingShotsVelocity() {
+    int xVelocity, yVelocity;
+
+	if (rotatingShotDirection == forwardShot) {
+		xVelocity = 2;
+		yVelocity = -1;
+	}
+	else if (rotatingShotDirection == upAndDownShot) {
+		xVelocity = 0;
+		yVelocity = 2;
+	}
+	else {
+		xVelocity = -2;
+		yVelocity = -1;
+	}
+
+	for (i = 0; i < numberOfRotatingShots; i++) {
+		if (!rotatingShots[i].isOnScreen) {
+			rotatingShots[i].xVelocity = xVelocity;
+			rotatingShots[i].yVelocity = yVelocity;
+		}
+
+		i++;
+
+		if (!rotatingShots[i].isOnScreen) {
+			rotatingShots[i].xVelocity = xVelocity;
+			rotatingShots[i].yVelocity = -yVelocity;
+		}
+	}
+}
+
 void moveRotatingShots() {
 	for (i = 0; i < numberOfRotatingShots; i++) {
 		if (rotatingShots[i].isOnScreen) {
@@ -140,6 +183,8 @@ void moveRotatingShots() {
 				rotatingShots[i].xCoordinate = offScreen;
 				rotatingShots[i].yCoordinate = offScreen;
 				rotatingShots[i].isOnScreen = 0;
+
+				updateRotatingShotsVelocity();
 			}
 			else {
 				rotatingShots[i].xCoordinate += rotatingShots[i].xVelocity;
@@ -203,49 +248,6 @@ void testShotAndEnemyCollision(Enemy* enemy) {
 					}
 				}
 			}
-		}
-	}
-}
-
-void updateRotatingShotDirection() {
-	if (rotatingShotDirection == forwardShot) {
-		rotatingShotDirection = upAndDownShot;
-	}
-	else if (rotatingShotDirection == upAndDownShot) {
-		rotatingShotDirection = behindShot;
-	}
-	else {
-		rotatingShotDirection = forwardShot;
-	}
-}
-
-void updateRotatingShotsVelocity() {
-    int xVelocity, yVelocity;
-
-	if (rotatingShotDirection == forwardShot) {
-		xVelocity = 2;
-		yVelocity = -1;
-	}
-	else if (rotatingShotDirection == upAndDownShot) {
-		xVelocity = 0;
-		yVelocity = 2;
-	}
-	else {
-		xVelocity = -2;
-		yVelocity = -1;
-	}
-
-	for (i = 0; i < numberOfRotatingShots; i++) {
-		if (!rotatingShots[i].isOnScreen) {
-			rotatingShots[i].xVelocity = xVelocity;
-			rotatingShots[i].yVelocity = yVelocity;
-		}
-
-		i++;
-
-		if (!rotatingShots[i].isOnScreen) {
-			rotatingShots[i].xVelocity = xVelocity;
-			rotatingShots[i].yVelocity = -yVelocity;
 		}
 	}
 }
