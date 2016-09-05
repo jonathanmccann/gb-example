@@ -21,7 +21,7 @@ int offset = 8;
 int offScreen = 0;
 
 // Create an iterator for use across all functions
-UBYTE i;
+UBYTE i, keyADown, rotatingShotCounter;
 
 typedef struct {
 	UBYTE xCoordinate;
@@ -38,10 +38,10 @@ typedef struct {
 	UBYTE yCoordinate;
 
 	// Velocity of the shot in the X direction
-	UBYTE xVelocity;
+	INT8 xVelocity;
 
 	// Velocity of the shot in the Y direction
-	UBYTE yVelocity;
+	INT8 yVelocity;
 
 	// Boolean to determine whether the enemy is moving up or down
 	int isOnScreen;
@@ -203,6 +203,43 @@ void testShotAndEnemyCollision(Enemy* enemy) {
 	}
 }
 
+void updateRotatingShotsVelocity() {
+    int xVelocity, yVelocity;
+
+	if (rotatingShotCounter == 0) {
+		xVelocity = 2;
+		yVelocity = -1;
+
+		rotatingShotCounter++;
+	}
+	else if (rotatingShotCounter == 1) {
+		xVelocity = 0;
+		yVelocity = 2;
+
+		rotatingShotCounter++;
+	}
+	else {
+		xVelocity = -2;
+		yVelocity = -1;
+
+		rotatingShotCounter = 0;
+	}
+
+	for (i = 0; i < numberOfRotatingShots; i++) {
+		if (!rotatingShots[i].isOnScreen) {
+			rotatingShots[i].xVelocity = xVelocity;
+			rotatingShots[i].yVelocity = yVelocity;
+		}
+
+		i++;
+
+		if (!rotatingShots[i].isOnScreen) {
+			rotatingShots[i].xVelocity = xVelocity;
+			rotatingShots[i].yVelocity = -yVelocity;
+		}
+	}
+}
+
 void updatePlayerAndShots(int key) {
 	// '&' is used in conjunction with if statments in case
 	// Both right and up (or another combination) is being
@@ -247,6 +284,15 @@ void updatePlayerAndShots(int key) {
 		}
 
 		movePlayer();
+	}
+
+	if (key & J_A) {
+		keyADown = 1;
+	}
+	else if (keyADown) {
+		keyADown = 0;
+
+		updateRotatingShotsVelocity();
 	}
 
 	if ((key & J_B) && !straightShots[0].isOnScreen &&
