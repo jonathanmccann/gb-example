@@ -10,14 +10,21 @@
 #define right_half_ship 1
 #define first_enemy 2
 #define second_enemy 3
-#define straight_shot 4
-#define upper_shot 5
-#define lower_shot 6
+#define first_straight_shot 4
+#define first_upper_shot 5
+#define first_lower_shot 6
+#define second_straight_shot 7
+#define second_upper_shot 8
+#define second_lower_shot 9
+#define third_straight_shot 10
+#define third_upper_shot 11
+#define third_lower_shot 12
 
 // Define the starting index of the shot sprites
 // for use inside of the loop in 'player.c'
 #define straight_shot_sprite_starting_position 4
 #define rotating_shot_sprite_starting_position 5
+#define shot_sprite_starting_position 4
 
 // Create external references to functions found in
 // 'sprite_and_background.c'

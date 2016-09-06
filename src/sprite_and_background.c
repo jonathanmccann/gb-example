@@ -55,13 +55,19 @@ void initializeSprites() {
 	// Set the fourth sprite tile to be the head for use as the second enemy
 	set_sprite_tile(second_enemy, 2);
 
-	// Set the three sprite tiles for the three various shots as the head
-	set_sprite_tile(straight_shot, 2);
-	set_sprite_tile(upper_shot, 2);
-	set_sprite_tile(lower_shot, 2);
+	// Set the six sprite tiles for the six various shots as the head
+	set_sprite_tile(first_straight_shot, 2);
+	set_sprite_tile(first_upper_shot, 2);
+	set_sprite_tile(first_lower_shot, 2);
+	set_sprite_tile(second_straight_shot, 2);
+	set_sprite_tile(second_upper_shot, 2);
+	set_sprite_tile(second_lower_shot, 2);
+	set_sprite_tile(third_straight_shot, 2);
+	set_sprite_tile(third_upper_shot, 2);
+	set_sprite_tile(third_lower_shot, 2);
 }
 
 void updateBackground() {
 	// Scroll the background as defined by the scroll rate
-	scroll_bkg(backgroundXScrollRate, backgroundYScrollRate);
+	//scroll_bkg(backgroundXScrollRate, backgroundYScrollRate);
 }

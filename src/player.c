@@ -3,8 +3,8 @@
 #include "../include/player.h"
 #include "../include/sprite_and_background.h"
 
-#define numberOfRotatingShots 2
-#define numberOfStraightShots 1
+#define numberOfShots 9
+#define numberOfShotsInGroup 3
 
 #define forwardShot 0
 #define upAndDownShot 1
@@ -26,6 +26,9 @@ int offScreen = 0;
 
 // Create an iterator for use across all functions
 UBYTE i, keyADown, rotatingShotDirection;
+
+// Create a counter to keep track of which shot we should be firing
+UBYTE shotCounter;
 
 typedef struct {
 	UBYTE xCoordinate;
@@ -56,8 +59,7 @@ typedef struct {
 
 Player player;
 
-Shot rotatingShots[numberOfRotatingShots];
-Shot straightShots[numberOfStraightShots];
+Shot shots[numberOfShots];
 
 void initializePlayer() {
 	// Move the sprite on to the screen so we can see it
@@ -73,52 +75,69 @@ void initializePlayer() {
 void initializeShots() {
 	// Set up the shots to confirm that "isOnScreen" is false.
 
-	for (i = 0; i < numberOfStraightShots; i++) {
-		straightShots[i].xCoordinate = offScreen;
-		straightShots[i].yCoordinate = offScreen;
-		straightShots[i].xVelocity = 2;
-		straightShots[i].yVelocity = 0;
-		straightShots[i].spriteNumber = straight_shot_sprite_starting_position + i;
-		straightShots[i].isOnScreen = 0;
-	}
-
-	for (i = 0; i < numberOfRotatingShots; i++) {
-		rotatingShots[i].xCoordinate = offScreen;
-		rotatingShots[i].yCoordinate = offScreen;
-		rotatingShots[i].xVelocity = 2;
-		rotatingShots[i].yVelocity = -1;
-		rotatingShots[i].spriteNumber = rotating_shot_sprite_starting_position + i;
-		rotatingShots[i].isOnScreen = 0;
+	// Incrementing within the loop to allow for differing velocities from
+	// the inception of the shots.
+	for (i = 0; i < numberOfShots; i++) {
+		shots[i].xCoordinate = offScreen;
+		shots[i].yCoordinate = offScreen;
+		shots[i].xVelocity = 2;
+		shots[i].yVelocity = 0;
+		shots[i].spriteNumber = shot_sprite_starting_position + i;
+		shots[i].isOnScreen = 0;
 
 		i++;
 
-		rotatingShots[i].xCoordinate = offScreen;
-		rotatingShots[i].yCoordinate = offScreen;
-		rotatingShots[i].xVelocity = 2;
-		rotatingShots[i].yVelocity = 1;
-		rotatingShots[i].spriteNumber = rotating_shot_sprite_starting_position + i;
-		rotatingShots[i].isOnScreen = 0;
+		shots[i].xCoordinate = offScreen;
+		shots[i].yCoordinate = offScreen;
+		shots[i].xVelocity = 2;
+		shots[i].yVelocity = -1;
+		shots[i].spriteNumber = shot_sprite_starting_position + i;
+		shots[i].isOnScreen = 0;
+
+		i++;
+
+		shots[i].xCoordinate = offScreen;
+		shots[i].yCoordinate = offScreen;
+		shots[i].xVelocity = 2;
+		shots[i].yVelocity = 1;
+		shots[i].spriteNumber = shot_sprite_starting_position + i;
+		shots[i].isOnScreen = 0;
 	}
+
+	// Initialize the shotCounter to zero so we start from the beginning of the
+	// 'shots' array.
+	shotCounter = 0;
 }
 
 void moveShotsToPlayer() {
 	// Set all of the shots to be where the player is
 	// so it looks like the shot is coming from the ship
 
-	for (i = 0; i < numberOfStraightShots; i++) {
-		straightShots[i].xCoordinate = player.xCoordinate;
-		straightShots[i].yCoordinate = player.yCoordinate;
-		straightShots[i].isOnScreen = 1;
+	// Test to see if the current group of shots is already on screen
+	if (shots[shotCounter].isOnScreen || shots[shotCounter + 1].isOnScreen ||
+		shots[shotCounter + 2].isOnScreen) {
 
-		move_sprite(straightShots[i].spriteNumber, straightShots[i].xCoordinate, straightShots[i].yCoordinate);
+		return;
 	}
 
-	for (i = 0; i < numberOfRotatingShots; i++) {
-		rotatingShots[i].xCoordinate = player.xCoordinate;
-		rotatingShots[i].yCoordinate = player.yCoordinate;
-		rotatingShots[i].isOnScreen = 1;
+	// Only loop as far as the number of shots in a group allows
+	for (i = 0; i < numberOfShotsInGroup; i++) {
+		shots[shotCounter].xCoordinate = player.xCoordinate;
+		shots[shotCounter].yCoordinate = player.yCoordinate;
+		shots[shotCounter].isOnScreen = 1;
 
-		move_sprite(rotatingShots[i].spriteNumber, rotatingShots[i].xCoordinate, rotatingShots[i].yCoordinate);
+		move_sprite(
+			shots[shotCounter].spriteNumber,
+			shots[shotCounter].xCoordinate,
+			shots[shotCounter].yCoordinate);
+
+		shotCounter++;
+	}
+
+	// Here, we aren't doing "numberOfShots - 1" since the loop above will
+	// increment it before breaking out.
+	if (shotCounter == numberOfShots) {
+		shotCounter = 0;
 	}
 }
 
@@ -157,63 +176,54 @@ void updateRotatingShotsVelocity() {
 		yVelocity = -1;
 	}
 
-	for (i = 0; i < numberOfRotatingShots; i++) {
-		if (!rotatingShots[i].isOnScreen) {
-			rotatingShots[i].xVelocity = xVelocity;
-			rotatingShots[i].yVelocity = yVelocity;
+	// Start at index 1 because the shots 0, 3, 6, etc. are straight shots
+	// and their velocity does not need to be updated.
+	for (i = 1; i < numberOfShots; i++) {
+		if (!shots[i].isOnScreen) {
+			shots[i].xVelocity = xVelocity;
+			shots[i].yVelocity = yVelocity;
 		}
 
 		i++;
 
-		if (!rotatingShots[i].isOnScreen) {
-			rotatingShots[i].xVelocity = xVelocity;
-			rotatingShots[i].yVelocity = -yVelocity;
+		if (!shots[i].isOnScreen) {
+			shots[i].xVelocity = xVelocity;
+			shots[i].yVelocity = -yVelocity;
 		}
+
+		i++;
 	}
 }
 
-void moveRotatingShots() {
-	for (i = 0; i < numberOfRotatingShots; i++) {
-		if (rotatingShots[i].isOnScreen) {
-			if ((rotatingShots[i].xCoordinate <= xCoordinateLowerBoundary) ||
-				(rotatingShots[i].xCoordinate >= xCoordinateUpperBoundary) ||
-				(rotatingShots[i].yCoordinate <= yCoordinateLowerBoundary) ||
-				(rotatingShots[i].yCoordinate >= yCoordinateUpperBoundary)) {
+void moveShots() {
+	int shotMovedOffscreen = 0;
 
-				rotatingShots[i].xCoordinate = offScreen;
-				rotatingShots[i].yCoordinate = offScreen;
-				rotatingShots[i].isOnScreen = 0;
+	for (i = 0; i < numberOfShots; i++) {
+		if (shots[i].isOnScreen) {
+			if ((shots[i].xCoordinate <= xCoordinateLowerBoundary) ||
+				(shots[i].xCoordinate >= xCoordinateUpperBoundary) ||
+				(shots[i].yCoordinate <= yCoordinateLowerBoundary) ||
+				(shots[i].yCoordinate >= yCoordinateUpperBoundary)) {
 
-				updateRotatingShotsVelocity();
+				shots[i].xCoordinate = offScreen;
+				shots[i].yCoordinate = offScreen;
+				shots[i].isOnScreen = 0;
+
+				shotMovedOffscreen = 1;
 			}
 			else {
-				rotatingShots[i].xCoordinate += rotatingShots[i].xVelocity;
-				rotatingShots[i].yCoordinate += rotatingShots[i].yVelocity;
+				shots[i].xCoordinate += shots[i].xVelocity;
+				shots[i].yCoordinate += shots[i].yVelocity;
 			}
 
-			move_sprite(rotatingShots[i].spriteNumber, rotatingShots[i].xCoordinate, rotatingShots[i].yCoordinate);
+			move_sprite(shots[i].spriteNumber, shots[i].xCoordinate, shots[i].yCoordinate);
 		}
 	}
-}
 
-void moveStraightShots() {
-	for (i = 0; i < numberOfStraightShots; i++) {
-		if (straightShots[i].isOnScreen) {
-			if ((straightShots[i].xCoordinate <= xCoordinateLowerBoundary) ||
-				(straightShots[i].xCoordinate >= xCoordinateUpperBoundary) ||
-				(straightShots[i].yCoordinate <= yCoordinateLowerBoundary) ||
-				(straightShots[i].yCoordinate >= yCoordinateUpperBoundary)) {
-
-				straightShots[i].xCoordinate = offScreen;
-				straightShots[i].yCoordinate = offScreen;
-				straightShots[i].isOnScreen = 0;
-			}
-			else {
-				straightShots[i].xCoordinate += straightShots[i].xVelocity;
-			}
-
-			move_sprite(straightShots[i].spriteNumber, straightShots[i].xCoordinate, straightShots[i].yCoordinate);
-		}
+	// If any of the shots have moved offscreen, be sure to update the rotating
+	// shots' velocities so their direction is correct upon the next fire.
+	if (shotMovedOffscreen) {
+		updateRotatingShotsVelocity();
 	}
 }
 
@@ -221,26 +231,11 @@ void moveStraightShots() {
 void testShotAndEnemyCollision(Enemy* enemy) {
 	int i;
 
-	for (i = 0; i < numberOfStraightShots; i++) {
-		if (straightShots[i].yCoordinate > enemy->yCoordinate - 8) {
-			if (straightShots[i].yCoordinate < enemy->yCoordinate + 8) {
-				if (straightShots[i].xCoordinate > enemy->xCoordinate - 8) {
-					if (straightShots[i].xCoordinate < enemy->xCoordinate + 8) {
-						enemy->xCoordinate = offScreen;
-						enemy->yCoordinate = offScreen;
-
-						move_sprite(enemy->spriteNumber, offScreen, offScreen);
-					}
-				}
-			}
-		}
-	}
-
-	for (i = 0; i < numberOfRotatingShots; i++) {
-		if (rotatingShots[i].yCoordinate > enemy->yCoordinate - 8) {
-			if (rotatingShots[i].yCoordinate < enemy->yCoordinate + 8) {
-				if (rotatingShots[i].xCoordinate > enemy->xCoordinate - 8) {
-					if (rotatingShots[i].xCoordinate < enemy->xCoordinate + 8) {
+	for (i = 0; i < numberOfShots; i++) {
+		if (shots[i].yCoordinate > enemy->yCoordinate - 8) {
+			if (shots[i].yCoordinate < enemy->yCoordinate + 8) {
+				if (shots[i].xCoordinate > enemy->xCoordinate - 8) {
+					if (shots[i].xCoordinate < enemy->xCoordinate + 8) {
 						enemy->xCoordinate = offScreen;
 						enemy->yCoordinate = offScreen;
 
@@ -308,16 +303,11 @@ void updatePlayerAndShots(int key) {
 		updateRotatingShotsVelocity();
 	}
 
-	if ((key & J_B) && !straightShots[0].isOnScreen &&
-		!rotatingShots[0].isOnScreen && !rotatingShots[1].isOnScreen) {
-
+	if (key & J_B) {
 		moveShotsToPlayer();
 	}
 
-	if (straightShots[0].isOnScreen || rotatingShots[0].isOnScreen ||
-		rotatingShots[1].isOnScreen) {
-
-		moveStraightShots();
-		moveRotatingShots();
-	}
+	// Move the shots irregardless of input since some shots might already be
+	// on the screen and require movement.
+	moveShots();
 }
