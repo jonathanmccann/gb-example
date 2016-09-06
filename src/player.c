@@ -27,6 +27,9 @@ int offScreen = 0;
 // Create an iterator for use across all functions
 UBYTE i, keyADown, rotatingShotDirection;
 
+// Create a timer to keep track of when the ship can shoot next
+UBYTE timeToShoot;
+
 // Create a counter to keep track of which shot we should be firing
 UBYTE shotCounter;
 
@@ -107,6 +110,9 @@ void initializeShots() {
 	// Initialize the shotCounter to zero so we start from the beginning of the
 	// 'shots' array.
 	shotCounter = 0;
+
+	// Allow the player to shoot immediately
+	timeToShoot = 0;
 }
 
 void moveShotsToPlayer() {
@@ -304,7 +310,20 @@ void updatePlayerAndShots(int key) {
 	}
 
 	if (key & J_B) {
-		moveShotsToPlayer();
+		if (timeToShoot == 0) {
+			moveShotsToPlayer();
+
+			// The main loop will run at 60 frames per second. Setting
+			// 'timeToShoot' will have the ship fire every 15 frames or
+			// 1/4th of a second.
+			timeToShoot = 15;
+		}
+	}
+
+	// Decrease the timeToShoot counter irregardless of input in case the player
+	// is not holding down the fire button.
+	if (timeToShoot != 0) {
+		timeToShoot--;
 	}
 
 	// Move the shots irregardless of input since some shots might already be
