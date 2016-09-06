@@ -44,7 +44,7 @@ void initializeEnemies() {
 void moveEnemySprites() {
 	int i;
 
-	for (i = 0; i < numberOfEnemies; i++) {
+	for (i = 0; i != numberOfEnemies; i++) {
 		// Move the enemy sprite head in a straight line pattern
 		if (enemies[i].isMovingUp) {
 			enemies[i].yCoordinate--;
@@ -74,7 +74,7 @@ void moveEnemySprites() {
 void testEnemyCollision() {
 	int i;
 
-	for (i = 0; i < numberOfEnemies; i++) {
+	for (i = 0; i != numberOfEnemies; i++) {
 		testShotAndEnemyCollision(&enemies[i]);
 	}
 }

@@ -80,7 +80,7 @@ void initializeShots() {
 
 	// Incrementing within the loop to allow for differing velocities from
 	// the inception of the shots.
-	for (i = 0; i < numberOfShots; i++) {
+	for (i = 0; i != numberOfShots; i++) {
 		shots[i].xCoordinate = offScreen;
 		shots[i].yCoordinate = offScreen;
 		shots[i].xVelocity = 2;
@@ -127,7 +127,7 @@ void moveShotsToPlayer() {
 	}
 
 	// Only loop as far as the number of shots in a group allows
-	for (i = 0; i < numberOfShotsInGroup; i++) {
+	for (i = 0; i != numberOfShotsInGroup; i++) {
 		shots[shotCounter].xCoordinate = player.xCoordinate;
 		shots[shotCounter].yCoordinate = player.yCoordinate;
 		shots[shotCounter].isOnScreen = 1;
@@ -184,7 +184,7 @@ void updateRotatingShotsVelocity() {
 
 	// Start at index 1 because the shots 0, 3, 6, etc. are straight shots
 	// and their velocity does not need to be updated.
-	for (i = 1; i < numberOfShots; i++) {
+	for (i = 1; i != numberOfShots; i++) {
 		if (!shots[i].isOnScreen) {
 			shots[i].xVelocity = xVelocity;
 			shots[i].yVelocity = yVelocity;
@@ -204,7 +204,7 @@ void updateRotatingShotsVelocity() {
 void moveShots() {
 	int shotMovedOffscreen = 0;
 
-	for (i = 0; i < numberOfShots; i++) {
+	for (i = 0; i != numberOfShots; i++) {
 		if (shots[i].isOnScreen) {
 			if ((shots[i].xCoordinate <= xCoordinateLowerBoundary) ||
 				(shots[i].xCoordinate >= xCoordinateUpperBoundary) ||
@@ -237,7 +237,7 @@ void moveShots() {
 void testShotAndEnemyCollision(Enemy* enemy) {
 	int i;
 
-	for (i = 0; i < numberOfShots; i++) {
+	for (i = 0; i != numberOfShots; i++) {
 		if (shots[i].yCoordinate > enemy->yCoordinate - 8) {
 			if (shots[i].yCoordinate < enemy->yCoordinate + 8) {
 				if (shots[i].xCoordinate > enemy->xCoordinate - 8) {
