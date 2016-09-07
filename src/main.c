@@ -35,6 +35,10 @@ void main() {
 		// collide with any of the enemies in
 		testEnemyCollision();
 
+		// Test to see if the player has collided with any of the solid
+		// background sprites
+		testBackgroundCollision();
+
 		// Use this to force the game to run at 60
 		// frames per second and allow the background
 		// to scroll more smoothly

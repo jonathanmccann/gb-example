@@ -1,5 +1,9 @@
 #include <gb/gb.h>
 
+#include <stdio.h>
+
+#include <background_map_tiles.c>
+
 #include "../include/player.h"
 #include "../include/sprite_and_background.h"
 
@@ -32,6 +36,11 @@ UBYTE timeToShoot;
 
 // Create a counter to keep track of which shot we should be firing
 UBYTE shotCounter;
+
+// Store how far we have scrolled on the X axis
+UBYTE scrollX;
+
+UBYTE hitVerticalLine = 0;
 
 typedef struct {
 	UBYTE xCoordinate;
@@ -67,12 +76,14 @@ Shot shots[numberOfShots];
 void initializePlayer() {
 	// Move the sprite on to the screen so we can see it
 	player.xCoordinate = 50;
-	player.yCoordinate = 32;
+	player.yCoordinate = 125;
 	player.leftSpriteNumber = left_half_ship;
 	player.rightSpriteNumber = right_half_ship;
 
 	move_sprite(player.leftSpriteNumber, player.xCoordinate, player.yCoordinate);
 	move_sprite(player.rightSpriteNumber, player.xCoordinate + offset, player.yCoordinate);
+
+	scrollX = 0;
 }
 
 void initializeShots() {
@@ -231,6 +242,40 @@ void moveShots() {
 	if (shotMovedOffscreen) {
 		updateRotatingShotsVelocity();
 	}
+}
+
+void testBackgroundCollision() {
+	UBYTE tile;
+
+	// Get the tile directly to the right of the ship. The offsets will need to
+	// be tweaked to get the correct collision as well as checking more parts
+	// of the ship.
+	get_bkg_tiles((player.xCoordinate + 7 + scrollX) / 8, (player.yCoordinate - 8) / 8, 1, 1, &tile);
+
+	// If the tile is 1 that means it has hit tile 1 from 'tiles.c'. In this
+	// case, it is the vertical line tile. For testing purposes, simply flip
+	// the ships sprites for feedback on whether or not the collision detection
+	// is working properly.
+	if (tile == 1) {
+		if (hitVerticalLine == 0) {
+			set_sprite_prop(left_half_ship, S_FLIPX);
+			set_sprite_prop(right_half_ship, S_FLIPX);
+
+			hitVerticalLine = 1;
+		}
+		else {
+			set_sprite_prop(left_half_ship, 0);
+			set_sprite_prop(right_half_ship, 0);
+
+			hitVerticalLine = 0;
+		}
+	}
+
+	// Keep track of where we are in terms of the background scrolling. Since
+	// the map has a width of 32 and 32 * 8 = 256, a UBYTE works perfectly as it
+	// will overflow back to 0 once the upper limit is reached. If the map
+	// becomes wider, 'scrollX' will need to be able to handle a larger digit.
+	scrollX += backgroundXScrollRate;
 }
 
 // Collision detection between the player's shots and the enemy
