@@ -2,8 +2,6 @@
 
 #include <stdio.h>
 
-#include <background_map_tiles.c>
-
 #include "../include/player.h"
 #include "../include/sprite_and_background.h"
 

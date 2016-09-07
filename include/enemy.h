@@ -1,5 +1,3 @@
-#include "sprite_and_background.h"
-
 #ifndef PROJECT_ENEMY_H
 #define PROJECT_ENEMY_H
 

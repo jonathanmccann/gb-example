@@ -2,6 +2,7 @@
 
 #include "../include/enemy.h"
 #include "../include/player.h"
+#include "../include/sprite_and_background.h"
 
 Enemy firstEnemy = {
 	100,  			// Starting X coordinate
