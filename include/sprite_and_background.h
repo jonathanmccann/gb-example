@@ -22,8 +22,6 @@
 
 // Define the starting index of the shot sprites
 // for use inside of the loop in 'player.c'
-#define straight_shot_sprite_starting_position 4
-#define rotating_shot_sprite_starting_position 5
 #define shot_sprite_starting_position 4
 
 // Create external references to functions found in
