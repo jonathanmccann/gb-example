@@ -4,6 +4,8 @@
 #include "../include/player.h"
 #include "../include/sprite_and_background.h"
 
+#define numberOfEnemies 2
+
 Enemy firstEnemy = {
 	100,  			// Starting X coordinate
 	100,  			// Staring Y coordinate
@@ -21,6 +23,8 @@ Enemy secondEnemy = {
 	125,   		  // Y coordinate upper boundary
 	second_enemy  // Sprite number of the enemy
 };
+
+Enemy enemies[numberOfEnemies];
 
 void initializeEnemies() {
 	enemies[0].xCoordinate = firstEnemy.xCoordinate;

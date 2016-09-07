@@ -1,8 +1,6 @@
 #ifndef PROJECT_ENEMY_H
 #define PROJECT_ENEMY_H
 
-#define numberOfEnemies 2
-
 typedef struct _Enemy {
 	// Initial X coordinate starting point for enemy
 	UBYTE xCoordinate;
@@ -20,8 +18,6 @@ typedef struct _Enemy {
 	// Set the sprite number associated with the enemy
 	int spriteNumber;
 } Enemy;
-
-Enemy enemies[numberOfEnemies];
 
 void initializeEnemies();
 void moveEnemySprites();
