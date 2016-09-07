@@ -69,5 +69,5 @@ void initializeSprites() {
 
 void updateBackground() {
 	// Scroll the background as defined by the scroll rate
-	//scroll_bkg(backgroundXScrollRate, backgroundYScrollRate);
+	scroll_bkg(backgroundXScrollRate, backgroundYScrollRate);
 }
