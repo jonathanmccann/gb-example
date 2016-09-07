@@ -3,7 +3,7 @@
 
 // Define how quickly and in which direct the background scrolls
 #define backgroundXScrollRate 1
-#define backgroundYScrollRate 1
+#define backgroundYScrollRate 0
 
 // Define the sprite numbers for use in other files
 #define left_half_ship 0
