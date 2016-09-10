@@ -1,7 +1,5 @@
 #include <gb/gb.h>
 
-#include <stdio.h>
-
 #include "../include/player.h"
 #include "../include/sprite_and_background.h"
 
