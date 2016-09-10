@@ -1,11 +1,13 @@
 #include <gb/gb.h>
 
+#include <stdio.h>
+
 #include "../include/enemy.h"
 #include "../include/player.h"
 #include "../include/shot.h"
 #include "../include/sprite_and_background.h"
 
-void main() {
+void initializeGame() {
 	// Initialize the background and sprites before
 	// trying to access and move them in 'player.c'
 	// and 'enemy.c'
@@ -20,6 +22,10 @@ void main() {
 	// Show the background and sprites that were previously
 	// initialized
 	initializeDisplay();
+}
+
+void gameLoop() {
+	initializeGame();
 
 	while (1) {
 		// Trigger the background to be updated
@@ -45,4 +51,16 @@ void main() {
 		// to scroll more smoothly
 		wait_vbl_done();
 	}
+}
+
+void displayStartScreen() {
+	printf("Press start to play");
+
+	waitpad(J_START);
+}
+
+void main() {
+	displayStartScreen();
+
+	gameLoop();
 }
