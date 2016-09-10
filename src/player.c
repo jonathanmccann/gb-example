@@ -286,7 +286,13 @@ void testShotAndEnemyCollision(Enemy* enemy) {
 						enemy->xCoordinate = offScreen;
 						enemy->yCoordinate = offScreen;
 
+						// Move the enemy sprite off screen
 						move_sprite(enemy->spriteNumber, offScreen, offScreen);
+
+						// Move the shot sprite off screen
+						move_sprite(shots[i].spriteNumber, offScreen, offScreen);
+
+						shots[i].isOnScreen = 0;
 					}
 				}
 			}
