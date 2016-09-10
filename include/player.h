@@ -3,6 +3,13 @@
 #ifndef PROJECT_PLAYER_H
 #define PROJECT_PLAYER_H
 
+typedef struct {
+	UBYTE xCoordinate;
+	UBYTE yCoordinate;
+	int leftSpriteNumber;
+	int rightSpriteNumber;
+} Player;
+
 void initializePlayer();
 void initializeShots();
 void updatePlayerAndShots(int key);

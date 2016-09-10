@@ -2,6 +2,7 @@
 
 #include "../include/enemy.h"
 #include "../include/player.h"
+#include "../include/shot.h"
 #include "../include/sprite_and_background.h"
 
 void main() {
