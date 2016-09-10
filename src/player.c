@@ -10,13 +10,15 @@
 #define upAndDownShot 1
 #define behindShot 2
 
-// Set the X coordinate boundaries so the sprite does not go off the screen
-UBYTE xCoordinateLowerBoundary = 8;
-UBYTE xCoordinateUpperBoundary = 152;
+#define playerXCoordinateLowerBoundary 8
+#define playerXCoordinateUpperBoundary 152
+#define playerYCoordinateLowerBoundary 16
+#define playerYCoordinateUpperBoundary 150
 
-// Set the Y coordinate boundaries so the sprite does not go off the screen
-UBYTE yCoordinateLowerBoundary = 16;
-UBYTE yCoordinateUpperBoundary = 150;
+#define shotXCoordinateLowerBoundary 0
+#define shotXCoordinateUpperBoundary 168
+#define shotYCoordinateLowerBoundary 0
+#define shotYCoordinateUpperBoundary 160
 
 // Set the offset of width between the left and right halves of the ship
 int offset = 8;
@@ -213,10 +215,10 @@ void moveShots() {
 
 	for (i = 0; i < numberOfShots; i++) {
 		if (shots[i].isOnScreen) {
-			if ((shots[i].xCoordinate <= xCoordinateLowerBoundary) ||
-				(shots[i].xCoordinate >= xCoordinateUpperBoundary) ||
-				(shots[i].yCoordinate <= yCoordinateLowerBoundary) ||
-				(shots[i].yCoordinate >= yCoordinateUpperBoundary)) {
+			if ((shots[i].xCoordinate <= shotXCoordinateLowerBoundary) ||
+				(shots[i].xCoordinate >= shotXCoordinateUpperBoundary) ||
+				(shots[i].yCoordinate <= shotYCoordinateLowerBoundary) ||
+				(shots[i].yCoordinate >= shotYCoordinateUpperBoundary)) {
 
 				shots[i].xCoordinate = offScreen;
 				shots[i].yCoordinate = offScreen;
@@ -309,8 +311,8 @@ void updatePlayerAndShots(int key) {
 
 		// Check to see if the X coordinate is greater than the upper boundary
 		// If so, then do not let the sprite move beyond it
-		if (player.xCoordinate > xCoordinateUpperBoundary) {
-			player.xCoordinate = xCoordinateUpperBoundary;
+		if (player.xCoordinate > playerXCoordinateUpperBoundary) {
+			player.xCoordinate = playerXCoordinateUpperBoundary;
 		}
 
 		movePlayer();
@@ -319,8 +321,8 @@ void updatePlayerAndShots(int key) {
 	if (key & J_LEFT) {
 		player.xCoordinate--;
 
-		if (player.xCoordinate < xCoordinateLowerBoundary) {
-			player.xCoordinate = xCoordinateLowerBoundary;
+		if (player.xCoordinate < playerXCoordinateLowerBoundary) {
+			player.xCoordinate = playerXCoordinateLowerBoundary;
 		}
 
 		movePlayer();
@@ -329,8 +331,8 @@ void updatePlayerAndShots(int key) {
 	if (key & J_UP) {
 		player.yCoordinate--;
 
-		if (player.yCoordinate < yCoordinateLowerBoundary) {
-			player.yCoordinate = yCoordinateLowerBoundary;
+		if (player.yCoordinate < playerYCoordinateLowerBoundary) {
+			player.yCoordinate = playerYCoordinateLowerBoundary;
 		}
 
 		movePlayer();
@@ -339,8 +341,8 @@ void updatePlayerAndShots(int key) {
 	if (key & J_DOWN) {
 		player.yCoordinate++;
 
-		if (player.yCoordinate > yCoordinateUpperBoundary) {
-			player.yCoordinate = yCoordinateUpperBoundary;
+		if (player.yCoordinate > playerYCoordinateUpperBoundary) {
+			player.yCoordinate = playerYCoordinateUpperBoundary;
 		}
 
 		movePlayer();
