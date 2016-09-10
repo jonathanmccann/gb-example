@@ -41,7 +41,7 @@ void initializeBackground() {
 	 * the entire width of the map to the tileCounter. This will progress the
 	 * tileCounter to the beginning of the next tile row.
 	 */
-	for (columnYCoordinate = 0; columnYCoordinate < backgroundMapTilesHeight; columnYCoordinate++) {
+	for (columnYCoordinate = 0; columnYCoordinate != backgroundMapTilesHeight; columnYCoordinate++) {
 		set_bkg_tiles(
 			0, columnYCoordinate, backgroundMapWidthToDraw, 1,
 			&(background_map_tiles + tileCounter));
@@ -109,7 +109,7 @@ void updateBackground() {
 	 * column. Again, use tileCounter to move forward in the background map to
 	 * next row of tiles.
 	 */
-	for (columnYCoordinate = 0; columnYCoordinate < backgroundMapTilesHeight; columnYCoordinate++) {
+	for (columnYCoordinate = 0; columnYCoordinate != backgroundMapTilesHeight; columnYCoordinate++) {
 		set_bkg_tiles(
 			columnXCoordinate, columnYCoordinate, 1, 1,
 			&(background_map_tiles + tileCounter));
