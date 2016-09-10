@@ -6,7 +6,7 @@
 #include <background_map_tiles.c>
 #include <ship.c>
 
-#define backgroundMapWidthToDraw 22
+#define backgroundMapWidthToDraw 21
 #define pixelsPerTile 8
 #define tilesPerScreen 32
 
@@ -94,7 +94,7 @@ void initializeSprites() {
 
 void updateBackground() {
 	// Specify the column that needs to be redrawn
-	tileCounter = scrollX + backgroundMapWidthToDraw - 1;
+	tileCounter = scrollX + backgroundMapWidthToDraw;
 
 	// Get the starting X coordinate of the column that needs to be redrawn
 	// Since the map can only be 32X32, use mod 32 to normalize the tileCounter
