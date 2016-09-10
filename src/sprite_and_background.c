@@ -6,6 +6,16 @@
 #include <background_map_tiles.c>
 #include <ship.c>
 
+#define backgroundMapWidthToDraw 22
+#define pixelsPerTile 8
+#define tilesPerScreen 32
+
+UBYTE scrollX, columnYCoordinate, columnXCoordinate;
+
+BYTE pixelCounter;
+
+UWORD tileCounter;
+
 unsigned char man[] =
 {
 	// Head
@@ -24,9 +34,24 @@ void initializeBackground() {
 	// Since there are two tiles
 	set_bkg_data(0, tilesSize, tiles);
 
-	// Set the background tiles. These tiles in background_map_tiles
-	// refer to 8x8 tiles created in tiles.c / tiles
-	set_bkg_tiles(0, 0, backgroundMapTilesWidth, backgroundMapTilesHeight, background_map_tiles);
+	/*
+	 * Starting in the upper left hand corner, draw a single row of tiles
+	 * (22 tiles wide, 1 tile tall). Do this 18 times to fill the height of the
+	 * screen. To start at the correct tile in the map, keep a tileCounter and add
+	 * the entire width of the map to the tileCounter. This will progress the
+	 * tileCounter to the beginning of the next tile row.
+	 */
+	for (columnYCoordinate = 0; columnYCoordinate < backgroundMapTilesHeight; columnYCoordinate++) {
+		set_bkg_tiles(
+			0, columnYCoordinate, backgroundMapWidthToDraw, 1,
+			&(background_map_tiles + tileCounter));
+
+		tileCounter = tileCounter + backgroundMapTilesWidth;
+	}
+
+	// Initialize the scrolling counters
+	scrollX = 0;
+	pixelCounter = 0;
 }
 
 void initializeDisplay() {
@@ -68,6 +93,47 @@ void initializeSprites() {
 }
 
 void updateBackground() {
+	// Specify the column that needs to be redrawn
+	tileCounter = scrollX + backgroundMapWidthToDraw - 1;
+
+	// Get the starting X coordinate of the column that needs to be redrawn
+	// Since the map can only be 32X32, use mod 32 to normalize the tileCounter
+	columnXCoordinate = tileCounter % tilesPerScreen;
+
+	// Normalize the tileCounter so that it does not overflow the background map
+	tileCounter = tileCounter % backgroundMapTilesWidth;
+
+	/*
+	 * Starting at the column specified in 'columnXCoordinate', redraw that
+	 * column tile by tile 18 (height of the map) times to redraw the entire
+	 * column. Again, use tileCounter to move forward in the background map to
+	 * next row of tiles.
+	 */
+	for (columnYCoordinate = 0; columnYCoordinate < backgroundMapTilesHeight; columnYCoordinate++) {
+		set_bkg_tiles(
+			columnXCoordinate, columnYCoordinate, 1, 1,
+			&(background_map_tiles + tileCounter));
+
+		tileCounter = tileCounter + backgroundMapTilesWidth;
+	}
+}
+
+void scrollBackground() {
 	// Scroll the background as defined by the scroll rate
 	scroll_bkg(backgroundXScrollRate, backgroundYScrollRate);
+
+	// Every pixel scrolled, increase the pixel tileCounter
+	pixelCounter++;
+
+	// If the player has scrolled 8 pixels (1 tile), then we need to update the
+	// background tiles
+	if (pixelCounter == pixelsPerTile) {
+		// Keep track of where we are in relation to how many tiles we have moved
+		scrollX++;
+
+		// Reset the pixel counter
+		pixelCounter = 0;
+
+		updateBackground();
+	}
 }

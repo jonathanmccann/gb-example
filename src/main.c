@@ -22,7 +22,7 @@ void main() {
 
 	while (1) {
 		// Trigger the background to be updated
-		updateBackground();
+		scrollBackground();
 
 		// Pass the input from the joypad to player.c to update
 		// the player and shot's location

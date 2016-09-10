@@ -29,6 +29,6 @@
 void initializeBackground();
 void initializeDisplay();
 void initializeSprites();
-void updateBackground();
+void scrollBackground();
 
 #endif //PROJECT_SPRITE_AND_BACKGROUND_H
