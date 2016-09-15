@@ -8,4 +8,7 @@ rm main.gb
 
 $1 -o main.gb main.c enemy.c player.c shot.c sprite_and_background.c
 
-wine $2 main.gb > /dev/null 2>&1
+if [ -e main.gb ]
+then
+	wine $2 main.gb > /dev/null 2>&1
+fi
