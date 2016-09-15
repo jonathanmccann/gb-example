@@ -14,6 +14,7 @@ void initializePlayer();
 void initializeShots();
 void updatePlayerAndShots(int key);
 void testBackgroundCollision();
+void testPlayerAndEnemyCollision(Enemy* enemy);
 void testShotAndEnemyCollision(Enemy* enemy);
 
 #endif

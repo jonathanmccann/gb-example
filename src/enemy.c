@@ -82,5 +82,6 @@ void testEnemyCollision() {
 
 	for (i = 0; i < numberOfEnemies; i++) {
 		testShotAndEnemyCollision(&enemies[i]);
+		testPlayerAndEnemyCollision(&enemies[i]);
 	}
 }

@@ -39,7 +39,8 @@ void gameLoop() {
 		moveEnemySprites();
 
 		// After all movement has completed, test to see if any of the shots
-		// collide with any of the enemies in
+		// collide with any of the enemies or if any of the enemies collide with
+		// the player
 		testEnemyCollision();
 
 		// Test to see if the player has collided with any of the solid

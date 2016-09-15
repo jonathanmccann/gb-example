@@ -82,6 +82,28 @@ void testBackgroundCollision() {
 	scrollX += backgroundXScrollRate;
 }
 
+void testPlayerAndEnemyCollision(Enemy* enemy) {
+	int i;
+
+	if (player.yCoordinate > enemy->yCoordinate - 8) {
+		if (player.yCoordinate < enemy->yCoordinate + 8) {
+			if (player.xCoordinate > enemy->xCoordinate - 16) {
+				if (player.xCoordinate < enemy->xCoordinate + 8) {
+					enemy->xCoordinate = offScreen;
+					enemy->yCoordinate = offScreen;
+
+					// Move the enemy sprite off screen
+					move_sprite(enemy->spriteNumber, offScreen, offScreen);
+
+					// Move the player's sprites off screen
+					move_sprite(player.leftSpriteNumber, offScreen, offScreen);
+					move_sprite(player.rightSpriteNumber, offScreen, offScreen);
+				}
+			}
+		}
+	}
+}
+
 void updatePlayerAndShots(int key) {
 	// '&' is used in conjunction with if statments in case
 	// Both right and up (or another combination) is being
