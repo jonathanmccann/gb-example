@@ -5,7 +5,7 @@
 #include "../include/shot.h"
 #include "../include/sprite_and_background.h"
 
-#define numberOfEnemies 2
+#define numberOfEnemies 3
 
 Enemy firstEnemy = {
 	100,  			// Starting X coordinate
@@ -25,6 +25,15 @@ Enemy secondEnemy = {
 	second_enemy  // Sprite number of the enemy
 };
 
+Enemy thirdEnemy = {
+	75,   		  // Starting X coordinate
+	50,    		  // Staring Y coordinate
+	FALSE, 		  // Is the enemy moving up
+	25,    		  // Y coordinate lower boundary
+	75,   		  // Y coordinate upper boundary
+	third_enemy  // Sprite number of the enemy
+};
+
 Enemy enemies[numberOfEnemies];
 
 void initializeEnemies() {
@@ -42,9 +51,17 @@ void initializeEnemies() {
 	enemies[1].yCoordinateUpperBoundary = secondEnemy.yCoordinateUpperBoundary;
 	enemies[1].spriteNumber = secondEnemy.spriteNumber;
 
+	enemies[2].xCoordinate = thirdEnemy.xCoordinate;
+	enemies[2].yCoordinate = thirdEnemy.yCoordinate;
+	enemies[2].isMovingUp = thirdEnemy.isMovingUp;
+	enemies[2].yCoordinateLowerBoundary = thirdEnemy.yCoordinateLowerBoundary;
+	enemies[2].yCoordinateUpperBoundary = thirdEnemy.yCoordinateUpperBoundary;
+	enemies[2].spriteNumber = thirdEnemy.spriteNumber;
+
 	// Move the enemy sprites on to the screen so we can see it
 	move_sprite(enemies[0].spriteNumber, enemies[0].xCoordinate, enemies[0].yCoordinate);
 	move_sprite(enemies[1].spriteNumber, enemies[1].xCoordinate, enemies[1].yCoordinate);
+	move_sprite(enemies[2].spriteNumber, enemies[2].xCoordinate, enemies[2].yCoordinate);
 }
 
 void moveEnemySprites() {
