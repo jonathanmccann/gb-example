@@ -1,5 +1,6 @@
 #include <gb/gb.h>
 
+#include "../include/global.h"
 #include "../include/player.h"
 #include "../include/shot.h"
 #include "../include/sprite_and_background.h"
@@ -95,9 +96,9 @@ void testPlayerAndEnemyCollision(Enemy* enemy) {
 					// Move the enemy sprite off screen
 					move_sprite(enemy->spriteNumber, offScreen, offScreen);
 
-					// Move the player's sprites off screen
-					move_sprite(player.leftSpriteNumber, offScreen, offScreen);
-					move_sprite(player.rightSpriteNumber, offScreen, offScreen);
+					// Designate that the player has died to break out of the
+					// main loop in main.c
+					isPlayerDead = 1;
 				}
 			}
 		}

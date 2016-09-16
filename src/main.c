@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "../include/enemy.h"
+#include "../include/global.h"
 #include "../include/player.h"
 #include "../include/shot.h"
 #include "../include/sprite_and_background.h"
@@ -46,6 +47,10 @@ void gameLoop() {
 		// Test to see if the player has collided with any of the solid
 		// background sprites
 		testBackgroundCollision();
+
+		if (isPlayerDead) {
+			break;
+		}
 
 		// Use this to force the game to run at 60
 		// frames per second and allow the background
