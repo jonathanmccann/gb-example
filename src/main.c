@@ -30,7 +30,7 @@ void gameLoop() {
 
 	while (1) {
 		// Trigger the background to be updated
-		scrollBackground();
+		//scrollBackground();
 
 		// Pass the input from the joypad to player.c to update
 		// the player and shot's location
@@ -48,7 +48,7 @@ void gameLoop() {
 		// background sprites
 		testBackgroundCollision();
 
-		if (isPlayerDead) {
+		if (playerHitCounter == 3) {
 			break;
 		}
 

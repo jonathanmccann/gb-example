@@ -1,5 +1,7 @@
 #include <gb/gb.h>
 
+#include <stdio.h>
+
 #include "../include/global.h"
 #include "../include/player.h"
 #include "../include/shot.h"
@@ -88,15 +90,27 @@ void testPlayerAndEnemyCollision(Enemy* enemy) {
 		if (player.yCoordinate < enemy->yCoordinate + 8) {
 			if (player.xCoordinate > enemy->xCoordinate - 16) {
 				if (player.xCoordinate < enemy->xCoordinate + 8) {
+					// Increase the player's hit counter since they are allowed
+					// to take two hits before dying. The first two hits will
+					// remove their ability to fire one of their rotating shots.
+					// This is dependent on where the ship was hit.
+					playerHitCounter++;
+
+					if (playerHitCounter == 3) {
+						return;
+					}
+					else if (player.yCoordinate < (enemy->yCoordinate)) {
+						removeLowerShot();
+					}
+					else {
+						removeUpperShot();
+					}
+
 					enemy->xCoordinate = offScreen;
 					enemy->yCoordinate = offScreen;
 
 					// Move the enemy sprite off screen
 					move_sprite(enemy->spriteNumber, offScreen, offScreen);
-
-					// Designate that the player has died to break out of the
-					// main loop in main.c
-					isPlayerDead = 1;
 				}
 			}
 		}

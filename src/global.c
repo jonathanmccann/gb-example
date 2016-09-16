@@ -1,3 +1,3 @@
 #include <gb/gb.h>
 
-UBYTE isPlayerDead;
+UBYTE playerHitCounter;

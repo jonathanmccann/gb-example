@@ -5,6 +5,8 @@
 
 void moveShots();
 void moveShotsToPlayer(Player* player);
+void removeLowerShot();
+void removeUpperShot();
 void updateRotatingShotDirection();
 void updateRotatingShotsVelocity();
 
