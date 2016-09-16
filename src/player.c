@@ -15,9 +15,6 @@
 // Set the offset of width between the left and right halves of the ship
 int offset = 8;
 
-// Set the off screen coordinates to hide the sprite
-int offScreen = 0;
-
 // Create an iterator for use across all functions
 UBYTE i, keyADown;
 

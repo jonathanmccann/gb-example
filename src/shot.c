@@ -1,6 +1,7 @@
 #include <gb/gb.h>
 
 #include "../include/enemy.h"
+#include "../include/global.h"
 #include "../include/player.h"
 #include "../include/sprite_and_background.h"
 
@@ -17,8 +18,6 @@
 #define shotYCoordinateUpperBoundary 160
 
 UBYTE canShootLower, canShootUpper, i, rotatingShotDirection;
-
-int offScreen = 0;
 
 // Create a counter to keep track of which shot we should be firing
 UBYTE shotCounter;
