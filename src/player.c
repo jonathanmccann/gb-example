@@ -84,8 +84,6 @@ void testBackgroundCollision() {
 }
 
 void testPlayerAndEnemyCollision(Enemy* enemy) {
-	int i;
-
 	if (player.yCoordinate > enemy->yCoordinate - 8) {
 		if (player.yCoordinate < enemy->yCoordinate + 8) {
 			if (player.xCoordinate > enemy->xCoordinate - 16) {
