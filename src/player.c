@@ -1,27 +1,17 @@
 #include <gb/gb.h>
 
-#include <stdio.h>
-
 #include "../include/global.h"
 #include "../include/player.h"
 #include "../include/shot.h"
 #include "../include/sprite_and_background.h"
 
+#define offset 8
 #define playerXCoordinateLowerBoundary 8
 #define playerXCoordinateUpperBoundary 152
 #define playerYCoordinateLowerBoundary 16
 #define playerYCoordinateUpperBoundary 150
 
-// Set the offset of width between the left and right halves of the ship
-int offset = 8;
-
-// Create an iterator for use across all functions
-UBYTE i, keyADown;
-
-// Create a timer to keep track of when the ship can shoot next
-int timeToShoot;
-
-UBYTE hitVerticalLine;
+UBYTE hitVerticalLine, keyADown, timeToShoot;
 
 Player player;
 
@@ -37,7 +27,6 @@ void initializePlayer() {
 
 	// Set up all global variables so that when the game restarts, they are
 	// initialized correctly
-	i = 0;
 	keyADown = 0;
 	hitVerticalLine = 0;
 	pixelScrollX = 0;
