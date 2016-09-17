@@ -182,7 +182,7 @@ void updateRotatingShotsVelocity() {
 
 	if (rotatingShotDirection == forwardShot) {
 		xVelocity = 2;
-		yVelocity = -1;
+		yVelocity = 1;
 	}
 	else if (rotatingShotDirection == upAndDownShot) {
 		xVelocity = 0;
@@ -190,7 +190,7 @@ void updateRotatingShotsVelocity() {
 	}
 	else {
 		xVelocity = -2;
-		yVelocity = -1;
+		yVelocity = 1;
 	}
 
 	// Start at index 1 because the shots 0, 3, 6, etc. are straight shots
@@ -198,14 +198,14 @@ void updateRotatingShotsVelocity() {
 	for (i = 1; i < numberOfShots; i++) {
 		if (!shots[i].isOnScreen) {
 			shots[i].xVelocity = xVelocity;
-			shots[i].yVelocity = yVelocity;
+			shots[i].yVelocity = -yVelocity;
 		}
 
 		i++;
 
 		if (!shots[i].isOnScreen) {
 			shots[i].xVelocity = xVelocity;
-			shots[i].yVelocity = -yVelocity;
+			shots[i].yVelocity = yVelocity;
 		}
 
 		i++;
