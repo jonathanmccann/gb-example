@@ -62,6 +62,11 @@ void initializeShots() {
 		shots[i].isOnScreen = 0;
 		shots[i].canBeShot = 1;
 
+		move_sprite(
+			shots[i].spriteNumber,
+			shots[i].xCoordinate,
+			shots[i].yCoordinate);
+
 		i++;
 
 		shots[i].xCoordinate = offScreen;
@@ -72,6 +77,11 @@ void initializeShots() {
 		shots[i].isOnScreen = 0;
 		shots[i].canBeShot = 1;
 
+		move_sprite(
+			shots[i].spriteNumber,
+			shots[i].xCoordinate,
+			shots[i].yCoordinate);
+
 		i++;
 
 		shots[i].xCoordinate = offScreen;
@@ -81,6 +91,11 @@ void initializeShots() {
 		shots[i].spriteNumber = shot_sprite_starting_position + i;
 		shots[i].isOnScreen = 0;
 		shots[i].canBeShot = 1;
+
+		move_sprite(
+			shots[i].spriteNumber,
+			shots[i].xCoordinate,
+			shots[i].yCoordinate);
 	}
 
 	// Initialize the shotCounter to zero so we start from the beginning of the
