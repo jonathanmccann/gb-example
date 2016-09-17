@@ -8,6 +8,8 @@
 #include "../include/shot.h"
 #include "../include/sprite_and_background.h"
 
+void main();
+
 void initializeGame() {
 	// Initialize the background and sprites before
 	// trying to access and move them in 'player.c'
@@ -59,6 +61,21 @@ void gameLoop() {
 	}
 }
 
+void gameOver() {
+	clearScreen();
+
+	// This print statement display incorrectly currently. It will be fixed with
+	// a splash 'Game Over' image in the future.
+	printf("Game Over");
+
+	waitpad(J_START);
+
+	// Although it calls the 'main' function, the function 'displayStartScreen'
+	// does not wait for another start button press, most likely due to how
+	// quickly the Gameboy scans for input.
+	main();
+}
+
 void displayStartScreen() {
 	printf("Press start to play");
 
@@ -69,4 +86,6 @@ void main() {
 	displayStartScreen();
 
 	gameLoop();
+
+	gameOver();
 }

@@ -27,6 +27,7 @@
 
 // Create external references to functions found in
 // 'sprite_and_background.c'
+void clearScreen();
 void initializeBackground();
 void initializeDisplay();
 void initializeSprites();

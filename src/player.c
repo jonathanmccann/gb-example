@@ -19,12 +19,9 @@ int offset = 8;
 UBYTE i, keyADown;
 
 // Create a timer to keep track of when the ship can shoot next
-int timeToShoot = 0;
+int timeToShoot;
 
-// Store how far we have scrolled on the X axis
-UBYTE scrollX;
-
-UBYTE hitVerticalLine = 0;
+UBYTE hitVerticalLine;
 
 Player player;
 
@@ -38,7 +35,14 @@ void initializePlayer() {
 	move_sprite(player.leftSpriteNumber, player.xCoordinate, player.yCoordinate);
 	move_sprite(player.rightSpriteNumber, player.xCoordinate + offset, player.yCoordinate);
 
-	scrollX = 0;
+	// Set up all global variables so that when the game restarts, they are
+	// initialized correctly
+	i = 0;
+	keyADown = 0;
+	hitVerticalLine = 0;
+	pixelScrollX = 0;
+	timeToShoot = 0;
+	playerHitCounter = 0;
 }
 
 void movePlayer() {
@@ -54,7 +58,7 @@ void testBackgroundCollision() {
 	// Get the tile directly to the right of the ship. The offsets will need to
 	// be tweaked to get the correct collision as well as checking more parts
 	// of the ship.
-	get_bkg_tiles((player.xCoordinate + 7 + scrollX) / 8, (player.yCoordinate - 8) / 8, 1, 1, &tile);
+	get_bkg_tiles((player.xCoordinate + 7 + pixelScrollX) / 8, (player.yCoordinate - 8) / 8, 1, 1, &tile);
 
 	// If the tile is 1 that means it has hit tile 1 from 'tiles.c'. In this
 	// case, it is the vertical line tile. For testing purposes, simply flip
@@ -78,8 +82,8 @@ void testBackgroundCollision() {
 	// Keep track of where we are in terms of the background scrolling. Since
 	// the map has a width of 32 and 32 * 8 = 256, a UBYTE works perfectly as it
 	// will overflow back to 0 once the upper limit is reached. If the map
-	// becomes wider, 'scrollX' will need to be able to handle a larger digit.
-	scrollX += backgroundXScrollRate;
+	// becomes wider, 'pixelScrollX' will need to be able to handle a larger digit.
+	pixelScrollX += backgroundXScrollRate;
 }
 
 void testPlayerAndEnemyCollision(Enemy* enemy) {

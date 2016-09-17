@@ -90,6 +90,9 @@ void initializeShots() {
 	// Set up the booleans to make sure the correct shot type is being disabled
 	canShootLower = 1;
 	canShootUpper = 1;
+
+	rotatingShotDirection = forwardShot;
+	i = 0;
 }
 
 void moveShotsToPlayer(Player* player) {

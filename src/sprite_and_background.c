@@ -1,5 +1,6 @@
 #include <gb/gb.h>
 
+#include "../include/global.h"
 #include "../include/sprite_and_background.h"
 
 #include <tiles.c>
@@ -10,7 +11,7 @@
 #define pixelsPerTile 8
 #define tilesPerScreen 32
 
-UBYTE scrollX, columnYCoordinate, columnXCoordinate;
+UBYTE columnYCoordinate, columnXCoordinate;
 
 BYTE pixelCounter;
 
@@ -29,7 +30,42 @@ unsigned char man[] =
 	0x10,0x10,0x28,0x28,0x24,0x24,0x42,0x42
 };
 
+void clearScreen() {
+	UBYTE x, y;
+
+	// Reset the X scroll value so that the correct tiles are cleared
+	SCX_REG = 0;
+
+	DISPLAY_OFF;
+	HIDE_SPRITES;
+	HIDE_BKG;
+
+	// Reset the tiles currently being display to blank
+	for(x = 0; x != 20; x++)
+	{
+		for(y = 0; y != 18; y++)
+		{
+			set_bkg_tiles(x, y, 1, 1, 0x04);
+		}
+	}
+
+	SHOW_BKG;
+	DISPLAY_ON;
+}
+
 void initializeBackground() {
+	// Reset the X scroll value so that the screen begins drawing in the correct
+	// place
+	SCX_REG = 0;
+
+	// Set up all global variables so that when the game restarts, they are
+	// initialized correctly
+	columnYCoordinate = 0;
+	columnXCoordinate = 0;
+	pixelCounter = 0;
+	tileCounter = 0;
+	tileScrollX = 0;
+
 	// Set the background data
 	// Since there are two tiles
 	set_bkg_data(0, tilesSize, tiles);
@@ -48,10 +84,6 @@ void initializeBackground() {
 
 		tileCounter = tileCounter + backgroundMapTilesWidth;
 	}
-
-	// Initialize the scrolling counters
-	scrollX = 0;
-	pixelCounter = 0;
 }
 
 void initializeDisplay() {
@@ -97,7 +129,7 @@ void initializeSprites() {
 
 void updateBackground() {
 	// Specify the column that needs to be redrawn
-	tileCounter = scrollX + backgroundMapWidthToDraw;
+	tileCounter = tileScrollX + backgroundMapWidthToDraw;
 
 	// Get the starting X coordinate of the column that needs to be redrawn
 	// Since the map can only be 32X32, use mod 32 to normalize the tileCounter
@@ -132,7 +164,7 @@ void scrollBackground() {
 	// background tiles
 	if (pixelCounter == pixelsPerTile) {
 		// Keep track of where we are in relation to how many tiles we have moved
-		scrollX++;
+		tileScrollX++;
 
 		// Reset the pixel counter
 		pixelCounter = 0;
