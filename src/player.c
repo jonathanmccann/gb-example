@@ -42,18 +42,21 @@ void movePlayer() {
 }
 
 void testBackgroundCollision() {
-	UBYTE tile;
+	UBYTE lowerLeftTile, lowerRightTile, upperLeftTile, upperRightTile;
 
 	// Get the tile directly to the right of the ship. The offsets will need to
 	// be tweaked to get the correct collision as well as checking more parts
 	// of the ship.
-	get_bkg_tiles((player.xCoordinate + 7 + pixelScrollX) / 8, (player.yCoordinate - 8) / 8, 1, 1, &tile);
+	get_bkg_tiles((player.xCoordinate + 7 + pixelScrollX) / 8, (player.yCoordinate - 8) / 8, 1, 1, &lowerRightTile);
+	get_bkg_tiles((player.xCoordinate + 7 + pixelScrollX) / 8, (player.yCoordinate - 16) / 8, 1, 1, &upperRightTile);
+	get_bkg_tiles((player.xCoordinate - 15 + pixelScrollX) / 8, (player.yCoordinate - 8) / 8, 1, 1, &lowerLeftTile);
+	get_bkg_tiles((player.xCoordinate - 15 + pixelScrollX) / 8, (player.yCoordinate - 16) / 8, 1, 1, &upperLeftTile);
 
 	// If the tile is 1 that means it has hit tile 1 from 'tiles.c'. In this
 	// case, it is the vertical line tile. For testing purposes, simply flip
 	// the ships sprites for feedback on whether or not the collision detection
 	// is working properly.
-	if (tile == 1) {
+	if ((lowerLeftTile == 1) || (lowerRightTile == 1) || (upperLeftTile == 1) || (upperRightTile == 1)) {
 		if (hitVerticalLine == 0) {
 			set_sprite_prop(left_half_ship, S_FLIPX);
 			set_sprite_prop(right_half_ship, S_FLIPX);
