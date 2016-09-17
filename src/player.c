@@ -11,7 +11,7 @@
 #define playerYCoordinateLowerBoundary 16
 #define playerYCoordinateUpperBoundary 150
 
-UBYTE hitVerticalLine, keyADown, timeToShoot;
+UBYTE keyADown, timeToShoot;
 
 Player player;
 
@@ -28,7 +28,6 @@ void initializePlayer() {
 	// Set up all global variables so that when the game restarts, they are
 	// initialized correctly
 	keyADown = 0;
-	hitVerticalLine = 0;
 	pixelScrollX = 0;
 	timeToShoot = 0;
 	playerHitCounter = 0;
@@ -57,18 +56,7 @@ void testBackgroundCollision() {
 	// the ships sprites for feedback on whether or not the collision detection
 	// is working properly.
 	if ((lowerLeftTile == 1) || (lowerRightTile == 1) || (upperLeftTile == 1) || (upperRightTile == 1)) {
-		if (hitVerticalLine == 0) {
-			set_sprite_prop(left_half_ship, S_FLIPX);
-			set_sprite_prop(right_half_ship, S_FLIPX);
-
-			hitVerticalLine = 1;
-		}
-		else {
-			set_sprite_prop(left_half_ship, 0);
-			set_sprite_prop(right_half_ship, 0);
-
-			hitVerticalLine = 0;
-		}
+		playerHitCounter = 3;
 	}
 
 	// Keep track of where we are in terms of the background scrolling. Since
