@@ -11,9 +11,30 @@
 #define playerYCoordinateLowerBoundary 16
 #define playerYCoordinateUpperBoundary 150
 
-UBYTE keyADown, timeToShoot;
+UBYTE invulnerabilityTime, keyADown, timeToShoot;
 
 Player player;
+
+void displayInvulnerability() {
+	if (!invulnerabilityTime) {
+		return;
+	}
+
+	invulnerabilityTime--;
+
+	if (invulnerabilityTime) {
+		// Use modulus to create a flicker effect
+		if (invulnerabilityTime % 4 == 0) {
+			// Move the sprite off screen to simulate a flicker effect
+			move_sprite(left_half_ship, player.xCoordinate, 161);
+			move_sprite(right_half_ship, player.xCoordinate + offset, 161);
+		}
+		else {
+			move_sprite(left_half_ship, player.xCoordinate, player.yCoordinate);
+			move_sprite(right_half_ship, player.xCoordinate + offset, player.yCoordinate);
+		}
+	}
+}
 
 void initializePlayer() {
 	// Move the sprite on to the screen so we can see it
@@ -27,6 +48,7 @@ void initializePlayer() {
 
 	// Set up all global variables so that when the game restarts, they are
 	// initialized correctly
+	invulnerabilityTime = 0;
 	keyADown = 0;
 	pixelScrollX = 0;
 	timeToShoot = 0;
@@ -67,31 +89,36 @@ void testBackgroundCollision() {
 }
 
 void testPlayerAndEnemyCollision(Enemy* enemy) {
-	if (player.yCoordinate > enemy->yCoordinate - 8) {
-		if (player.yCoordinate < enemy->yCoordinate + 8) {
-			if (player.xCoordinate > enemy->xCoordinate - 16) {
-				if (player.xCoordinate < enemy->xCoordinate + 8) {
-					// Increase the player's hit counter since they are allowed
-					// to take two hits before dying. The first two hits will
-					// remove their ability to fire one of their rotating shots.
-					// This is dependent on where the ship was hit.
-					playerHitCounter++;
+	if (!invulnerabilityTime) {
+		if (player.yCoordinate > enemy->yCoordinate - 8) {
+			if (player.yCoordinate < enemy->yCoordinate + 8) {
+				if (player.xCoordinate > enemy->xCoordinate - 16) {
+					if (player.xCoordinate < enemy->xCoordinate + 8) {
+						// Increase the player's hit counter since they are allowed
+						// to take two hits before dying. The first two hits will
+						// remove their ability to fire one of their rotating shots.
+						// This is dependent on where the ship was hit.
+						playerHitCounter++;
 
-					if (playerHitCounter == 3) {
-						return;
-					}
-					else if (player.yCoordinate < (enemy->yCoordinate)) {
-						removeLowerShot();
-					}
-					else {
-						removeUpperShot();
-					}
+						// Allow the player to be invulnerable for one second
+						invulnerabilityTime = 60;
 
-					enemy->xCoordinate = offScreen;
-					enemy->yCoordinate = offScreen;
+						if (playerHitCounter == 3) {
+							return;
+						}
+						else if (player.yCoordinate < (enemy->yCoordinate)) {
+							removeLowerShot();
+						}
+						else {
+							removeUpperShot();
+						}
 
-					// Move the enemy sprite off screen
-					move_sprite(enemy->spriteNumber, offScreen, offScreen);
+						enemy->xCoordinate = offScreen;
+						enemy->yCoordinate = offScreen;
+
+						// Move the enemy sprite off screen
+						move_sprite(enemy->spriteNumber, offScreen, offScreen);
+					}
 				}
 			}
 		}
@@ -174,4 +201,6 @@ void updatePlayerAndShots(int key) {
 	// Move the shots irregardless of input since some shots might already be
 	// on the screen and require movement.
 	moveShots();
+
+	displayInvulnerability();
 }
