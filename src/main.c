@@ -7,6 +7,8 @@
 #include "../include/player.h"
 #include "../include/sprite_and_background.h"
 
+UBYTE scrollBackgroundCounter;
+
 void main();
 
 void initializeGame() {
@@ -24,6 +26,8 @@ void initializeGame() {
 	// Show the background and sprites that were previously
 	// initialized
 	initializeDisplay();
+
+	scrollBackgroundCounter = 0;
 }
 
 void gameLoop() {
@@ -31,7 +35,14 @@ void gameLoop() {
 
 	while (1) {
 		// Trigger the background to be updated
-		scrollBackground();
+		if (scrollBackgroundCounter) {
+			scrollBackground();
+
+			scrollBackgroundCounter = 0;
+		}
+		else {
+			scrollBackgroundCounter = 1;
+		}
 
 		// Pass the input from the joypad to player.c to update
 		// the player and shot's location
