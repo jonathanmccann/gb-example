@@ -5,6 +5,7 @@
 #include "../include/shot.h"
 #include "../include/sprite_and_background.h"
 
+#define invulnerabilityFrames 100
 #define offset 8
 #define playerXCoordinateLowerBoundary 8
 #define playerXCoordinateUpperBoundary 152
@@ -101,7 +102,7 @@ void testPlayerAndEnemyCollision(Enemy* enemy) {
 						playerHitCounter++;
 
 						// Allow the player to be invulnerable for one second
-						invulnerabilityTime = 60;
+						invulnerabilityTime = invulnerabilityFrames;
 
 						if (playerHitCounter == 3) {
 							return;
