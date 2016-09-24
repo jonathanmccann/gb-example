@@ -71,8 +71,8 @@ void testBackgroundCollision() {
 	// of the ship.
 	get_bkg_tiles((player.xCoordinate + 7 + pixelScrollX) / 8, (player.yCoordinate - 8) / 8, 1, 1, &lowerRightTile);
 	get_bkg_tiles((player.xCoordinate + 7 + pixelScrollX) / 8, (player.yCoordinate - 16) / 8, 1, 1, &upperRightTile);
-	get_bkg_tiles((player.xCoordinate - 15 + pixelScrollX) / 8, (player.yCoordinate - 8) / 8, 1, 1, &lowerLeftTile);
-	get_bkg_tiles((player.xCoordinate - 15 + pixelScrollX) / 8, (player.yCoordinate - 16) / 8, 1, 1, &upperLeftTile);
+	get_bkg_tiles((player.xCoordinate - 8 + pixelScrollX) / 8, (player.yCoordinate - 8) / 8, 1, 1, &lowerLeftTile);
+	get_bkg_tiles((player.xCoordinate - 8 + pixelScrollX) / 8, (player.yCoordinate - 16) / 8, 1, 1, &upperLeftTile);
 
 	// If the tile is 1 that means it has hit tile 1 from 'tiles.c'. In this
 	// case, it is the vertical line tile. For testing purposes, simply flip
