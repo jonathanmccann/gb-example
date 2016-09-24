@@ -81,12 +81,6 @@ void testBackgroundCollision() {
 	if ((lowerLeftTile == 1) || (lowerRightTile == 1) || (upperLeftTile == 1) || (upperRightTile == 1)) {
 		playerHitCounter = 3;
 	}
-
-	// Keep track of where we are in terms of the background scrolling. Since
-	// the map has a width of 32 and 32 * 8 = 256, a UBYTE works perfectly as it
-	// will overflow back to 0 once the upper limit is reached. If the map
-	// becomes wider, 'pixelScrollX' will need to be able to handle a larger digit.
-	pixelScrollX += backgroundXScrollRate;
 }
 
 void testPlayerAndEnemyCollision(Enemy* enemy) {

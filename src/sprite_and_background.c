@@ -157,6 +157,12 @@ void scrollBackground() {
 	// Scroll the background as defined by the scroll rate
 	scroll_bkg(backgroundXScrollRate, backgroundYScrollRate);
 
+	// Keep track of where we are in terms of the background scrolling. Since
+	// the map has a width of 32 and 32 * 8 = 256, a UBYTE works perfectly as it
+	// will overflow back to 0 once the upper limit is reached. If the map
+	// becomes wider, 'pixelScrollX' will need to be able to handle a larger digit.
+	pixelScrollX += backgroundXScrollRate;
+
 	// Every pixel scrolled, increase the pixel tileCounter
 	pixelCounter++;
 
