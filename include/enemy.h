@@ -11,6 +11,9 @@ typedef struct _Enemy {
 	// Set which style of movement the enemy will have
 	UBYTE movementPathType;
 
+	// Determine whether or not the enemy is on screen
+	UBYTE isOnScreen;
+
 	// Set the sprite number associated with the enemy
 	int spriteNumber;
 } Enemy;

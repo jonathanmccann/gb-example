@@ -270,6 +270,7 @@ void testShotAndEnemyCollision(Enemy* enemy) {
 					if (shots[i].xCoordinate < enemy->xCoordinate + 8) {
 						enemy->xCoordinate = offScreen;
 						enemy->yCoordinate = offScreen;
+						enemy->isOnScreen = 0;
 
 						// Move the enemy sprite off screen
 						move_sprite(enemy->spriteNumber, offScreen, offScreen);

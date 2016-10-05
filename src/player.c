@@ -110,6 +110,7 @@ void testPlayerAndEnemyCollision(Enemy* enemy) {
 
 						enemy->xCoordinate = offScreen;
 						enemy->yCoordinate = offScreen;
+						enemy->isOnScreen = 0;
 
 						// Move the enemy sprite off screen
 						move_sprite(enemy->spriteNumber, offScreen, offScreen);
