@@ -112,8 +112,11 @@ void initializeSprites() {
 	// Set the fourth sprite tile to be the head for use as the second enemy
 	set_sprite_tile(second_enemy, 2);
 
-	// Set the fourth sprite tile to be the head for use as the third enemy
+	// Set the fifth sprite tile to be the head for use as the third enemy
 	set_sprite_tile(third_enemy, 2);
+
+	// Set the sixth sprite tile to be the head for use as the fourth enemy
+	set_sprite_tile(fourth_enemy, 2);
 
 	// Set the six sprite tiles for the six various shots as the head
 	set_sprite_tile(first_straight_shot, 2);

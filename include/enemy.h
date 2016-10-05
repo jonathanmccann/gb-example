@@ -8,12 +8,8 @@ typedef struct _Enemy {
 	// Initial Y coordinate starting point for enemy
 	UBYTE yCoordinate;
 
-	// Boolean to determine whether the enemy is moving up or down
-	BOOLEAN isMovingUp;
-
-	// Set the Y coordinate upper and lower bounds for the enemy sprite
-	UBYTE yCoordinateLowerBoundary;
-	UBYTE yCoordinateUpperBoundary;
+	// Set which style of movement the enemy will have
+	UBYTE movementPathType;
 
 	// Set the sprite number associated with the enemy
 	int spriteNumber;
