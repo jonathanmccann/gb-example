@@ -11,6 +11,12 @@ typedef struct _Enemy {
 	// Set which style of movement the enemy will have
 	UBYTE movementPathType;
 
+	// Count how many pixels the enemy has used for use with 'changeInMovement'
+	UBYTE movementCounter;
+
+	// Set when the enemy will have a change in movement
+	UBYTE changeInMovement;
+
 	// Determine whether or not the enemy is on screen
 	UBYTE isOnScreen;
 
