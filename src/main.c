@@ -2,9 +2,9 @@
 
 #include <stdio.h>
 
-#include "../include/enemy.h"
 #include "../include/global.h"
 #include "../include/player.h"
+#include "../include/shot_and_enemy.h"
 #include "../include/sprite_and_background.h"
 
 UBYTE scrollBackgroundCounter;
@@ -14,7 +14,7 @@ void main();
 void initializeGame() {
 	// Initialize the background and sprites before
 	// trying to access and move them in 'player.c'
-	// and 'enemy.c'
+	// and 'shot.c'
 	initializeBackground();
 	initializeSprites();
 

@@ -21,6 +21,7 @@
 #define third_straight_shot 12
 #define third_upper_shot 13
 #define third_lower_shot 14
+#define first_enemy_shot 15
 
 // Define the starting index of the shot sprites
 // for use inside of the loop in 'player.c'

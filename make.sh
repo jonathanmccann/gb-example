@@ -6,7 +6,7 @@ cd src
 
 rm main.gb
 
-$1 -o main.gb main.c enemy.c global.c player.c shot.c sprite_and_background.c
+$1 -o main.gb main.c global.c player.c shot_and_enemy.c sprite_and_background.c
 
 if [ -e main.gb ]
 then

@@ -2,7 +2,7 @@
 
 #include "../include/global.h"
 #include "../include/player.h"
-#include "../include/shot.h"
+#include "../include/shot_and_enemy.h"
 #include "../include/sprite_and_background.h"
 
 #define invulnerabilityFrames 100

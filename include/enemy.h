@@ -17,15 +17,14 @@ typedef struct _Enemy {
 	// Set when the enemy will have a change in movement
 	UBYTE changeInMovement;
 
+	// Count how many pixels the enemy has moved before registering a shot
+	UBYTE shotCounter;
+
 	// Determine whether or not the enemy is on screen
 	UBYTE isOnScreen;
 
 	// Set the sprite number associated with the enemy
 	int spriteNumber;
 } Enemy;
-
-void initializeEnemies();
-void moveEnemySprites();
-void testEnemyCollision();
 
 #endif //PROJECT_ENEMY_H

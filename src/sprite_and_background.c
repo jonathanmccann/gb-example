@@ -92,6 +92,8 @@ void initializeDisplay() {
 }
 
 void initializeSprites() {
+	int i;
+
 	// Load the two parts of the ship into the sprite data
 	set_sprite_data(0, shipSize, ship);
 
@@ -128,6 +130,14 @@ void initializeSprites() {
 	set_sprite_tile(third_straight_shot, 2);
 	set_sprite_tile(third_upper_shot, 2);
 	set_sprite_tile(third_lower_shot, 2);
+
+	// Set the 20 enemy shot sprites as the head
+	set_sprite_tile(15, 2);
+	set_sprite_tile(16, 2);
+	set_sprite_tile(17, 2);
+	set_sprite_tile(18, 2);
+	set_sprite_tile(19, 2);
+	set_sprite_tile(20, 2);
 }
 
 void updateBackground() {
