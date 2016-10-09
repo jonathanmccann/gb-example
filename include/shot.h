@@ -4,9 +4,9 @@
 #define PROJECT_SHOT_H
 
 void moveShots();
-void moveShotsToPlayer(Player* player);
-void removeLowerShot();
-void removeUpperShot();
+void movePlayerShotsToPlayer(Player *player);
+void removePlayerLowerShot();
+void removePlayerUpperShot();
 void updateRotatingShotDirection();
 void updateRotatingShotsVelocity();
 

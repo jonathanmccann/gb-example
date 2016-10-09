@@ -11,7 +11,7 @@ typedef struct {
 } Player;
 
 void initializePlayer();
-void initializeShots();
+void initializePlayerShots();
 void updatePlayerAndShots(int key);
 void testBackgroundCollision();
 void testPlayerAndEnemyCollision(Enemy* enemy);

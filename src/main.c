@@ -21,7 +21,7 @@ void initializeGame() {
 	// Call the initialize enemy and player functions
 	initializeEnemies();
 	initializePlayer();
-	initializeShots();
+	initializePlayerShots();
 
 	// Show the background and sprites that were previously
 	// initialized

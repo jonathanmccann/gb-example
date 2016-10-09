@@ -5,7 +5,7 @@
 #include "../include/player.h"
 #include "../include/sprite_and_background.h"
 
-#define numberOfShots 9
+#define numberOfPlayerShots 9
 #define numberOfShotsInGroup 3
 
 #define forwardShot 0
@@ -46,56 +46,56 @@ typedef struct {
 	int spriteNumber;
 } Shot;
 
-Shot shots[numberOfShots];
+Shot playerShots[numberOfPlayerShots];
 
-void initializeShots() {
+void initializePlayerShots() {
 	// Set up the shots to confirm that "isOnScreen" is false.
 
 	// Incrementing within the loop to allow for differing velocities from
 	// the inception of the shots.
-	for (i = 0; i < numberOfShots; i++) {
-		shots[i].xCoordinate = offScreen;
-		shots[i].yCoordinate = offScreen;
-		shots[i].xVelocity = 2;
-		shots[i].yVelocity = 0;
-		shots[i].spriteNumber = shot_sprite_starting_position + i;
-		shots[i].isOnScreen = 0;
-		shots[i].canBeShot = 1;
+	for (i = 0; i < numberOfPlayerShots; i++) {
+		playerShots[i].xCoordinate = offScreen;
+		playerShots[i].yCoordinate = offScreen;
+		playerShots[i].xVelocity = 2;
+		playerShots[i].yVelocity = 0;
+		playerShots[i].spriteNumber = shot_sprite_starting_position + i;
+		playerShots[i].isOnScreen = 0;
+		playerShots[i].canBeShot = 1;
 
 		move_sprite(
-			shots[i].spriteNumber,
-			shots[i].xCoordinate,
-			shots[i].yCoordinate);
+			playerShots[i].spriteNumber,
+			playerShots[i].xCoordinate,
+			playerShots[i].yCoordinate);
 
 		i++;
 
-		shots[i].xCoordinate = offScreen;
-		shots[i].yCoordinate = offScreen;
-		shots[i].xVelocity = 2;
-		shots[i].yVelocity = -1;
-		shots[i].spriteNumber = shot_sprite_starting_position + i;
-		shots[i].isOnScreen = 0;
-		shots[i].canBeShot = 1;
+		playerShots[i].xCoordinate = offScreen;
+		playerShots[i].yCoordinate = offScreen;
+		playerShots[i].xVelocity = 2;
+		playerShots[i].yVelocity = -1;
+		playerShots[i].spriteNumber = shot_sprite_starting_position + i;
+		playerShots[i].isOnScreen = 0;
+		playerShots[i].canBeShot = 1;
 
 		move_sprite(
-			shots[i].spriteNumber,
-			shots[i].xCoordinate,
-			shots[i].yCoordinate);
+			playerShots[i].spriteNumber,
+			playerShots[i].xCoordinate,
+			playerShots[i].yCoordinate);
 
 		i++;
 
-		shots[i].xCoordinate = offScreen;
-		shots[i].yCoordinate = offScreen;
-		shots[i].xVelocity = 2;
-		shots[i].yVelocity = 1;
-		shots[i].spriteNumber = shot_sprite_starting_position + i;
-		shots[i].isOnScreen = 0;
-		shots[i].canBeShot = 1;
+		playerShots[i].xCoordinate = offScreen;
+		playerShots[i].yCoordinate = offScreen;
+		playerShots[i].xVelocity = 2;
+		playerShots[i].yVelocity = 1;
+		playerShots[i].spriteNumber = shot_sprite_starting_position + i;
+		playerShots[i].isOnScreen = 0;
+		playerShots[i].canBeShot = 1;
 
 		move_sprite(
-			shots[i].spriteNumber,
-			shots[i].xCoordinate,
-			shots[i].yCoordinate);
+			playerShots[i].spriteNumber,
+			playerShots[i].xCoordinate,
+			playerShots[i].yCoordinate);
 	}
 
 	// Initialize the shotCounter to zero so we start from the beginning of the
@@ -110,36 +110,36 @@ void initializeShots() {
 	i = 0;
 }
 
-void moveShotsToPlayer(Player* player) {
+void movePlayerShotsToPlayer(Player *player) {
 	// Set all of the shots to be where the player is
 	// so it looks like the shot is coming from the ship
 
 	// Test to see if the current group of shots is already on screen
-	if (shots[shotCounter].isOnScreen || shots[shotCounter + 1].isOnScreen ||
-		shots[shotCounter + 2].isOnScreen) {
+	if (playerShots[shotCounter].isOnScreen || playerShots[shotCounter + 1].isOnScreen ||
+		playerShots[shotCounter + 2].isOnScreen) {
 
 		return;
 	}
 
 	// Only loop as far as the number of shots in a group allows
 	for (i = 0; i < numberOfShotsInGroup; i++) {
-		if (shots[shotCounter].canBeShot) {
-			shots[shotCounter].xCoordinate = player->xCoordinate;
-			shots[shotCounter].yCoordinate = player->yCoordinate;
-			shots[shotCounter].isOnScreen = 1;
+		if (playerShots[shotCounter].canBeShot) {
+			playerShots[shotCounter].xCoordinate = player->xCoordinate;
+			playerShots[shotCounter].yCoordinate = player->yCoordinate;
+			playerShots[shotCounter].isOnScreen = 1;
 
 			move_sprite(
-				shots[shotCounter].spriteNumber,
-				shots[shotCounter].xCoordinate,
-				shots[shotCounter].yCoordinate);
+				playerShots[shotCounter].spriteNumber,
+				playerShots[shotCounter].xCoordinate,
+				playerShots[shotCounter].yCoordinate);
 		}
 
 		shotCounter++;
 	}
 
-	// Here, we aren't doing "numberOfShots - 1" since the loop above will
+	// Here, we aren't doing "numberOfPlayerShots - 1" since the loop above will
 	// increment it before breaking out.
-	if (shotCounter == numberOfShots) {
+	if (shotCounter == numberOfPlayerShots) {
 		shotCounter = 0;
 	}
 }
@@ -147,15 +147,15 @@ void moveShotsToPlayer(Player* player) {
 // If the lower shot has already been removed, then remove the upper shot.
 // Look over very specifically the third, sixth, and ninth shots since those
 // are the lower ones.
-void removeLowerShot() {
+void removePlayerLowerShot() {
 	if (!canShootLower) {
-		removeUpperShot();
+		removePlayerUpperShot();
 	}
 	else {
 		int i;
 
 		for (i = 2; i <= 8; i += 3) {
-			shots[i].canBeShot = 0;
+			playerShots[i].canBeShot = 0;
 		}
 
 		canShootLower = 0;
@@ -165,15 +165,15 @@ void removeLowerShot() {
 // If the upper shot has already been removed, then remove the lower shot.
 // Look over very specifically the second, fifth, and eighth shots since those
 // are the upper ones.
-void removeUpperShot() {
+void removePlayerUpperShot() {
 	if (!canShootUpper) {
-		removeLowerShot();
+		removePlayerLowerShot();
 	}
 	else {
 		int i;
 
 		for (i = 1; i <= 7; i += 3) {
-			shots[i].canBeShot = 0;
+			playerShots[i].canBeShot = 0;
 		}
 
 		canShootUpper = 0;
@@ -210,17 +210,17 @@ void updateRotatingShotsVelocity() {
 
 	// Start at index 1 because the shots 0, 3, 6, etc. are straight shots
 	// and their velocity does not need to be updated.
-	for (i = 1; i < numberOfShots; i++) {
-		if (!shots[i].isOnScreen) {
-			shots[i].xVelocity = xVelocity;
-			shots[i].yVelocity = -yVelocity;
+	for (i = 1; i < numberOfPlayerShots; i++) {
+		if (!playerShots[i].isOnScreen) {
+			playerShots[i].xVelocity = xVelocity;
+			playerShots[i].yVelocity = -yVelocity;
 		}
 
 		i++;
 
-		if (!shots[i].isOnScreen) {
-			shots[i].xVelocity = xVelocity;
-			shots[i].yVelocity = yVelocity;
+		if (!playerShots[i].isOnScreen) {
+			playerShots[i].xVelocity = xVelocity;
+			playerShots[i].yVelocity = yVelocity;
 		}
 
 		i++;
@@ -230,25 +230,25 @@ void updateRotatingShotsVelocity() {
 void moveShots() {
 	int shotMovedOffscreen = 0;
 
-	for (i = 0; i < numberOfShots; i++) {
-		if (shots[i].isOnScreen) {
-			if ((shots[i].xCoordinate <= shotXCoordinateLowerBoundary) ||
-				(shots[i].xCoordinate >= shotXCoordinateUpperBoundary) ||
-				(shots[i].yCoordinate <= shotYCoordinateLowerBoundary) ||
-				(shots[i].yCoordinate >= shotYCoordinateUpperBoundary)) {
+	for (i = 0; i < numberOfPlayerShots; i++) {
+		if (playerShots[i].isOnScreen) {
+			if ((playerShots[i].xCoordinate <= shotXCoordinateLowerBoundary) ||
+				(playerShots[i].xCoordinate >= shotXCoordinateUpperBoundary) ||
+				(playerShots[i].yCoordinate <= shotYCoordinateLowerBoundary) ||
+				(playerShots[i].yCoordinate >= shotYCoordinateUpperBoundary)) {
 
-				shots[i].xCoordinate = offScreen;
-				shots[i].yCoordinate = offScreen;
-				shots[i].isOnScreen = 0;
+				playerShots[i].xCoordinate = offScreen;
+				playerShots[i].yCoordinate = offScreen;
+				playerShots[i].isOnScreen = 0;
 
 				shotMovedOffscreen = 1;
 			}
 			else {
-				shots[i].xCoordinate += shots[i].xVelocity;
-				shots[i].yCoordinate += shots[i].yVelocity;
+				playerShots[i].xCoordinate += playerShots[i].xVelocity;
+				playerShots[i].yCoordinate += playerShots[i].yVelocity;
 			}
 
-			move_sprite(shots[i].spriteNumber, shots[i].xCoordinate, shots[i].yCoordinate);
+			move_sprite(playerShots[i].spriteNumber, playerShots[i].xCoordinate, playerShots[i].yCoordinate);
 		}
 	}
 
@@ -263,11 +263,11 @@ void moveShots() {
 void testShotAndEnemyCollision(Enemy* enemy) {
 	int i;
 
-	for (i = 0; i < numberOfShots; i++) {
-		if (shots[i].yCoordinate > enemy->yCoordinate - 8) {
-			if (shots[i].yCoordinate < enemy->yCoordinate + 8) {
-				if (shots[i].xCoordinate > enemy->xCoordinate - 8) {
-					if (shots[i].xCoordinate < enemy->xCoordinate + 8) {
+	for (i = 0; i < numberOfPlayerShots; i++) {
+		if (playerShots[i].yCoordinate > enemy->yCoordinate - 8) {
+			if (playerShots[i].yCoordinate < enemy->yCoordinate + 8) {
+				if (playerShots[i].xCoordinate > enemy->xCoordinate - 8) {
+					if (playerShots[i].xCoordinate < enemy->xCoordinate + 8) {
 						enemy->xCoordinate = offScreen;
 						enemy->yCoordinate = offScreen;
 						enemy->isOnScreen = 0;
@@ -276,9 +276,9 @@ void testShotAndEnemyCollision(Enemy* enemy) {
 						move_sprite(enemy->spriteNumber, offScreen, offScreen);
 
 						// Move the shot sprite off screen
-						move_sprite(shots[i].spriteNumber, offScreen, offScreen);
+						move_sprite(playerShots[i].spriteNumber, offScreen, offScreen);
 
-						shots[i].isOnScreen = 0;
+						playerShots[i].isOnScreen = 0;
 					}
 				}
 			}

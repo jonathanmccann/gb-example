@@ -102,10 +102,10 @@ void testPlayerAndEnemyCollision(Enemy* enemy) {
 							return;
 						}
 						else if (player.yCoordinate < (enemy->yCoordinate)) {
-							removeLowerShot();
+							removePlayerLowerShot();
 						}
 						else {
-							removeUpperShot();
+							removePlayerUpperShot();
 						}
 
 						enemy->xCoordinate = offScreen;
@@ -179,7 +179,7 @@ void updatePlayerAndShots(int key) {
 
 	if (key & J_B) {
 		if (timeToShoot == 0) {
-			moveShotsToPlayer(&player);
+			movePlayerShotsToPlayer(&player);
 
 			// The main loop will run at 60 frames per second. Setting
 			// 'timeToShoot' will have the ship fire every 15 frames or
