@@ -476,8 +476,8 @@ void moveEnemySprites() {
 						enemyShots[i].xCoordinate = enemies[i].xCoordinate;
 						enemyShots[i].yCoordinate = enemies[i].yCoordinate;
 						enemyShots[i].xVelocity = -2;
-						enemyShots[i].yVelocity = 0;
 						enemyShots[i].isOnScreen = 1;
+						enemyShots[i].yVelocity = 1;
 
 						spriteNumber = i + first_enemy_shot;
 
