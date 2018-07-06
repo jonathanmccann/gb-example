@@ -92,8 +92,6 @@ void initializeDisplay() {
 }
 
 void initializeSprites() {
-	int i;
-
 	// Load the two parts of the ship into the sprite data
 	set_sprite_data(0, shipSize, ship);
 
