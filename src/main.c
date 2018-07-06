@@ -14,7 +14,7 @@ void main();
 void initializeGame() {
 	// Initialize the background and sprites before
 	// trying to access and move them in 'player.c'
-	// and 'shot.c'
+	// and 'shot_and_enemy.c'
 	initializeBackground();
 	initializeSprites();
 
@@ -48,7 +48,7 @@ void gameLoop() {
 		// the player and shot's location
 		updatePlayerAndShots(joypad());
 
-		// Move the enemy sprites as they are defined in enemy.c
+		// Move the enemy sprites as they are defined in 'shot_and_enemy.c'
 		moveEnemySprites();
 
 		// After all movement has completed, test to see if any of the shots
