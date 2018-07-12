@@ -17,6 +17,10 @@ BYTE pixelCounter;
 
 UWORD tileCounter;
 
+BYTE mapCounter;
+
+int updateMapCounter = 0;
+
 unsigned char man[] =
 {
 	// Head
@@ -65,6 +69,7 @@ void initializeBackground() {
 	pixelCounter = 0;
 	tileCounter = 0;
 	tileScrollX = 0;
+	mapCounter = 0;
 
 	// Set the background data
 	// Since there are two tiles
@@ -80,7 +85,7 @@ void initializeBackground() {
 	for (columnYCoordinate = 0; columnYCoordinate != backgroundMapTilesHeight; columnYCoordinate++) {
 		set_bkg_tiles(
 			0, columnYCoordinate, backgroundMapWidthToDraw, 1,
-			&(backgroundMapTiles + tileCounter));
+			&(backgroundMapTiles[mapCounter] + tileCounter));
 
 		tileCounter = tileCounter + backgroundMapTilesWidth;
 	}
@@ -142,6 +147,16 @@ void updateBackground() {
 	// Specify the column that needs to be redrawn
 	tileCounter = tileScrollX + backgroundMapWidthToDraw;
 
+	// If the tileCounter is at the last tile in the map switch to the next map array
+	if (tileCounter == 255) {
+		if (updateMapCounter == 1) {
+			updateMapCounter = 2;
+		}
+		else {
+			updateMapCounter = 1;
+		}
+	}
+
 	// Get the starting X coordinate of the column that needs to be redrawn
 	// Since the map can only be 32X32, use mod 32 to normalize the tileCounter
 	columnXCoordinate = tileCounter % tilesPerScreen;
@@ -158,9 +173,17 @@ void updateBackground() {
 	for (columnYCoordinate = 0; columnYCoordinate != backgroundMapTilesHeight; columnYCoordinate++) {
 		set_bkg_tiles(
 			columnXCoordinate, columnYCoordinate, 1, 1,
-			&(backgroundMapTiles + tileCounter));
+			&(backgroundMapTiles[mapCounter] + tileCounter));
 
 		tileCounter = tileCounter + backgroundMapTilesWidth;
+	}
+
+	// Update the counter after the drawing occurs above so that we draw the last column of the current map
+	if (updateMapCounter == 1) {
+		mapCounter = 1;
+	}
+	else if (updateMapCounter == 2) {
+		mapCounter = 0;
 	}
 }
 
