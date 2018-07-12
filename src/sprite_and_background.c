@@ -80,7 +80,7 @@ void initializeBackground() {
 	for (columnYCoordinate = 0; columnYCoordinate != backgroundMapTilesHeight; columnYCoordinate++) {
 		set_bkg_tiles(
 			0, columnYCoordinate, backgroundMapWidthToDraw, 1,
-			&(background_map_tiles + tileCounter));
+			&(backgroundMapTiles + tileCounter));
 
 		tileCounter = tileCounter + backgroundMapTilesWidth;
 	}
@@ -158,7 +158,7 @@ void updateBackground() {
 	for (columnYCoordinate = 0; columnYCoordinate != backgroundMapTilesHeight; columnYCoordinate++) {
 		set_bkg_tiles(
 			columnXCoordinate, columnYCoordinate, 1, 1,
-			&(background_map_tiles + tileCounter));
+			&(backgroundMapTiles + tileCounter));
 
 		tileCounter = tileCounter + backgroundMapTilesWidth;
 	}
